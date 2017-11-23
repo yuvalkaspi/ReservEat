@@ -9,6 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.reserveat.reserveat.common.Common;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -21,9 +25,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddActivity.class );
                 startActivity(intent);
-                //Toast.makeText(getApplicationContext(),"sorting", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser != null){
+//            String name = currentUser.getDisplayName();
+//            Toast.makeText(getApplicationContext(),"Hello " + name, Toast.LENGTH_SHORT).show();
+        }else{
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class );
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -36,8 +53,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.item1:
-                Toast.makeText(getApplicationContext(), "Item 1 Selected", Toast.LENGTH_LONG).show();
+            case R.id.logOut:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class );
+                startActivity(intent);
                 return true;
             case R.id.item2:
                 Toast.makeText(getApplicationContext(), "Item 2 Selected", Toast.LENGTH_LONG).show();
