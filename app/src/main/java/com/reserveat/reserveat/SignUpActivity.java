@@ -4,9 +4,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +26,8 @@ public class SignUpActivity extends AppCompatActivity {
     EditText lastNameEditText;
     EditText emailEditText;
     EditText passwordEditText;
+    private static final String TAG = "SignUpActivity";
+    private static final int NUM_OF_FIELDS = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +35,11 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         mAuth = FirebaseAuth.getInstance();
 
-        firstNameEditText= (EditText) findViewById(R.id.firstName);
-        lastNameEditText= (EditText) findViewById(R.id.lastName);
-        emailEditText = (EditText) findViewById(R.id.email);
-        passwordEditText = (EditText) findViewById(R.id.password);
-        Button joinButton = (Button) findViewById(R.id.join);
+        firstNameEditText= findViewById(R.id.firstName);
+        lastNameEditText= findViewById(R.id.lastName);
+        emailEditText = findViewById(R.id.email);
+        passwordEditText = findViewById(R.id.password);
+        Button joinButton = findViewById(R.id.join);
 
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,8 +47,6 @@ public class SignUpActivity extends AppCompatActivity {
                 attemptSignUp();
             }
         });
-
-
     }
 
     @Override
@@ -56,72 +58,51 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     /**
-     * Attempts to sign in or register the account specified by the login form.
+     * Attempts to sign up.
      * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
+     * errors are presented and no actual sign up attempt is made.
      */
     private void attemptSignUp() {
 
-        // Reset errors.
-        firstNameEditText.setError(null);
-        lastNameEditText.setError(null);
-        emailEditText.setError(null);
-        passwordEditText.setError(null);
-
         // Store values at the time of the login attempt.
-        String email = emailEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString().trim();
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
         final String firstName = firstNameEditText.getText().toString().trim();
-        final String lastName = lastNameEditText.getText().toString();
+        final String lastName = lastNameEditText.getText().toString().trim();
 
-        boolean cancel = false;
+
+        TextView[] formTextViewArr = {passwordEditText, emailEditText, lastNameEditText, firstNameEditText};//order desc
+        int[] formTextViewErrCodeArr = new int[NUM_OF_FIELDS];
+
         View focusView = null;
 
-        // Check for a valid password
-        if (TextUtils.isEmpty(password)) {
-            passwordEditText.setError(getString(R.string.error_field_required));
-            focusView = passwordEditText;
-            cancel = true;
-        } else if (!Common.isPasswordValid(password)) {
-            passwordEditText.setError(getString(R.string.error_invalid_password));
-            focusView = passwordEditText;
-            cancel = true;
+        formTextViewErrCodeArr[0] = Common.isPasswordValid(password);
+        formTextViewErrCodeArr[1] = Common.isEmailValid(email);
+        formTextViewErrCodeArr[2] = Common.isEmptyTextField(lastName);
+        formTextViewErrCodeArr[3] = Common.isEmptyTextField(firstName);
+
+        //todo: check if first name and last name contain only letters
+
+        for (int i = 0; i < NUM_OF_FIELDS; i ++){
+            int res = formTextViewErrCodeArr[i];
+            TextView textView = formTextViewArr[i];
+            if(res != 0){//error
+                textView.setError(getString(res));
+                focusView = textView;
+            }else{
+                textView.setError(null);// Reset error.
+            }
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            emailEditText.setError(getString(R.string.error_field_required));
-            focusView = emailEditText;
-            cancel = true;
-        } else if (!Common.isEmailValid(email)) {
-            emailEditText.setError(getString(R.string.error_invalid_email));
-            focusView = emailEditText;
-            cancel = true;
-        }
-
-        // Check for a valid first name
-        if (TextUtils.isEmpty(firstName)) {
-            firstNameEditText.setError(getString(R.string.error_field_required));
-            focusView = firstNameEditText;
-            cancel = true;
-        }
-
-        // Check for a valid last name
-        if (TextUtils.isEmpty(lastName)) {
-            lastNameEditText.setError(getString(R.string.error_field_required));
-            focusView = lastNameEditText;
-            cancel = true;
-        }
-
-
-        if (cancel) {
+        if (focusView != null) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
+            Log.w(TAG, "fields verification error: field was entered incorrect");
             focusView.requestFocus();
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-
+            Log.i(TAG, "fields verification: success");
             addUserToDB(email, password, firstName, lastName);
 
         }
@@ -136,7 +117,7 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            //Log.d(TAG, "createUserWithEmail:success");
+                            Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -148,8 +129,9 @@ public class SignUpActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                //Log.d(TAG, "User profile updated.");
+                                                Log.d(TAG, "updateProfile:success");
                                             }else{
+                                                Log.w(TAG, "updateProfile:failure", task.getException());
                                                 Toast.makeText(SignUpActivity.this, "Update failed.",
                                                         Toast.LENGTH_SHORT).show();
                                             }
@@ -159,16 +141,18 @@ public class SignUpActivity extends AppCompatActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            //Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(SignUpActivity.this, "Registration failed.",
                                     Toast.LENGTH_SHORT).show();
                             Common.updateUI(null,SignUpActivity.this);
                         }
 
-                        // ...
                     }
                 });
     }
+
+
+
 
 
 }

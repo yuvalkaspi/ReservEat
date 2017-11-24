@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -33,6 +34,7 @@ public class AddActivity extends AppCompatActivity {
     EditText dateEditText;
     EditText hourEditText;
     EditText numOfPeopleEditText;
+    private static final String TAG = "AddActivity";
 
     Calendar current = Calendar.getInstance();
     @Override
@@ -111,6 +113,7 @@ public class AddActivity extends AppCompatActivity {
 
     private void addReservationToDB() {
 
+        Log.i(TAG, "adding new reservation to DB");
         String restaurant = restaurantEditText.getText().toString().trim();
         String date = dateEditText.getText().toString().trim();
         String hour = hourEditText.getText().toString().trim();
@@ -123,8 +126,10 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
+                    Log.i(TAG, "add new reservation:success", task.getException());
                     Toast.makeText(AddActivity.this, "Your reservation was saved!", Toast.LENGTH_LONG).show();
                 }else{
+                    Log.w(TAG, "add new reservation:failure", task.getException());
                     Toast.makeText(AddActivity.this, "Error!", Toast.LENGTH_LONG).show();
                 }
             }
