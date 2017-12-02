@@ -22,7 +22,6 @@ import android.provider.ContactsContract;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
-import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
@@ -64,7 +63,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private FirebaseAuth mAuth;
     private static final String TAG = "LoginActivity";
-    private static final int NUM_OF_FIELDS = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,7 +175,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String password = mPasswordView.getText().toString();
 
         TextView[] formTextViewArr = {mPasswordView, mEmailView};//order desc
-        int[] formTextViewErrCodeArr = new int[NUM_OF_FIELDS];
+        int[] formTextViewErrCodeArr = new int[formTextViewArr.length];
 
         View focusView = null;
 
@@ -185,7 +183,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         formTextViewErrCodeArr[1] = Common.isEmailValid(email);
 
 
-        for (int i = 0; i < NUM_OF_FIELDS; i ++){
+        for (int i = 0; i < formTextViewArr.length; i ++){
             int res = formTextViewErrCodeArr[i];
             TextView textView = formTextViewArr[i];
             if(res != 0){//error
@@ -206,7 +204,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             Log.i(TAG, "fields verification: success");
             loginEmailPassword(email, password);
-
         }
     }
 
@@ -230,8 +227,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     Toast.LENGTH_SHORT).show();
                             Common.updateUI(null,LoginActivity.this);
                         }
-
-                        // ...
                     }
                 });
     }

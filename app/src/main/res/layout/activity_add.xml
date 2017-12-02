@@ -26,6 +26,7 @@
         android:inputType="textPersonName" />
 
     <EditText
+        android:id="@+id/branch"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -63,6 +64,7 @@
         android:inputType="numberDecimal" />
 
     <EditText
+        android:id="@+id/reservationName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
@@ -70,6 +72,7 @@
         android:inputType="textPersonName" />
 
     <EditText
+        android:id="@+id/otherInfo"
         android:layout_width="fill_parent"
         android:layout_height="100dp"
         android:layout_marginBottom="10dp"

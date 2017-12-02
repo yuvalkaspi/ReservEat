@@ -27,7 +27,6 @@ public class SignUpActivity extends AppCompatActivity {
     EditText emailEditText;
     EditText passwordEditText;
     private static final String TAG = "SignUpActivity";
-    private static final int NUM_OF_FIELDS = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,6 @@ public class SignUpActivity extends AppCompatActivity {
      */
     private void attemptSignUp() {
 
-        // Store values at the time of the login attempt.
         String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         final String firstName = firstNameEditText.getText().toString().trim();
@@ -72,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         TextView[] formTextViewArr = {passwordEditText, emailEditText, lastNameEditText, firstNameEditText};//order desc
-        int[] formTextViewErrCodeArr = new int[NUM_OF_FIELDS];
+        int[] formTextViewErrCodeArr = new int[formTextViewArr.length];
 
         View focusView = null;
 
@@ -83,7 +81,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         //todo: check if first name and last name contain only letters
 
-        for (int i = 0; i < NUM_OF_FIELDS; i ++){
+        for (int i = 0; i < formTextViewArr.length; i ++){
             int res = formTextViewErrCodeArr[i];
             TextView textView = formTextViewArr[i];
             if(res != 0){//error
@@ -117,7 +115,7 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
+                            Log.i(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -129,7 +127,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Log.d(TAG, "updateProfile:success");
+                                                Log.i(TAG, "updateProfile:success");
                                             }else{
                                                 Log.w(TAG, "updateProfile:failure", task.getException());
                                                 Toast.makeText(SignUpActivity.this, "Update failed.",
