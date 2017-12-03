@@ -3,7 +3,6 @@ package com.reserveat.reserveat;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -136,6 +135,7 @@ public class SignUpActivity extends AppCompatActivity {
                                             Common.updateUI(mAuth.getCurrentUser(),SignUpActivity.this);
                                         }
                                     });
+                            //todo: nullpointerexception?
 
                         } else {
                             // If sign in fails, display a message to the user.

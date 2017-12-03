@@ -18,8 +18,10 @@
         style="@style/Divider">
 
         <Button
-            android:id="@+id/Sort"
+            android:text="@string/sort"
+            android:elevation="4dp"
             android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
@@ -28,6 +30,8 @@
             android:elevation="4dp"
             android:text="Sort ⬇"
             android:textSize="20sp" />
+            android:id="@+id/Sort"
+            android:background="@android:color/white" />
 
         <View
             android:layout_width="1dp"
@@ -35,9 +39,12 @@
             android:background="@android:color/darker_gray"/>
 
         <Button
-            android:id="@+id/Refine"
+            android:text="@string/refine"
+            android:elevation="4dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:id="@+id/Refine"
+            android:background="@android:color/white" />
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_weight="1"
@@ -58,6 +65,11 @@
         android:layout_weight="10"
         android:background="@android:color/white"
         style="@style/Divider">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <View
@@ -74,8 +86,10 @@
         android:background="@color/colorPrimary"        android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/notification"
+            android:text="@string/notification"
+            android:elevation="4dp"
             android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
@@ -85,6 +99,8 @@
             android:text="notification"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
+            android:id="@+id/notification"
+            android:background="@android:color/transparent" />
 
         <View
             android:layout_width="1dp"
@@ -92,9 +108,12 @@
             android:background="@android:color/darker_gray"/>
 
         <Button
-            android:id="@+id/add_cancellation"
+            android:text="@string/add"
+            android:elevation="4dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:id="@+id/add_cancellation"
+            android:background="@android:color/transparent" />
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_weight="1"
