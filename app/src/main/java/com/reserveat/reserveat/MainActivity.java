@@ -35,6 +35,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button notifyButton = (Button) findViewById(R.id.notification);
+        notifyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NotifyActivity.class );
+                startActivity(intent);
+            }
+        });
+
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("reservations");
 
