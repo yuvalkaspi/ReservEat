@@ -12,7 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="5dp"
-        android:text="Sign Up"
+        android:text="@string/sign_up"
         android:textColor="#ce3232"
         android:textSize="40sp"
         android:typeface="serif" />
@@ -22,7 +22,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="First Name"
+        android:hint="@string/first_name"
         android:inputType="textPersonName" />
 
     <EditText
@@ -32,14 +32,14 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="Last Name" />
+        android:hint="@string/last_name" />
 
     <EditText
         android:id="@+id/email"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -47,7 +47,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="@string/prompt_password"
+        android:hint="@string/password"
         android:inputType="textPassword" />
 
 
@@ -60,5 +60,5 @@
         android:elevation="4dp"
         android:paddingLeft="70dp"
         android:paddingRight="70dp"
-        android:text="Join" />
+        android:text="@string/join" />
 </LinearLayout>

@@ -1,27 +1,17 @@
 package com.reserveat.reserveat.common;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.reserveat.reserveat.LoginActivity;
 import com.reserveat.reserveat.MainActivity;
 import com.reserveat.reserveat.R;
 
-/**
- * Created by user on 11/23/2017.
- */
 
 public class Common {
 
-    static final int OK = 0;
+    private static final int OK = 0;
 
     public static void updateUI(FirebaseUser currentUser , Context packageContext){
         if (currentUser != null){

@@ -12,7 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="5dp"
-        android:text="Add Cancellation"
+        android:text="@string/add_cancellation"
         android:textColor="#ce3232"
         android:textSize="40sp"
         android:typeface="serif" />
@@ -22,7 +22,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="Restaurant"
+        android:hint="@string/restaurant"
         android:inputType="textPersonName" />
 
     <EditText
@@ -32,7 +32,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="Branch"
+        android:hint="@string/branch"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -42,7 +42,7 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:clickable="true"
         android:focusable="false"
-        android:hint="Date"
+        android:hint="@string/date"
         android:inputType="none" />
 
     <EditText
@@ -52,7 +52,7 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:clickable="true"
         android:focusable="false"
-        android:hint="Hour"
+        android:hint="@string/hour"
         android:inputType="none" />
 
     <EditText
@@ -60,7 +60,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="Number Of People"
+        android:hint="@string/num_of_people"
         android:inputType="numberDecimal" />
 
     <EditText
@@ -68,7 +68,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="Reservation Name"
+        android:hint="@string/reservation_name"
         android:inputType="textPersonName" />
 
     <EditText
@@ -81,7 +81,7 @@
         android:breakStrategy="balanced"
         android:fitsSystemWindows="true"
         android:gravity="top"
-        android:hint="Other Info"
+        android:hint="@string/other_info"
         android:inputType="textMultiLine"
         android:padding="5dp"
         android:singleLine="false" />
@@ -94,5 +94,5 @@
         android:elevation="4dp"
         android:paddingLeft="70dp"
         android:paddingRight="70dp"
-        android:text="Add" />
+        android:text="@string/add" />
 </LinearLayout>
