@@ -8,8 +8,6 @@
     tools:context="com.reserveat.reserveat.NotifyActivity">
 
 
-
-
     <TextView
         android:id="@+id/contact_form_title"
         android:layout_width="wrap_content"
@@ -19,7 +17,7 @@
         android:layout_marginTop="5dp"
         android:text="NOTIFY ON CANCEL"
         android:textColor="#1e55c2"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:typeface="serif" />
 
     <EditText

@@ -88,7 +88,7 @@ public class AddActivity extends AppCompatActivity {
                         //todo: check locale
                         hourEditText.setText(String.format(java.util.Locale.US, "%02d:%02d", hour, minutes));
                     }
-                },hour,minutes,true);
+                },hour,minutes,false);
                 tpd.show();
             }
         });

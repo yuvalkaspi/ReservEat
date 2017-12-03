@@ -18,15 +18,16 @@
         style="@style/Divider">
 
         <Button
-            android:text="Sort ⬇"
-            android:elevation="4dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             android:id="@+id/Sort"
-            android:background="@android:color/white"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:elevation="4dp"
+            android:text="Sort ⬇"
+            android:textSize="20sp" />
 
         <View
             android:layout_width="1dp"
@@ -34,15 +35,16 @@
             android:background="@android:color/darker_gray"/>
 
         <Button
-            android:text="Refine"
-            android:elevation="4dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             android:id="@+id/Refine"
-            android:background="@android:color/white"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:elevation="4dp"
+            android:text="Refine"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <View
@@ -72,15 +74,17 @@
         android:background="@color/colorPrimary"        android:orientation="horizontal" >
 
         <Button
-            android:text="notification"
-            android:elevation="4dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             android:id="@+id/notification"
-            android:background="@android:color/transparent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:elevation="4dp"
+            android:text="notification"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
         <View
             android:layout_width="1dp"
@@ -88,15 +92,17 @@
             android:background="@android:color/darker_gray"/>
 
         <Button
-            android:text="add"
-            android:elevation="4dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             android:id="@+id/add_cancellation"
-            android:background="@android:color/transparent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:elevation="4dp"
+            android:text="add"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
     </LinearLayout>
 

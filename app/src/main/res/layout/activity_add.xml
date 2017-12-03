@@ -14,7 +14,7 @@
         android:layout_marginTop="5dp"
         android:text="ADD CANCELLATION"
         android:textColor="#293eb1"
-        android:textSize="20dp"
+        android:textSize="24sp"
         android:typeface="serif" />
 
     <EditText

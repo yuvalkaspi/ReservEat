@@ -45,6 +45,23 @@ public class NotificationRequest implements Serializable {
         return result;
     }
 
+    public String getRestaurant(){
+        return this.restaurant;
+    }
+
+    public String getDate(){
+        return this.date;
+    }
+
+    public String getHour(){
+        return this.hour;
+    }
+
+    public int getNumOfPeople(){
+        return this.numOfPeople;
+    }
+
+
 
 }
 

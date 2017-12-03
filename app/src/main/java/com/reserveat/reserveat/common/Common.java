@@ -1,17 +1,14 @@
 package com.reserveat.reserveat.common;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
+
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.reserveat.reserveat.LoginActivity;
 import com.reserveat.reserveat.MainActivity;
 import com.reserveat.reserveat.R;
 
@@ -56,6 +53,8 @@ public class Common {
         }
         return OK;
     }
+
+
 
 
 }
