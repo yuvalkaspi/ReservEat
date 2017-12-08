@@ -63,6 +63,12 @@
         android:hint="@string/num_of_people"
         android:inputType="numberDecimal" />
 
+    <Switch
+        android:id="@+id/isReservationOnMyName"
+        android:textSize="20sp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/reservationName"
         android:layout_width="fill_parent"
@@ -70,21 +76,6 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="@string/reservation_name"
         android:inputType="textPersonName" />
-
-    <EditText
-        android:id="@+id/otherInfo"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:breakStrategy="balanced"
-        android:fitsSystemWindows="true"
-        android:gravity="top"
-        android:hint="@string/other_info"
-        android:inputType="textMultiLine"
-        android:padding="5dp"
-        android:singleLine="false" />
 
     <Button
         android:id="@+id/add"
