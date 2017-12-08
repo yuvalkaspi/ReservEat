@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:id="@+id/Sort"
+            android:id="@+id/sort"
             android:background="@android:color/white" />
 
         <View
@@ -37,7 +37,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:id="@+id/Refine"
+            android:id="@+id/refine"
             android:background="@android:color/white" />
     </LinearLayout>
 

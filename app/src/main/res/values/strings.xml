@@ -27,7 +27,7 @@
     <string name="date">Date</string>
     <string name="hour">Hour</string>
     <string name="reservation_name">Reservation name</string>
-    <string name="add_cancellation">Add Cancellation</string>
+    <string name="add_cancellation">ADD CANCELLATION</string>
     <string name="other_info">Other info</string>
 
     <!-- Strings related to main activiry -->
@@ -37,5 +37,13 @@
     <string name="add">Add</string>
     <string name="clock_icon">clock_icon</string>
     <string name="man_icon">man_icon</string>
+    <string name="sort_by">Sort by</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <string-array name="SortByOptions">
+        <item>Reservation date</item>
+        <item>Number of people</item>
+    </string-array>
 
 </resources>
