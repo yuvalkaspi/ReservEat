@@ -102,7 +102,7 @@ public class AddActivity extends AppCompatActivity {
                         Date dateObj = calendar.getTime();
                         hourEditText.setText(dateFormat.format(dateObj));
                     }
-                },hour,minutes,true);
+                },hour,minutes,false);
                 tpd.show();
             }
         });
