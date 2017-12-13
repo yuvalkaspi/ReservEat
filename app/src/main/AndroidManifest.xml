@@ -26,7 +26,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".AddActivity" />
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".NotifyActivity"></activity>
+        <activity android:name=".NotifyActivity" />
+        <activity android:name=".MyReservationsListActivity"></activity>
     </application>
 
 </manifest>

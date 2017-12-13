@@ -3,6 +3,7 @@ package com.reserveat.reserveat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 class ReservationHolder extends RecyclerView.ViewHolder {
 
@@ -19,11 +20,18 @@ class ReservationHolder extends RecyclerView.ViewHolder {
         date = itemView.findViewById(R.id.dateHolder);
         hour = itemView.findViewById(R.id.hourHolder);
         numOfPeople = itemView.findViewById(R.id.numOfPeopleHolder);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mClickListener.onItemClick(view ,getAdapterPosition());
+            }
+        });
     }
 
     void setRestaurant(String r){
         restaurant.setText(r);
     }
+    //String getRestaurant(){ return restaurant.getText().toString(); }
 
     void setBranch(String b){
         branch.setText(b);
@@ -39,6 +47,22 @@ class ReservationHolder extends RecyclerView.ViewHolder {
 
     void setNumOfPeople(int n){
         numOfPeople.setText(String.valueOf(n));
+    }
+
+    private ClickListener mClickListener = new ClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+
+        }
+    };
+
+    //Interface to send callbacks...
+    public interface ClickListener{
+        public void onItemClick(View view, int position);
+    }
+
+    public void setOnClickListener(ClickListener clickListener){
+        mClickListener = clickListener;
     }
 
 }

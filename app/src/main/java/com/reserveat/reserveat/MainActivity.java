@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-    recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
     }
 
@@ -92,11 +92,12 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.logOut:
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class );
-                startActivity(intent);
+                Intent intent_login = new Intent(MainActivity.this, LoginActivity.class );
+                startActivity(intent_login);
                 return true;
-            case R.id.item2:
-                Toast.makeText(getApplicationContext(), "Item 2 Selected", Toast.LENGTH_LONG).show();
+            case R.id.MyReservations:
+                Intent intent_res_list = new Intent(MainActivity.this, MyReservationsListActivity.class );
+                startActivity(intent_res_list);
                 return true;
             case R.id.item3:
                 Toast.makeText(getApplicationContext(), "Item 3 Selected", Toast.LENGTH_LONG).show();
