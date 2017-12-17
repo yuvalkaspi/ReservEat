@@ -65,6 +65,7 @@
     <string name="q3">How do you rate the restaurant?</string>
     <string name="save">save</string>
     <string name="survey_form">SURVEY FORM</string>
+    <string name="my_reservations">My Reservations</string>
 
     <string-array name="SurveyBusyRestaurantOptions">
         <item>1 - not busy</item>
