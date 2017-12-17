@@ -12,7 +12,10 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.reserveat.reserveat.common.Common;
 import com.reserveat.reserveat.common.Reservation;
+
+import java.text.ParseException;
 
 public class MyReservationsListActivity extends AppCompatActivity {
 
@@ -32,20 +35,21 @@ public class MyReservationsListActivity extends AppCompatActivity {
 
         FirebaseRecyclerAdapter<Reservation, ReservationHolder> adapter = new FirebaseRecyclerAdapter<Reservation, ReservationHolder>(Reservation.class, R.layout.reservation,ReservationHolder.class, mDatabase) {
             @Override
-            protected void populateViewHolder(final ReservationHolder viewHolder, Reservation model, int position) {
-                viewHolder.setRestaurant(model.getRestaurant());
-                viewHolder.setBranch(model.getBranch());
-                viewHolder.setDate(model.getDate());
-                viewHolder.setHour(model.getHour());
-                viewHolder.setNumOfPeople(model.getNumOfPeople());
-                final Reservation reservation = model;
-                viewHolder.setOnClickListener(new ReservationHolder.ClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Toast.makeText(getApplicationContext(), reservation.getRestaurant() + " Selected", Toast.LENGTH_LONG).show();
-                    }
-                });
-                Log.i(TAG, "success:populateViewHolder");
+            protected void populateViewHolder(ReservationHolder viewHolder, Reservation model, int position) {
+                try{
+                    Common.myPopulateViewHolder(viewHolder, model);
+                    final Reservation reservation = model;
+                    viewHolder.setOnClickListener(new ReservationHolder.ClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            Toast.makeText(getApplicationContext(), reservation.getRestaurant() + " Selected", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    Log.i(TAG, "populateViewHolder: success");
+                }catch(ParseException e){
+                    Toast.makeText(MyReservationsListActivity.this, "error!", Toast.LENGTH_LONG).show();
+                    Log.w(TAG, "populateViewHolder: failure");
+                }
             }
         };
 

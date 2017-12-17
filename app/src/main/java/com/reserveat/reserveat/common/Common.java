@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.google.firebase.auth.FirebaseUser;
 import com.reserveat.reserveat.MainActivity;
 import com.reserveat.reserveat.R;
+import com.reserveat.reserveat.ReservationHolder;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -65,4 +66,16 @@ public class Common {
     }
 
 
+    public static void myPopulateViewHolder(ReservationHolder viewHolder, Reservation model) throws ParseException {
+        String date = model.getDate();
+        int indexOfSpace = date.indexOf(" ");
+        String dateOldFormat = date.substring(0, indexOfSpace);
+        String hour = date.substring(indexOfSpace + 1);
+        String dateNewFormat = Common.switchDateFormat(dateOldFormat, Common.dateFormatDB, Common.dateFormatUser);
+        viewHolder.setRestaurant(model.getRestaurant());
+        viewHolder.setBranch(model.getBranch());
+        viewHolder.setDate(dateNewFormat);
+        viewHolder.setHour(hour);
+        viewHolder.setNumOfPeople(model.getNumOfPeople());
+    }
 }

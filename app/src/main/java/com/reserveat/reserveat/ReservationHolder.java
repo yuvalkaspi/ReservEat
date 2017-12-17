@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-class ReservationHolder extends RecyclerView.ViewHolder {
+public class ReservationHolder extends RecyclerView.ViewHolder {
 
     private final TextView restaurant;
     private final TextView branch;
@@ -28,24 +28,24 @@ class ReservationHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    void setRestaurant(String r){
+    public void setRestaurant(String r){
         restaurant.setText(r);
     }
     //String getRestaurant(){ return restaurant.getText().toString(); }
 
-    void setBranch(String b){
+    public void setBranch(String b){
         branch.setText(b);
     }
 
-    void setDate(String d){
+    public void setDate(String d){
         date.setText(d);
     }
 
-    void setHour(String h){
+    public void setHour(String h){
         hour.setText(h);
     }
 
-    void setNumOfPeople(int n){
+    public void setNumOfPeople(int n){
         numOfPeople.setText(String.valueOf(n));
     }
 
