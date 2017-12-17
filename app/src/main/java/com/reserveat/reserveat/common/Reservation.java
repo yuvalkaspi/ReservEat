@@ -7,9 +7,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by user on 12/1/2017.
- */
 
 @IgnoreExtraProperties
 public class Reservation implements Serializable {
@@ -17,25 +14,21 @@ public class Reservation implements Serializable {
     private String uid;
     private String restaurant;
     private String branch;
-    private String date;
-    private String hour;
+    private String fullDate;
     private int numOfPeople;
     private String reservationName;
-    private String OtherInfo;
 
     public Reservation() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Reservation(String uid, String restaurant, String branch, String date, String hour, int numOfPeople, String reservationName, String OtherInfo) {
+    public Reservation(String uid, String restaurant, String branch, String fullDate, int numOfPeople, String reservationName) {
         this.uid = uid;
         this.restaurant = restaurant;
         this.branch = branch;
-        this.date = date;
-        this.hour = hour;
+        this.fullDate = fullDate;
         this.numOfPeople = numOfPeople;
         this.reservationName = reservationName;
-        this.OtherInfo = OtherInfo;
     }
 
     @Exclude
@@ -44,11 +37,9 @@ public class Reservation implements Serializable {
         result.put("uid", uid);
         result.put("restaurant", restaurant);
         result.put("branch", branch);
-        result.put("date", date);
-        result.put("hour", hour);
+        result.put("date", fullDate);
         result.put("numOfPeople", numOfPeople);
         result.put("reservationName", reservationName);
-        result.put("other info", OtherInfo);
 
         return result;
     }
@@ -70,19 +61,11 @@ public class Reservation implements Serializable {
     }
 
     public String getDate() {
-        return date;
+        return fullDate;
     }
 
     public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getHour() {
-        return hour;
-    }
-
-    public void setHour(String hour) {
-        this.hour = hour;
+        this.fullDate = date;
     }
 
     public int getNumOfPeople() {
@@ -101,11 +84,4 @@ public class Reservation implements Serializable {
         this.reservationName = reservationName;
     }
 
-    public String getOtherInfo() {
-        return OtherInfo;
-    }
-
-    public void setOtherInfo(String otherInfo) {
-        OtherInfo = otherInfo;
-    }
 }

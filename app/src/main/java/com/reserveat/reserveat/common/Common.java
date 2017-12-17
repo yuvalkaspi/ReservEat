@@ -8,8 +8,18 @@ import com.google.firebase.auth.FirebaseUser;
 import com.reserveat.reserveat.MainActivity;
 import com.reserveat.reserveat.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class Common {
+
+    public static final String hourFormat = "HH:mm";
+    public static final String dateFormatUser = "dd/MM/yyyy";
+    public static final String dateFormatDB = "yyyy/MM/dd";
 
     private static final int OK = 0;
 
@@ -45,6 +55,13 @@ public class Common {
             return R.string.error_field_required;
         }
         return OK;
+    }
+
+    public static String switchDateFormat(String date, String oldFormat, String newFormat) throws ParseException{
+        DateFormat dateFormat = new SimpleDateFormat(oldFormat, Locale.getDefault());
+        Date d = dateFormat.parse(date);
+        dateFormat = new SimpleDateFormat(newFormat, Locale.getDefault());
+        return dateFormat.format(d);
     }
 
 
