@@ -26,7 +26,7 @@
     <string name="num_of_people">Num of People</string>
     <string name="date">Date</string>
     <string name="hour">Hour</string>
-    <string name="is_reservation_on_my_name">"Is Reservation on my name?"</string>
+    <string name="is_reservation_on_my_name">"Is reservation on my name?"</string>
     <string name="reservation_name">Reservation name</string>
     <string name="add_cancellation">ADD CANCELLATION</string>
 

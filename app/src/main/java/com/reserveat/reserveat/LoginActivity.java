@@ -39,6 +39,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.reserveat.reserveat.common.Common;
 
 import java.util.ArrayList;
@@ -62,6 +65,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private FirebaseAuth mAuth;
+    DatabaseReference mDatabase;
     private static final String TAG = "LoginActivity";
 
     @Override
@@ -218,8 +222,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.i(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Common.updateUI(user,LoginActivity.this);
+                            String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
+                            mDatabase = FirebaseDatabase.getInstance().getReference();
+                            mDatabase.child("users").child(currentUser.getUid()).child("instanceId").setValue(refreshedToken);
+                            Common.updateUI(currentUser,LoginActivity.this);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
