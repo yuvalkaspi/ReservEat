@@ -2,6 +2,14 @@
     <string name="app_name">ReservEat</string>
     <string name="title_activity_home_page">Home Page</string>
 
+
+    <!-- Strings related to menu -->
+
+    <string name="mySurvey">My Surveys</string>
+    <string name="logOut">Log Out</string>
+
+
+
     <!-- Strings related to login -->
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -45,6 +53,25 @@
     <string-array name="SortByOptions">
         <item>Reservation date</item>
         <item>Number of people</item>
+    </string-array>
+
+    <string name="submit">SUBMIT</string>
+    <string name="saveRequest">SAVE REQUEST</string>
+
+
+    <!-- Strings related to survey form -->
+    <string name="q1">How busy was the restaurant when you arrived?</string>
+    <string name="q2">How busy was the restaurant when you left?</string>
+    <string name="q3">How do you rate the restaurant?</string>
+    <string name="save">save</string>
+    <string name="survey_form">SURVEY FORM</string>
+
+    <string-array name="SurveyBusyRestaurantOptions">
+        <item>1 - not busy</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5 - most busy</item>
     </string-array>
 
 </resources>

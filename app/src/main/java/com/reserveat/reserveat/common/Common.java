@@ -1,7 +1,9 @@
 package com.reserveat.reserveat.common;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -11,8 +13,12 @@ import com.reserveat.reserveat.R;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 
 public class Common {
@@ -62,6 +68,21 @@ public class Common {
         Date d = dateFormat.parse(date);
         dateFormat = new SimpleDateFormat(newFormat, Locale.getDefault());
         return dateFormat.format(d);
+    }
+
+    /* Receives a string contains date and hour
+       Returns array which contains that date and the hour */
+    public static List<String> getDate(String dateAndHour){
+
+        int indexOfSpace = dateAndHour.indexOf(" ");
+        String date = dateAndHour.substring(0, indexOfSpace);
+        String hour = dateAndHour.substring(indexOfSpace + 1);
+
+        List<String> dateAndHourList = new ArrayList<>();
+        dateAndHourList.add(date);
+        dateAndHourList.add(hour);
+
+        return dateAndHourList;
     }
 
 

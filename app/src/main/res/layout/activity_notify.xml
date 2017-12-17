@@ -70,6 +70,6 @@
         android:elevation="4dp"
         android:paddingLeft="70dp"
         android:paddingRight="70dp"
-        android:text="SAVE REQUEST" />
+        android:text="@string/saveRequest" />
 
 </LinearLayout>

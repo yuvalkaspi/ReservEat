@@ -141,8 +141,9 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
             case R.id.item2:
                 Toast.makeText(getApplicationContext(), "Item 2 Selected", Toast.LENGTH_LONG).show();
                 return true;
-            case R.id.item3:
-                Toast.makeText(getApplicationContext(), "Item 3 Selected", Toast.LENGTH_LONG).show();
+            case R.id.mySurveys:
+                Intent mySurveyIntent = new Intent(MainActivity.this, MySurveyActivity.class );
+                startActivity(mySurveyIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

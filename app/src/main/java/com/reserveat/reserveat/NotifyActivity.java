@@ -31,16 +31,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.reserveat.reserveat.common.Common;
+import com.reserveat.reserveat.common.DBUtils;
 import com.reserveat.reserveat.common.NotificationRequest;
 import com.reserveat.reserveat.common.Reservation;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class NotifyActivity extends AppCompatActivity {
 
-    private DatabaseReference mDatabase;
     private static final String TAG = "NotifyActivity";
     private EditText restaurantEditText;
     private EditText dateEditText;
@@ -58,28 +65,33 @@ public class NotifyActivity extends AppCompatActivity {
 
         //Calendar myCalendar = Calendar.getInstance();
 
-        restaurantEditText= (EditText) findViewById(R.id.restaurant);
-        dateEditText= (EditText) findViewById(R.id.date);
-        hourEditText = (EditText) findViewById(R.id.hour);
-        numOfPeopleEditText = (EditText) findViewById(R.id.numOfPeople);
-        Button saveButton = (Button) findViewById(R.id.save);
+        restaurantEditText = findViewById(R.id.restaurant);
+        dateEditText = findViewById(R.id.date);
+        hourEditText = findViewById(R.id.hour);
+        numOfPeopleEditText = findViewById(R.id.numOfPeople);
+        Button saveButton = findViewById(R.id.save);
 
         dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int year = current.get(Calendar.YEAR);
-                int month  = current.get(Calendar.MONTH);
-                int day  = current.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dpd = new DatePickerDialog(NotifyActivity.this,new DatePickerDialog.OnDateSetListener() {
+                int month = current.get(Calendar.MONTH);
+                int day = current.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dpd = new DatePickerDialog(NotifyActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        dateEditText.setText(String.format(java.util.Locale.US,"%02d/%02d/%d", day, month + 1, year));
+                    public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+                        DateFormat dateFormat = new SimpleDateFormat(Common.dateFormatUser, Locale.getDefault());
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, monthOfYear);
+                        calendar.set(Calendar.DATE, dayOfMonth);
+                        Date dateObj = calendar.getTime();
+                        dateEditText.setText(dateFormat.format(dateObj));
                     }
                 },year,month,day);
                 dpd.show();
             }
         });
-
 
         hourEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +101,12 @@ public class NotifyActivity extends AppCompatActivity {
                 TimePickerDialog tpd = new TimePickerDialog(NotifyActivity.this , new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
-                        hourEditText.setText(String.format(java.util.Locale.US, "%02d:%02d", hour, minutes));
+                        DateFormat dateFormat = new SimpleDateFormat(Common.hourFormat, Locale.getDefault());
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.HOUR_OF_DAY, hour);
+                        calendar.set(Calendar.MINUTE, minutes);
+                        Date dateObj = calendar.getTime();
+                        hourEditText.setText(dateFormat.format(dateObj));
                     }
                 },hour,minutes,false);
                 tpd.show();
@@ -99,7 +116,6 @@ public class NotifyActivity extends AppCompatActivity {
         isFlexibleSwitch = (Switch) findViewById(R.id.isFlexible);
         isFlexibleSwitch.setText("is flexible?");
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,34 +137,64 @@ public class NotifyActivity extends AppCompatActivity {
 
     private void notifyOnCancel() {
 
-        String restaurant = restaurantEditText.getText().toString().trim();
-        String date = dateEditText.getText().toString().trim();
-        String hour = hourEditText.getText().toString().trim();
-        String numOfPeople = numOfPeopleEditText.getText().toString().trim();
-        boolean isFlexible = isFlexibleSwitch.isChecked();
-        String[] mandatoryFeildsValues = {restaurant, date, hour, numOfPeople};
-        TextView[] mandatoryFields = {restaurantEditText, dateEditText, hourEditText, numOfPeopleEditText};
-        if(!isValidValues(mandatoryFeildsValues, mandatoryFields)){
-            return;
+        try {
+            String restaurant = restaurantEditText.getText().toString().trim();
+            String date = dateEditText.getText().toString().trim();
+            String dateNewFormat = Common.switchDateFormat(date, Common.dateFormatUser, Common.dateFormatDB);
+            String hour = hourEditText.getText().toString().trim();
+            String newFullDateString = dateNewFormat + " " + hour;
+            String numOfPeople = numOfPeopleEditText.getText().toString().trim();
+            boolean isFlexible = isFlexibleSwitch.isChecked();
+            String[] mandatoryFeildsValues = {restaurant, date, hour, numOfPeople};
+            TextView[] mandatoryFields = {restaurantEditText, dateEditText, hourEditText, numOfPeopleEditText};
+            if (!isValidValues(mandatoryFeildsValues, mandatoryFields)) {
+                return;
+            }
+
+            //check if a reservation is already exist
+            NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, newFullDateString, Integer.valueOf(numOfPeople), isFlexible);
+
+            String reservationID = isCancellationExist(notificationRequest);
+            if (!reservationID.equals(""))
+                notifyUserOnCancellation(reservationID);
+            else //save request in notification table
+                addNotificationRequestToDB(notificationRequest);
+        } catch (ParseException e) {
+            //todo
+            Toast.makeText(NotifyActivity.this, "Error!", Toast.LENGTH_LONG).show();
         }
+    }
 
-        //check if a reservation is already exist
-        NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, date, hour, Integer.valueOf(numOfPeople), isFlexible);
+    private void notifyUserOnCancellation(String reservationID){
 
-        if (isCancellationExist(notificationRequest))
-             notifyUserOnCancellation(notificationRequest);
-        else //save request in notification table
-            addNotificationRequestToDB(notificationRequest);
+        //Reservation reservation = DBUtils.getReservationByID(reservationID);
+       // String notificationMessage = createAlertMessageReservationFound(reservation);
+        //Common.NotifyUser(notificationMessage);
+    }
 
+
+    private String createAlertMessageReservationFound(Reservation reservation){
+        StringBuilder sb = new StringBuilder();
+        sb.append("We found a reservation for you!");
+        sb.append("the reservation is at ").append(reservation.getRestaurant());
+        String branch = reservation.getBranch();
+        if(branch != null && !branch.isEmpty()) {
+            sb.append(", ");
+            sb.append(branch);
+        }
+        sb.append("for ").append(reservation.getNumOfPeople()).append("peoples");
+        List<String> dateAndHour = Common.getDate(reservation.getDate());
+        sb.append("on ").append(dateAndHour.get(0)).append("at ").append(dateAndHour.get(1));
+
+        return sb.toString();
     }
 
 
 
+    private String isCancellationExist(final NotificationRequest notificationRequest){
 
-    private boolean isCancellationExist(final NotificationRequest notificationRequest){
-
-        final boolean[] isFound = {false}; //define as array because it should be changed anonymous inner class
-        Query query = mDatabase.child("reservations").orderByChild("restaurant").equalTo(notificationRequest.getRestaurant());
+        final String[] isFound = {""}; //define as array because it should be changed anonymous inner class
+        Query query = DBUtils.getDatabaseRef().child("reservations").orderByChild("restaurant").equalTo(notificationRequest.getRestaurant());
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -156,7 +202,7 @@ public class NotifyActivity extends AppCompatActivity {
                 for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
                     Map<String, Object> newPost = (Map<String, Object>) childSnapshot.getValue();
                     if (isMatch(notificationRequest, newPost)) {
-                        isFound[0] = true;
+                        isFound[0] = dataSnapshot.getKey();
                         Log.i(TAG, "notification request already exist in DB");
                     }
                 }
@@ -171,28 +217,22 @@ public class NotifyActivity extends AppCompatActivity {
 
     private boolean isMatch(NotificationRequest notificationRequest, Map<String, Object> newPost){
 
-        return newPost.get("date").equals(notificationRequest.getDate()) &&
-                newPost.get("hour").equals(notificationRequest.getHour()) &&
+        return newPost.get("fullDate").equals(notificationRequest.getFullDate()) &&
                 newPost.get("numOfPeople").equals(Long.valueOf(notificationRequest.getNumOfPeople()));
-
-    }
-
-    //TODO
-    private void notifyUserOnCancellation(NotificationRequest notificationRequest){
 
     }
 
     private void addNotificationRequestToDB(NotificationRequest notificationRequest){
         Log.i(TAG, "adding a new notification request to DB");
 
-        String key = mDatabase.child("notificationRequests").push().getKey();
+        String key = DBUtils.getDatabaseRef().child("notificationRequests").push().getKey();
         Map<String, Object> notificationRequestValues = notificationRequest.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/notificationRequests/" + key, notificationRequestValues);
         childUpdates.put("/users/" + currentUser.getUid() + "/notificationRequests/" + key, notificationRequestValues);
 
-        mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+        DBUtils.getDatabaseRef().updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
