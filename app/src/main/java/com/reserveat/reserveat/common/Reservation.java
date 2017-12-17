@@ -51,6 +51,10 @@ public class Reservation implements Serializable {
         return restaurant;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
     public void setPicker(String pickedByUid) { this.pickedByUid = pickedByUid; }
 
     public void setRestaurant(String restaurant) {

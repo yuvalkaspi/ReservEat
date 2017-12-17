@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
                             mPopupWindow.setElevation(5.0f);
 
                             TextView keyTextView = (TextView) customView.findViewById(R.id.tv);
-                            keyTextView.setText("resturant is " + reservation.getRestaurant());
+                            keyTextView.setText("restaurant is " + reservation.getRestaurant());
 
                             Button closeButton = (Button) customView.findViewById(R.id.ib_close);
                             closeButton.setOnClickListener(new View.OnClickListener() {
