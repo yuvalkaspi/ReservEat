@@ -16,6 +16,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.reserveat.reserveat.common.Common;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -25,6 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText lastNameEditText;
     EditText emailEditText;
     EditText passwordEditText;
+    DatabaseReference mDatabase;
     private static final String TAG = "SignUpActivity";
 
     @Override
@@ -116,6 +120,11 @@ public class SignUpActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.i(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                            mDatabase = FirebaseDatabase.getInstance().getReference();
+                            mDatabase.child("users").child(user.getUid()).child("instanceId").setValue(refreshedToken);
+                            //todo- check value?
 
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(firstName + " " + lastName)

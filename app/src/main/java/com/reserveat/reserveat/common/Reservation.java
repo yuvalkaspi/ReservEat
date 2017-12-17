@@ -12,6 +12,7 @@ import java.util.Map;
 public class Reservation implements Serializable {
 
     private String uid;
+    private String pickedByUid;
     private String restaurant;
     private String branch;
     private String fullDate;
@@ -24,6 +25,7 @@ public class Reservation implements Serializable {
 
     public Reservation(String uid, String restaurant, String branch, String fullDate, int numOfPeople, String reservationName) {
         this.uid = uid;
+        this.pickedByUid = "none"; // new reservation is not picked yet
         this.restaurant = restaurant;
         this.branch = branch;
         this.fullDate = fullDate;
@@ -35,6 +37,7 @@ public class Reservation implements Serializable {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("uid", uid);
+        result.put("pickedByUid", pickedByUid);
         result.put("restaurant", restaurant);
         result.put("branch", branch);
         result.put("date", fullDate);
@@ -47,6 +50,12 @@ public class Reservation implements Serializable {
     public String getRestaurant() {
         return restaurant;
     }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setPicker(String pickedByUid) { this.pickedByUid = pickedByUid; }
 
     public void setRestaurant(String restaurant) {
         this.restaurant = restaurant;

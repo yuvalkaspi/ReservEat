@@ -12,9 +12,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="5dp"
-        android:text="@string/sign_up"
-        android:textColor="#ce3232"
-        android:textSize="40sp"
+        android:text="SIGN UP"
+        android:textColor="#1e55c2"
+        android:textSize="20sp"
         android:typeface="serif" />
 
     <EditText
