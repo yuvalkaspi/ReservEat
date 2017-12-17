@@ -26,8 +26,24 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".AddActivity" />
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".NotifyActivity" />
+<<<<<<< HEAD
         <activity android:name=".MyReservationsListActivity"></activity>
+=======
+        <activity android:name=".NotifyActivity"></activity>
+        <service
+            android:name=".FBMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name=".FBInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+>>>>>>> origin/master
     </application>
+
 
 </manifest>
