@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
     RecyclerView recyclerView;
     FirebaseUser currentUser;
     String key;
-    //Reservation reservation;
     private PopupWindow mPopupWindow;
 
     @Override
@@ -128,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
                             pickButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
+                                    reservation.setPicker(currentUser.getUid());
                                     Map<String, Object> reservationValues = reservation.toMap();
                                     Map<String, Object> childUpdates = new HashMap<>();
 

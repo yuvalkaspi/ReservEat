@@ -21,7 +21,6 @@
         android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This is a sample popup window."
         android:layout_centerInParent="true"
         android:padding="25sp"
         />
