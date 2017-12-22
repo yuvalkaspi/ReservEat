@@ -1,9 +1,11 @@
-package com.reserveat.reserveat;
+package com.reserveat.reserveat.common;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.reserveat.reserveat.R;
 
 public class ReservationHolder extends RecyclerView.ViewHolder {
 

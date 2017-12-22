@@ -1,15 +1,12 @@
 package com.reserveat.reserveat.common;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.reserveat.reserveat.MainActivity;
 import com.reserveat.reserveat.R;
-import com.reserveat.reserveat.ReservationHolder;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -18,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 
 public class Common {

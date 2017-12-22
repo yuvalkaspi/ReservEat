@@ -14,10 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.Common;
 import com.reserveat.reserveat.common.Reservation;
+import com.reserveat.reserveat.common.ReservationHolder;
+import com.reserveat.reserveat.common.SortDialogFragment;
 
 import java.text.ParseException;
 import java.util.HashMap;
