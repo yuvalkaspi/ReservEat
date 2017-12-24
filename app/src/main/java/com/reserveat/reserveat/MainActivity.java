@@ -14,10 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +28,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.Common;
 import com.reserveat.reserveat.common.Reservation;
-import com.reserveat.reserveat.common.ReviewData;
 import com.reserveat.reserveat.common.ReservationHolder;
 import com.reserveat.reserveat.common.SortDialogFragment;
 
@@ -96,86 +93,46 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
 
         final FirebaseRecyclerAdapter<Reservation, ReservationHolder> adapter =
                 new FirebaseRecyclerAdapter<Reservation, ReservationHolder>(Reservation.class, R.layout.reservation,ReservationHolder.class, mDatabase.orderByChild(orderByOption)) {
-            @Override
-            protected void populateViewHolder(ReservationHolder viewHolder, Reservation model, int position) {
-                try{
-                    Common.myPopulateViewHolder(viewHolder, model);
-                    final Reservation reservation = model;
-                    viewHolder.setOnClickListener(new ReservationHolder.ClickListener() {
-                        @Override
-                        public void onItemClick(View view, int position) {
-                            key = getRef(position).getKey();
-                            LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                            final View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
-                            mPopupWindow = new PopupWindow(
-                                    customView,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
-                            );
-                            mPopupWindow.setElevation(5.0f);
-
-                            TextView keyTextView = (TextView) customView.findViewById(R.id.tv);
-                            keyTextView.setText("restaurant is " + reservation.getRestaurant());
-
-                            Button closeButton = (Button) customView.findViewById(R.id.ib_close);
-                            closeButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    // Dismiss the popup window
-                                    mPopupWindow.dismiss();
-                                }
-                            });
-
-                            Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
-                            pickButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    popUpPickClick(reservation, customView);
-                                    reservation.setPicker(currentUser.getUid());
-                                    Map<String, Object> reservationValues = reservation.toMap();
-                                    Map<String, Object> childUpdates = new HashMap<>();
-                                    //Map<String, String> surveyValues = createNewSurveyValues(reservation);
-
-                                    childUpdates.put("/users/" + currentUser.getUid() + "/pickedReservations/" + key, reservationValues);
-                                    childUpdates.put("/historyReservations/" + key, reservationValues);
-                                    childUpdates.put("/reservations/" + key, null);
-                                   // childUpdates.put("/users/" + currentUser.getUid() + "/surveys/" + key, surveyValues);
-                                    popUpDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Log.i(TAG, "pick reservation:success", task.getException());
-                                                mPopupWindow.dismiss();
-                                            } else {
-                                                Log.w(TAG, "pick reservation:failure", task.getException());
-                                                Toast.makeText(getApplicationContext() , "Error!", Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                    });
-
-
-                                }
-                            });
-                            mPopupWindow.setFocusable(true);
-                            mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.activity_main_page), Gravity.CENTER,0,0);
-
+                    @Override
+                    protected void populateViewHolder(ReservationHolder viewHolder, Reservation model, int position) {
+                        try{
+                            Common.myPopulateViewHolder(viewHolder, model);
+                        }catch(ParseException e){
+                            Toast.makeText(MainActivity.this, "error!", Toast.LENGTH_LONG).show();
+                            Log.w(TAG, "populateViewHolder: failure");
                         }
-                    });
-                    Log.i(TAG, "populateViewHolder: success");
-                }catch(ParseException e){
-                    Toast.makeText(MainActivity.this, "error!", Toast.LENGTH_LONG).show();
-                    Log.w(TAG, "populateViewHolder: failure");
-                }
-            }
-        };
+                        final Reservation reservation = model;
+                        viewHolder.setOnClickListener(new ReservationHolder.ClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                key = getRef(position).getKey();
+                                LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                                final View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
+                                mPopupWindow = new PopupWindow(
+                                        customView,
+                                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                                        LinearLayout.LayoutParams.WRAP_CONTENT
+                                );
+
+                                Common.popUpWindowCreate(mPopupWindow, customView, reservation);
+
+                                Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
+                                pickButton.setVisibility(View.VISIBLE);
+                                pickButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        popUpPickClick(reservation, customView);
+                                    }
+                                });
+                                mPopupWindow.setFocusable(true);
+                                mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.activity_main_page), Gravity.CENTER,0,0);
+                            }
+                        });
+                        Log.i(TAG, "populateViewHolder: success");
+                    }
+                };
 
         recyclerView.setAdapter(adapter);
-    }
-
-    private Map<String, String> createNewSurveyValues(Reservation reservation) {
-
-        ReviewData survey = new ReviewData(reservation.getRestaurant(), reservation.getBranch(), reservation.getDate());
-        return survey.toMap();
     }
 
     @Override
@@ -247,11 +204,6 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.logOut:
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class );
-                startActivity(intent);
-                return true;
             case R.id.MyReservations:
                 Intent intent_res_list = new Intent(MainActivity.this, MyReservationsListActivity.class );
                 startActivity(intent_res_list);
@@ -260,8 +212,14 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
                 Intent mySurveyIntent = new Intent(MainActivity.this, MyReviewActivity.class );
                 startActivity(mySurveyIntent);
                 return true;
+            case R.id.logOut:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class );
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }
