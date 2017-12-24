@@ -217,7 +217,7 @@ public class NotifyActivity extends AppCompatActivity {
 
     private boolean isMatch(NotificationRequest notificationRequest, Map<String, Object> newPost){
 
-        return newPost.get("fullDate").equals(notificationRequest.getFullDate()) &&
+        return newPost.get("date").equals(notificationRequest.getFullDate()) &&
                 newPost.get("numOfPeople").equals(Long.valueOf(notificationRequest.getNumOfPeople()));
 
     }

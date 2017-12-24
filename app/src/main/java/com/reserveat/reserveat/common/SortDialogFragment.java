@@ -1,4 +1,4 @@
-package com.reserveat.reserveat;
+package com.reserveat.reserveat.common;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
+import com.reserveat.reserveat.R;
 
 
 public class SortDialogFragment extends DialogFragment {
