@@ -16,14 +16,14 @@ public class Reservation implements Serializable {
     private String restaurant;
     private String branch;
     private String fullDate;
-    private int numOfPeople;
+    private String numOfPeople;
     private String reservationName;
 
     public Reservation() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Reservation(String uid, String restaurant, String branch, String fullDate, int numOfPeople, String reservationName) {
+    public Reservation(String uid, String restaurant, String branch, String fullDate, String numOfPeople, String reservationName) {
         this.uid = uid;
         this.pickedByUid = "none"; // new reservation is not picked yet
         this.restaurant = restaurant;
@@ -77,11 +77,11 @@ public class Reservation implements Serializable {
         this.fullDate = date;
     }
 
-    public int getNumOfPeople() {
+    public String getNumOfPeople() {
         return numOfPeople;
     }
 
-    public void setNumOfPeople(int numOfPeople) {
+    public void setNumOfPeople(String numOfPeople) {
         this.numOfPeople = numOfPeople;
     }
 

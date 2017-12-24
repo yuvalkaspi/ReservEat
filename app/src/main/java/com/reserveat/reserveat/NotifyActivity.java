@@ -140,86 +140,40 @@ public class NotifyActivity extends AppCompatActivity {
         try {
             String restaurant = restaurantEditText.getText().toString().trim();
             String date = dateEditText.getText().toString().trim();
-            String dateNewFormat = Common.switchDateFormat(date, Common.dateFormatUser, Common.dateFormatDB);
             String hour = hourEditText.getText().toString().trim();
-            String newFullDateString = dateNewFormat + " " + hour;
             String numOfPeople = numOfPeopleEditText.getText().toString().trim();
             boolean isFlexible = isFlexibleSwitch.isChecked();
             String[] mandatoryFeildsValues = {restaurant, date, hour, numOfPeople};
-            TextView[] mandatoryFields = {restaurantEditText, dateEditText, hourEditText, numOfPeopleEditText};
-            if (!isValidValues(mandatoryFeildsValues, mandatoryFields)) {
+            if (!isValidValues(mandatoryFeildsValues)) {
+                Toast.makeText(NotifyActivity.this, "PLEASE FILL AT LEAST ONE FIELD", Toast.LENGTH_LONG).show();
                 return;
             }
+            String dateNewFormat = "";
+            if(date != null && !date.isEmpty())
+                dateNewFormat = Common.switchDateFormat(date, Common.dateFormatUser, Common.dateFormatDB);
 
+            String newFullDateString = dateNewFormat + " " + hour;
             //check if a reservation is already exist
-            NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, newFullDateString, Integer.valueOf(numOfPeople), isFlexible);
+            NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, newFullDateString, numOfPeople, isFlexible);
+            addNotificationRequestToDB(notificationRequest);
 
-            String reservationID = isCancellationExist(notificationRequest);
-            if (!reservationID.equals(""))
-                notifyUserOnCancellation(reservationID);
-            else //save request in notification table
-                addNotificationRequestToDB(notificationRequest);
         } catch (ParseException e) {
-            //todo
             Toast.makeText(NotifyActivity.this, "Error!", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void notifyUserOnCancellation(String reservationID){
-
-        //Reservation reservation = DBUtils.getReservationByID(reservationID);
-       // String notificationMessage = createAlertMessageReservationFound(reservation);
-        //Common.NotifyUser(notificationMessage);
-    }
-
-
-    private String createAlertMessageReservationFound(Reservation reservation){
-        StringBuilder sb = new StringBuilder();
-        sb.append("We found a reservation for you!");
-        sb.append("the reservation is at ").append(reservation.getRestaurant());
-        String branch = reservation.getBranch();
-        if(branch != null && !branch.isEmpty()) {
-            sb.append(", ");
-            sb.append(branch);
-        }
-        sb.append("for ").append(reservation.getNumOfPeople()).append("peoples");
-        List<String> dateAndHour = Common.getDate(reservation.getDate());
-        sb.append("on ").append(dateAndHour.get(0)).append("at ").append(dateAndHour.get(1));
-
-        return sb.toString();
-    }
-
-
-
-    private String isCancellationExist(final NotificationRequest notificationRequest){
-
-        final String[] isFound = {""}; //define as array because it should be changed anonymous inner class
-        Query query = DBUtils.getDatabaseRef().child("reservations").orderByChild("restaurant").equalTo(notificationRequest.getRestaurant());
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
-                    Map<String, Object> newPost = (Map<String, Object>) childSnapshot.getValue();
-                    if (isMatch(notificationRequest, newPost)) {
-                        isFound[0] = dataSnapshot.getKey();
-                        Log.i(TAG, "notification request already exist in DB");
-                    }
-                }
+    /*  Receives all the data that a user inserted to the feilds in the notification form
+    *  returns true if at least one of them is not empty
+    *  otherwise returns false
+    * */
+    private boolean isValidValues(String[] feildsValues) {
+        boolean foundFilledFeild = false;
+        for(String val : feildsValues){
+            if(val != null && !val.isEmpty()){
+                foundFilledFeild = true;
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-
-        return isFound[0];
-    }
-
-    private boolean isMatch(NotificationRequest notificationRequest, Map<String, Object> newPost){
-
-        return newPost.get("fullDate").equals(notificationRequest.getFullDate()) &&
-                newPost.get("numOfPeople").equals(Long.valueOf(notificationRequest.getNumOfPeople()));
-
+        }
+        return foundFilledFeild;
     }
 
     private void addNotificationRequestToDB(NotificationRequest notificationRequest){
@@ -238,6 +192,8 @@ public class NotifyActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
                     Log.i(TAG, "add new notification request: success", task.getException());
                     Toast.makeText(NotifyActivity.this, "Your notification request was saved!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(NotifyActivity.this, MainActivity.class );
+                    startActivity(intent);
                 }else{
                     Log.w(TAG, "add new notification request: failure", task.getException());
                     Toast.makeText(NotifyActivity.this, "Error!", Toast.LENGTH_LONG).show();
@@ -245,43 +201,7 @@ public class NotifyActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
 
-
-    private boolean isValidValues(String[] mandatoryFeildsValues, TextView[] mandatoryFields) {
-
-        View focusView = null;
-        int numOfMandatoryFields = mandatoryFeildsValues.length;
-        int [] mandatoryFieldsError = new int[mandatoryFeildsValues.length];
-        for(int i = 0; i < numOfMandatoryFields; i++){
-            mandatoryFieldsError[i] = Common.isEmptyTextField(mandatoryFeildsValues[i]);
-        }
-
-        for (int i = 0; i < numOfMandatoryFields; i ++){
-            int result = mandatoryFieldsError[i];
-            TextView textView = mandatoryFields[i];
-            if (result != 0){ //error
-                textView.setError(getString(result));
-                focusView = textView;
-            } else {
-                textView.setError(null); //Reset error
-            }
-        }
-        if (focusView != null) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            Log.w(TAG, "fields verification error: field was entered incorrect");
-            focusView.requestFocus();
-            return false;
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            Log.i(TAG, "fields verification: success");
-            return true;
-        }
-
-    }
 
 }

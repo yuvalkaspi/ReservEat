@@ -40,8 +40,8 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
-        <activity android:name=".MySurveyActivity" />
-        <activity android:name=".SurveyForm"></activity>
+        <activity android:name=".MyReviewActivity" />
+        <activity android:name=".ReviewForm"></activity>
     </application>
 
 </manifest>

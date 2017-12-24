@@ -14,10 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.Common;
 import com.reserveat.reserveat.common.Reservation;
+import com.reserveat.reserveat.common.ReviewData;
 
 import java.text.ParseException;
 import java.util.HashMap;
@@ -130,11 +129,12 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
                                     reservation.setPicker(currentUser.getUid());
                                     Map<String, Object> reservationValues = reservation.toMap();
                                     Map<String, Object> childUpdates = new HashMap<>();
+                                    //Map<String, String> surveyValues = createNewSurveyValues(reservation);
 
                                     childUpdates.put("/users/" + currentUser.getUid() + "/pickedReservations/" + key, reservationValues);
                                     childUpdates.put("/historyReservations/" + key, reservationValues);
                                     childUpdates.put("/reservations/" + key, null);
-
+                                   // childUpdates.put("/users/" + currentUser.getUid() + "/surveys/" + key, surveyValues);
                                     myDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
@@ -147,6 +147,8 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
                                             }
                                         }
                                     });
+
+
                                 }
                             });
                             mPopupWindow.setFocusable(true);
@@ -163,6 +165,12 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
         };
 
         recyclerView.setAdapter(adapter);
+    }
+
+    private Map<String, String> createNewSurveyValues(Reservation reservation) {
+
+        ReviewData survey = new ReviewData(reservation.getRestaurant(), reservation.getBranch(), reservation.getDate());
+        return survey.toMap();
     }
 
     @Override
@@ -209,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
                 startActivity(intent_res_list);
                 return true;
             case R.id.mySurveys:
-                Intent mySurveyIntent = new Intent(MainActivity.this, MySurveyActivity.class );
+                Intent mySurveyIntent = new Intent(MainActivity.this, MyReviewActivity.class );
                 startActivity(mySurveyIntent);
                 return true;
             default:
