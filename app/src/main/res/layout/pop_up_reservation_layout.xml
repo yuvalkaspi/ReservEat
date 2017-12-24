@@ -7,32 +7,32 @@
     android:layout_height="match_parent"
     android:padding="15dp"
     android:orientation="vertical"
-    android:background="@color/cardview_light_background">
+    android:background="@color/lightGray">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="345dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="11dp"
-        >
+        android:layout_marginLeft="11dp">
 
         <TextView
-            android:id="@+id/reservation_form_title"
+            android:id="@+id/contact_form_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="5dp"
-            android:text="@string/reservation"
-            android:textColor="@color/colorHeadline"
-            android:textSize="20sp"
+            android:text="@string/reservation_details"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="24sp"
             android:typeface="serif" />
 
         <ImageButton
             android:id="@+id/ib_close"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@mipmap/close"
             android:layout_marginLeft="35dp"
-            />
+            android:gravity="center_horizontal"
+            android:src="@mipmap/close" />
 
     </LinearLayout>
 
@@ -54,7 +54,7 @@
             android:padding="@dimen/pop_up_padding"
             android:text="Restuarnt:"
             android:textSize="@dimen/pop_up_text_size"
-            android:textColor="@color/pop_up_text_color"/>
+            android:textColor="@color/cardview_dark_background"/>
 
         <TextView
             android:id="@+id/popup_resturant_name"
@@ -63,7 +63,7 @@
             android:padding="@dimen/pop_up_padding"
             android:text="restuarnt"
             android:textSize="@dimen/pop_up_text_size"
-            android:textColor="@color/pop_up_text_color"/>
+            android:textColor="@color/cardview_dark_background"/>
 
     </LinearLayout>
 
@@ -78,22 +78,23 @@
             android:src="@mipmap/cafe"
             android:layout_gravity="center"
             />
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="95dp"
             android:layout_height="wrap_content"
             android:padding="@dimen/pop_up_padding"
             android:text="Branch:     "
-            android:textSize="@dimen/pop_up_text_size"
-            android:textColor="@color/pop_up_text_color"/>
+            android:textColor="@color/cardview_dark_background"/>
+            android:textSize="@dimen/pop_up_text_size" />
 
         <TextView
             android:id="@+id/popup_branch"
-            android:layout_width="wrap_content"
+            android:layout_width="252dp"
             android:layout_height="wrap_content"
             android:padding="@dimen/pop_up_padding"
             android:text="branch"
-            android:textSize="@dimen/pop_up_text_size"
-            android:textColor="@color/pop_up_text_color"/>
+            android:textColor="@color/cardview_dark_background"/>
+            android:textSize="@dimen/pop_up_text_size" />
 
     </LinearLayout>
 
@@ -114,7 +115,7 @@
             android:padding="@dimen/pop_up_padding"
             android:text="Date:          "
             android:textSize="@dimen/pop_up_text_size"
-            android:textColor="@color/pop_up_text_color"/>
+            android:textColor="@color/cardview_dark_background"/>
 
         <TextView
             android:id="@+id/popup_date"
@@ -123,7 +124,7 @@
             android:padding="@dimen/pop_up_padding"
             android:text="date"
             android:textSize="@dimen/pop_up_text_size"
-            android:textColor="@color/pop_up_text_color"/>
+            android:textColor="@color/cardview_dark_background"/>
 
     </LinearLayout>
 
@@ -144,7 +145,7 @@
             android:padding="@dimen/pop_up_padding"
             android:text="Hour:          "
             android:textSize="@dimen/pop_up_text_size"
-            android:textColor="@color/pop_up_text_color"/>
+            android:textColor="@color/cardview_dark_background"/>
 
         <TextView
             android:id="@+id/popup_hour"
@@ -153,7 +154,7 @@
             android:padding="@dimen/pop_up_padding"
             android:text="hour"
             android:textSize="@dimen/pop_up_text_size"
-            android:textColor="@color/pop_up_text_color"/>
+            android:textColor="@color/cardview_dark_background"/>
 
     </LinearLayout>
 
@@ -174,7 +175,7 @@
             android:padding="@dimen/pop_up_padding"
             android:text="People:      "
             android:textSize="@dimen/pop_up_text_size"
-            android:textColor="@color/pop_up_text_color"/>
+            android:textColor="@color/cardview_dark_background"/>
 
         <TextView
             android:id="@+id/popup_num_of_people"
@@ -183,22 +184,21 @@
             android:padding="@dimen/pop_up_padding"
             android:text="num"
             android:textSize="@dimen/pop_up_text_size"
-            android:textColor="@color/pop_up_text_color"/>
+            android:textColor="@color/cardview_dark_background"/>
 
     </LinearLayout>
 
     <Button
         android:id="@+id/pick_Button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="pick"
-        android:textSize="@dimen/pop_up_text_size"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:textColor="@android:color/white"
-        android:background="@color/colorPrimary"
         android:layout_marginLeft="@dimen/fab_margin"
-        />
+        android:background="@color/colorPrimary"
+        android:text="pick"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/pop_up_text_size" />
 
 
     <LinearLayout

@@ -16,10 +16,12 @@
         android:layout_marginBottom="16dp"
         android:layout_marginTop="5dp"
         android:text="NOTIFY ON CANCEL"
-        android:textColor="#1e55c2"
+        android:textColor="@color/colorPrimary"
         android:textSize="24sp"
         android:typeface="serif" />
-
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
     <EditText
         android:id="@+id/restaurant"
         android:layout_width="fill_parent"
@@ -27,7 +29,9 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="Restaurant"
         android:inputType="textPersonName" />
-
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
     <EditText
         android:id="@+id/date"
         android:layout_width="fill_parent"
@@ -37,7 +41,9 @@
         android:focusable="false"
         android:hint="Date"
         android:inputType="none" />
-
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
     <EditText
         android:id="@+id/hour"
         android:layout_width="fill_parent"
@@ -47,7 +53,9 @@
         android:focusable="false"
         android:hint="Hour"
         android:inputType="none" />
-
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
     <EditText
         android:id="@+id/numOfPeople"
         android:layout_width="fill_parent"
@@ -55,13 +63,17 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="Number Of People"
         android:inputType="numberDecimal" />
-
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
     <Switch
         android:id="@+id/isFlexible"
         android:textSize="20sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
-
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
     <Button
         android:id="@+id/save"
         android:layout_width="match_parent"

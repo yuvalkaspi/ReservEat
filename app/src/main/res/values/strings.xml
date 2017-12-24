@@ -5,8 +5,8 @@
 
     <!-- Strings related to menu -->
 
-    <string name="mySurvey">My Surveys</string>
-    <string name="logOut">Log Out</string>
+    <string name="myPickedReservations">RESERVATIONS I PICKED OUT</string>
+    <string name="logOut">LOG OUT</string>
 
 
 
@@ -41,19 +41,19 @@
 
 
     <!-- Strings related to main activiry -->
-    <string name="sort">Sort ⬇</string>
-    <string name="refine">Refine</string>
-    <string name="notification">Notification</string>
-    <string name="add">Add</string>
+    <string name="sort">SORT</string>
+    <string name="search">SEARCH</string>
+    <string name="notification">NOTIFICATION</string>
+    <string name="add">ADD</string>
     <string name="clock_icon">clock_icon</string>
     <string name="man_icon">man_icon</string>
-    <string name="sort_by">Sort by</string>
+    <string name="sort_by">SORT BY</string>
     <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">CANCEL</string>
 
     <string-array name="SortByOptions">
-        <item>Reservation date</item>
-        <item>Number of people</item>
+        <item>RESERVATION DATE</item>
+        <item>NUMBER OF PEOPLE</item>
     </string-array>
 
     <string name="submit">SUBMIT</string>
@@ -64,9 +64,10 @@
     <string name="q1">How busy was the restaurant when you arrived?</string>
     <string name="q2">How busy was the restaurant when you left?</string>
     <string name="q3">How do you rate the restaurant?</string>
-    <string name="save">save</string>
+    <string name="save">SAVE</string>
     <string name="survey_form">SURVEY FORM</string>
-    <string name="my_reservations">My Reservations</string>
+    <string name="my_reservations">MY RESERVATIONS</string>
+    <string name="reservation_details">DETAILS</string>
 
 
     <string-array name="SurveyBusyRestaurantOptions">
