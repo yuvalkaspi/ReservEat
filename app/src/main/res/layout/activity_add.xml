@@ -12,10 +12,18 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="5dp"
-        android:text="@string/add_cancellation"
+        android:text="@string/add_reservation"
         android:textColor="#293eb1"
         android:textSize="24sp"
         android:typeface="serif" />
+
+
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        />
 
     <EditText
         android:id="@+id/restaurant"
@@ -23,7 +31,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="@string/restaurant"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"/>
 
     <EditText
         android:id="@+id/branch"
@@ -33,7 +41,10 @@
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="@string/branch"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        />
+
+
 
     <EditText
         android:id="@+id/date"

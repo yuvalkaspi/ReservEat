@@ -27,6 +27,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +40,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.Common;
 import com.reserveat.reserveat.common.Reservation;
+
+import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -65,6 +72,31 @@ public class AddActivity extends AppCompatActivity {
         numOfPeopleEditText = findViewById(R.id.numOfPeople);
         reservationNameEditText = findViewById(R.id.reservationName);
         Button addButton = findViewById(R.id.add);
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(TYPE_RESTAURANT).setCountry("IL")
+                .build();
+
+        autocompleteFragment.setFilter(typeFilter);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                restaurantEditText.setText(place.getName());
+                branchEditText.setText(place.getAddress());
+                Log.i(TAG, "Place: " + place.getName());
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });
+
+
 
         dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
