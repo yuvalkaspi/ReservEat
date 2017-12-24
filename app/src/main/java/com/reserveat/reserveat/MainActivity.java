@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
     private final String[] sortBy = {"date","numOfPeople"};
     private static final String TAG = "MainActivity";
     DatabaseReference mDatabase;
-    DatabaseReference myDatabase;
+    DatabaseReference popUpDatabase;
     RecyclerView recyclerView;
     FirebaseUser currentUser;
     String key;
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
         });
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("reservations");
-        myDatabase = FirebaseDatabase.getInstance().getReference();
+        popUpDatabase = FirebaseDatabase.getInstance().getReference();
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
                         public void onItemClick(View view, int position) {
                             key = getRef(position).getKey();
                             LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                            View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
+                            final View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
                             mPopupWindow = new PopupWindow(
                                     customView,
                                     LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
                                     childUpdates.put("/historyReservations/" + key, reservationValues);
                                     childUpdates.put("/reservations/" + key, null);
                                    // childUpdates.put("/users/" + currentUser.getUid() + "/surveys/" + key, surveyValues);
-                                    myDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    popUpDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
                 startActivity(intent_res_list);
                 return true;
             case R.id.mySurveys:
-                Intent mySurveyIntent = new Intent(MainActivity.this, MySurveyActivity.class );
+                Intent mySurveyIntent = new Intent(MainActivity.this, MyReviewActivity.class );
                 startActivity(mySurveyIntent);
                 return true;
             default:
