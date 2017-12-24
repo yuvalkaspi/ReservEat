@@ -14,8 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.Common;
 import com.reserveat.reserveat.common.Reservation;
 import com.reserveat.reserveat.common.ReviewData;
+import com.reserveat.reserveat.common.ReservationHolder;
+import com.reserveat.reserveat.common.SortDialogFragment;
 
 import java.text.ParseException;
 import java.util.HashMap;
@@ -126,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
                             pickButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
+                                    popUpPickClick(reservation, customView);
                                     reservation.setPicker(currentUser.getUid());
                                     Map<String, Object> reservationValues = reservation.toMap();
                                     Map<String, Object> childUpdates = new HashMap<>();
@@ -183,6 +188,41 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
         // Do nothing
     }
 
+    private void popUpPickClick(final Reservation reservation, View customView) {
+        final Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
+        final TextView nameFormTextView = (TextView) customView.findViewById(R.id.popup_name_form);
+        final TextView nameTextView = (TextView) customView.findViewById(R.id.popup_name);
+        final TextView noteTextView = (TextView) customView.findViewById(R.id.popup_note);
+
+        reservation.setPicker(currentUser.getUid());
+        Map<String, Object> reservationValues = reservation.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        childUpdates.put("/users/" + currentUser.getUid() + "/pickedReservations/" + key, reservationValues);
+        childUpdates.put("/historyReservations/" + key, reservationValues);
+        childUpdates.put("/reservations/" + key, null);
+
+        popUpDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.i(TAG, "pick reservation:success", task.getException());
+                    pickButton.setVisibility(View.GONE);
+                    nameFormTextView.setVisibility(View.VISIBLE);
+                    nameFormTextView.setText("Reservation name is : ");
+                    nameTextView.setVisibility(View.VISIBLE);
+                    nameTextView.setText(reservation.getReservationName());
+                    noteTextView.setVisibility(View.VISIBLE);
+                    noteTextView.setText("*note it is your responsibility to validate the resrvation");
+
+                } else {
+                    Log.w(TAG, "pick reservation:failure", task.getException());
+                    Toast.makeText(getApplicationContext() , "Error!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -217,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
                 startActivity(intent_res_list);
                 return true;
             case R.id.mySurveys:
-                Intent mySurveyIntent = new Intent(MainActivity.this, MyReviewActivity.class );
+                Intent mySurveyIntent = new Intent(MainActivity.this, MySurveyActivity.class );
                 startActivity(mySurveyIntent);
                 return true;
             default:

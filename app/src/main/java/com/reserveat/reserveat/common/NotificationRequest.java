@@ -35,7 +35,7 @@ public class NotificationRequest implements Serializable {
         HashMap<String, Object> result = new HashMap<>();
         result.put("uid", uid);
         result.put("restaurant", restaurant);
-        result.put("fullDate", fullDate);
+        result.put("date", fullDate);
         result.put("numOfPeople", numOfPeople);
         result.put("isFlexible", isFlexible);
 

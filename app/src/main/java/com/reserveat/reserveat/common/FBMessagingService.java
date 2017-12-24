@@ -1,4 +1,4 @@
-package com.reserveat.reserveat;
+package com.reserveat.reserveat.common;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,6 +11,8 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.reserveat.reserveat.MainActivity;
+import com.reserveat.reserveat.R;
 
 
 public class FBMessagingService extends FirebaseMessagingService {

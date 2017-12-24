@@ -1,4 +1,4 @@
-package com.reserveat.reserveat;
+package com.reserveat.reserveat.common;
 
 
 import android.util.Log;
