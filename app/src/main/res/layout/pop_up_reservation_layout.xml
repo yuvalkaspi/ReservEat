@@ -26,8 +26,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/reservation"
             android:textColor="@color/colorHeadline"
-            android:textSize="20sp"
-            android:typeface="serif" />
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/ib_close"
@@ -200,8 +199,7 @@
         android:layout_centerVertical="true"
         android:textColor="@android:color/white"
         android:background="@color/colorPrimary"
-        android:layout_marginLeft="@dimen/fab_margin"
-        />
+        android:layout_marginLeft="@dimen/fab_margin" />
 
 
     <LinearLayout
@@ -240,6 +238,26 @@
         android:textSize="12sp"
         android:textColor="@color/pop_up_text_color"
         android:visibility="gone"/>
+
+
+
+        <Button
+            android:id="@+id/spam_Button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/exclamation"
+            android:gravity="left|center_vertical"
+            android:text=" spam"
+            android:textSize="@dimen/pop_up_text_size"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:visibility="visible"
+            android:background="@color/cardview_light_background"
+            />
+
+
 
 </LinearLayout>
 

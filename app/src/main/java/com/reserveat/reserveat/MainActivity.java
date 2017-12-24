@@ -97,37 +97,38 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
             protected void populateViewHolder(ReservationHolder viewHolder, Reservation model, int position) {
                 try{
                     Common.myPopulateViewHolder(viewHolder, model);
-                    final Reservation reservation = model;
-                    viewHolder.setOnClickListener(new ReservationHolder.ClickListener() {
-                        @Override
-                        public void onItemClick(View view, int position) {
-                            key = getRef(position).getKey();
-                            LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                            final View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
-                            mPopupWindow = new PopupWindow(
-                                    customView,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
-                            );
-
-                            Common.popUpWindowCreate(mPopupWindow, customView, reservation);
-
-                            Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
-                            pickButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    popUpPickClick(reservation, customView);
-                                }
-                            });
-                            mPopupWindow.setFocusable(true);
-                            mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.activity_main_page), Gravity.CENTER,0,0);
-                        }
-                    });
-                    Log.i(TAG, "populateViewHolder: success");
                 }catch(ParseException e){
                     Toast.makeText(MainActivity.this, "error!", Toast.LENGTH_LONG).show();
                     Log.w(TAG, "populateViewHolder: failure");
                 }
+                final Reservation reservation = model;
+                viewHolder.setOnClickListener(new ReservationHolder.ClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        key = getRef(position).getKey();
+                        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                        final View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
+                        mPopupWindow = new PopupWindow(
+                                customView,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                        );
+
+                        Common.popUpWindowCreate(mPopupWindow, customView, reservation);
+
+                        Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
+                        pickButton.setVisibility(View.VISIBLE);
+                        pickButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                popUpPickClick(reservation, customView);
+                            }
+                        });
+                        mPopupWindow.setFocusable(true);
+                        mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.activity_main_page), Gravity.CENTER,0,0);
+                    }
+                });
+                Log.i(TAG, "populateViewHolder: success");
             }
         };
 

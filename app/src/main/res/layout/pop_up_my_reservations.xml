@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_custom_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:orientation="vertical"
+    android:background="@color/cardview_light_background"
+    >
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="11dp"
+        >
+
+        <TextView
+            android:id="@+id/reservation_form_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/reservation"
+            android:textColor="@color/colorHeadline"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/ib_close"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/close"
+            android:layout_marginLeft="35dp"
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/popup_review_Button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/review"
+        android:gravity="left|center_vertical"
+        android:text=" review"
+        android:textSize="@dimen/pop_up_text_size"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:visibility="visible"
+        android:background="@color/cardview_light_background" />
+
+
+    <Button
+        android:id="@+id/popup_remove_Button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/dustbin"
+        android:gravity="left|center_vertical"
+        android:text=" remove"
+        android:textSize="@dimen/pop_up_text_size"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:visibility="visible"
+        android:background="@color/cardview_light_background"
+        />
+
+    <Button
+        android:id="@+id/popup_spam_Button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/exclamation"
+        android:gravity="left|center_vertical"
+        android:text=" spam"
+        android:textSize="@dimen/pop_up_text_size"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:visibility="visible"
+        android:background="@color/cardview_light_background"
+        />
+
+
+</LinearLayout>
+
