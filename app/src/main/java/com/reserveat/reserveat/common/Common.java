@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseUser;
 import com.reserveat.reserveat.MainActivity;
 import com.reserveat.reserveat.R;
-import com.reserveat.reserveat.ReservationHolder;
 
 import java.text.DateFormat;
 import java.text.ParseException;
