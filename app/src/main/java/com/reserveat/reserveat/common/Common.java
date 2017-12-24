@@ -5,6 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.reserveat.reserveat.MainActivity;
@@ -19,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 
@@ -98,5 +105,44 @@ public class Common {
         viewHolder.setDate(dateNewFormat);
         viewHolder.setHour(hour);
         viewHolder.setNumOfPeople(model.getNumOfPeople());
+    }
+
+    public static void popUpWindowCreate(final PopupWindow mPopupWindow, View customView, Reservation reservation) {
+        mPopupWindow.setElevation(5.0f);
+
+        TextView restaurantTextView = (TextView) customView.findViewById(R.id.popup_resturant_name);
+        restaurantTextView.setText(reservation.getRestaurant());
+
+        TextView branchTextView = (TextView) customView.findViewById(R.id.popup_branch);
+        branchTextView.setText(reservation.getBranch());
+
+        String date = reservation.getDate();
+        int indexOfSpace = date.indexOf(" ");
+        String dateOldFormat = date.substring(0, indexOfSpace);
+        String hour = date.substring(indexOfSpace + 1);
+
+        try {
+            TextView dateTextView = (TextView) customView.findViewById(R.id.popup_date);
+            String dateNewFormat = Common.switchDateFormat(dateOldFormat, Common.dateFormatDB, Common.dateFormatUser);
+            dateTextView.setText(dateNewFormat);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        TextView hourTextView = (TextView) customView.findViewById(R.id.popup_hour);
+        hourTextView.setText(hour);
+
+        TextView numOfPeopleTextView = (TextView) customView.findViewById(R.id.popup_num_of_people);
+        numOfPeopleTextView.setText("" + reservation.getNumOfPeople());
+
+        ImageButton closeButton = (ImageButton) customView.findViewById(R.id.ib_close);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Dismiss the popup window
+                mPopupWindow.dismiss();
+            }
+        });
     }
 }

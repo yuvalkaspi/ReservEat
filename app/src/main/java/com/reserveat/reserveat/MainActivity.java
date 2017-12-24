@@ -14,10 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
     private final String[] sortBy = {"date","numOfPeople"};
     private static final String TAG = "MainActivity";
     DatabaseReference mDatabase;
-    DatabaseReference myDatabase;
+    DatabaseReference popUpDatabase;
     RecyclerView recyclerView;
     FirebaseUser currentUser;
     String key;
@@ -79,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
         });
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("reservations");
-        myDatabase = FirebaseDatabase.getInstance().getReference();
+        popUpDatabase = FirebaseDatabase.getInstance().getReference();
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -103,55 +101,24 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
                         public void onItemClick(View view, int position) {
                             key = getRef(position).getKey();
                             LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                            View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
+                            final View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
                             mPopupWindow = new PopupWindow(
                                     customView,
                                     LinearLayout.LayoutParams.WRAP_CONTENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT
                             );
-                            mPopupWindow.setElevation(5.0f);
 
-                            TextView keyTextView = (TextView) customView.findViewById(R.id.tv);
-                            keyTextView.setText("restaurant is " + reservation.getRestaurant());
-
-                            Button closeButton = (Button) customView.findViewById(R.id.ib_close);
-                            closeButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    // Dismiss the popup window
-                                    mPopupWindow.dismiss();
-                                }
-                            });
+                            Common.popUpWindowCreate(mPopupWindow, customView, reservation);
 
                             Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
                             pickButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    reservation.setPicker(currentUser.getUid());
-                                    Map<String, Object> reservationValues = reservation.toMap();
-                                    Map<String, Object> childUpdates = new HashMap<>();
-
-                                    childUpdates.put("/users/" + currentUser.getUid() + "/pickedReservations/" + key, reservationValues);
-                                    childUpdates.put("/historyReservations/" + key, reservationValues);
-                                    childUpdates.put("/reservations/" + key, null);
-
-                                    myDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Log.i(TAG, "pick reservation:success", task.getException());
-                                                mPopupWindow.dismiss();
-                                            } else {
-                                                Log.w(TAG, "pick reservation:failure", task.getException());
-                                                Toast.makeText(getApplicationContext() , "Error!", Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                    });
+                                    popUpPickClick(reservation, customView);
                                 }
                             });
                             mPopupWindow.setFocusable(true);
                             mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.activity_main_page), Gravity.CENTER,0,0);
-
                         }
                     });
                     Log.i(TAG, "populateViewHolder: success");
@@ -173,6 +140,41 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         // Do nothing
+    }
+
+    private void popUpPickClick(final Reservation reservation, View customView) {
+        final Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
+        final TextView nameFormTextView = (TextView) customView.findViewById(R.id.popup_name_form);
+        final TextView nameTextView = (TextView) customView.findViewById(R.id.popup_name);
+        final TextView noteTextView = (TextView) customView.findViewById(R.id.popup_note);
+
+        reservation.setPicker(currentUser.getUid());
+        Map<String, Object> reservationValues = reservation.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        childUpdates.put("/users/" + currentUser.getUid() + "/pickedReservations/" + key, reservationValues);
+        childUpdates.put("/historyReservations/" + key, reservationValues);
+        childUpdates.put("/reservations/" + key, null);
+
+        popUpDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.i(TAG, "pick reservation:success", task.getException());
+                    pickButton.setVisibility(View.GONE);
+                    nameFormTextView.setVisibility(View.VISIBLE);
+                    nameFormTextView.setText("Reservation name is : ");
+                    nameTextView.setVisibility(View.VISIBLE);
+                    nameTextView.setText(reservation.getReservationName());
+                    noteTextView.setVisibility(View.VISIBLE);
+                    noteTextView.setText("*note it is your responsibility to validate the resrvation");
+
+                } else {
+                    Log.w(TAG, "pick reservation:failure", task.getException());
+                    Toast.makeText(getApplicationContext() , "Error!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -216,4 +218,5 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }

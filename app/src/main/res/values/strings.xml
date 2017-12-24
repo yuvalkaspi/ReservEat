@@ -37,6 +37,7 @@
     <string name="is_reservation_on_my_name">"Is reservation on my name?"</string>
     <string name="reservation_name">Reservation name</string>
     <string name="add_cancellation">ADD CANCELLATION</string>
+    <string name="reservation">RESERVATION</string>
 
 
     <!-- Strings related to main activiry -->
@@ -66,6 +67,7 @@
     <string name="save">save</string>
     <string name="survey_form">SURVEY FORM</string>
     <string name="my_reservations">My Reservations</string>
+
 
     <string-array name="SurveyBusyRestaurantOptions">
         <item>1 - not busy</item>
