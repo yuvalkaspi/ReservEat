@@ -39,6 +39,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.Common;
+import com.reserveat.reserveat.common.DBUtils;
 import com.reserveat.reserveat.common.Reservation;
 
 import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
@@ -46,7 +47,6 @@ import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
 public class AddActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
-    EditText restaurantEditText;
     EditText branchEditText;
     EditText dateEditText;
     EditText hourEditText;
@@ -55,8 +55,9 @@ public class AddActivity extends AppCompatActivity {
     private Switch isReservationOnMyName;
     FirebaseUser currentUser;
     private static final String TAG = "AddActivity";
-
+    private String restaurant;
     Calendar current = Calendar.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +66,6 @@ public class AddActivity extends AppCompatActivity {
 
         //Calendar myCalendar = Calendar.getInstance();
 
-        restaurantEditText = findViewById(R.id.restaurant);
         branchEditText = findViewById(R.id.branch);
         dateEditText = findViewById(R.id.date);
         hourEditText = findViewById(R.id.hour);
@@ -73,7 +73,7 @@ public class AddActivity extends AppCompatActivity {
         reservationNameEditText = findViewById(R.id.reservationName);
         Button addButton = findViewById(R.id.add);
 
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
@@ -85,9 +85,12 @@ public class AddActivity extends AppCompatActivity {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                restaurantEditText.setText(place.getName());
-                branchEditText.setText(place.getAddress());
                 Log.i(TAG, "Place: " + place.getName());
+                restaurant = place.getName().toString();
+                branchEditText.setText(place.getAddress());
+                branchEditText.setVisibility(View.VISIBLE);
+                DBUtils.addingPlaceToDB(place, TAG);
+                autocompleteFragment.setMenuVisibility(false);
             }
 
             @Override
@@ -166,6 +169,8 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -180,7 +185,7 @@ public class AddActivity extends AppCompatActivity {
 
     private void attemptAddReservation() {
 
-        String restaurant = restaurantEditText.getText().toString().trim();
+        //String restaurant = restaurantEditText.getText().toString().trim();
         String branch = branchEditText.getText().toString().trim();
         String date = dateEditText.getText().toString().trim();
         String hour = hourEditText.getText().toString().trim();
@@ -189,7 +194,7 @@ public class AddActivity extends AppCompatActivity {
 
 
         TextView[] formTextViewArr = {reservationNameEditText, numOfPeopleEditText,
-                hourEditText, dateEditText, branchEditText, restaurantEditText};//order desc
+                hourEditText, dateEditText, branchEditText};//order desc
 
         int[] formTextViewErrCodeArr = new int[formTextViewArr.length];
 
@@ -204,7 +209,6 @@ public class AddActivity extends AppCompatActivity {
         formTextViewErrCodeArr[2] = Common.isEmptyTextField(hour);
         formTextViewErrCodeArr[3] = Common.isEmptyTextField(date);
         formTextViewErrCodeArr[4] = Common.isEmptyTextField(branch);
-        formTextViewErrCodeArr[5] = Common.isEmptyTextField(restaurant);
 
 
         for (int i = 0; i < formTextViewArr.length; i ++){

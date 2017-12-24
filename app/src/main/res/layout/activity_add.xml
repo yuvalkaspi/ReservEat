@@ -26,14 +26,6 @@
         />
 
     <EditText
-        android:id="@+id/restaurant"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="@string/restaurant"
-        android:inputType="textPersonName"/>
-
-    <EditText
         android:id="@+id/branch"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -42,8 +34,7 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="@string/branch"
         android:inputType="textEmailAddress"
-        />
-
+        android:visibility="gone"/>
 
 
     <EditText
