@@ -29,13 +29,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.Common;
 import com.reserveat.reserveat.common.Reservation;
 import com.reserveat.reserveat.common.ReservationHolder;
-import com.reserveat.reserveat.common.SortDialogFragment;
+import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogFragment;
+import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
 
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements SortDialogFragment.NoticeDialogListener {
+public class MainActivity extends AppCompatActivity implements OurDialogFragment.NoticeDialogListener {
 
     private final String[] sortBy = {"date","numOfPeople"};
     private static final String TAG = "MainActivity";
@@ -73,8 +74,9 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment newFragment = new SortDialogFragment();
-                newFragment.show(getFragmentManager(), "SortDialogFragment");
+                OurDialogFragment newFragment = new ChoiceDialogFragment();
+                OurDialogFragment.initDialog(newFragment, R.string.sort_by, R.array.SortByOptions,-1);
+                newFragment.show(getFragmentManager(), "ChoiceDialogFragment");
             }
         });
 
@@ -136,8 +138,8 @@ public class MainActivity extends AppCompatActivity implements SortDialogFragmen
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog, int index) {
-        createAdapter(sortBy[index]);
+    public void onDialogPositiveClick(DialogFragment dialog, int dialogIndex, float result) {
+        createAdapter(sortBy[(int)result - 1]);
     }
 
     @Override
