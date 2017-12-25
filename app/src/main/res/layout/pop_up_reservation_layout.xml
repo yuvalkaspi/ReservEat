@@ -5,7 +5,7 @@
     android:id="@+id/rl_custom_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
+    android:padding="10dp"
     android:orientation="vertical"
     android:background="@color/gray_background">
 
@@ -15,17 +15,18 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/activity_horizontal_margin">
 
-        <TextView
-            android:id="@+id/contact_form_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/reservation_details"
-            android:textColor="@color/cardview_dark_background"
-            android:textSize="24sp"
-            android:typeface="serif" />
+
+            <TextView
+                android:id="@+id/contact_form_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/reservation_details"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp"
+                android:typeface="serif" />
 
             <ImageButton
                 android:id="@+id/ib_close"
@@ -35,17 +36,11 @@
                 android:layout_alignParentTop="true"
                 android:gravity="center_horizontal"
                 android:src="@mipmap/close" />
-
     </RelativeLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/spaceSize" />
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="@dimen/pop_up_icon_size"
@@ -74,6 +69,11 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="@dimen/pop_up_icon_size"
+            android:layout_height="@dimen/pop_up_icon_size"
+            android:layout_gravity="center" />
 
         <TextView
             android:layout_width="95dp"
