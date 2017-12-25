@@ -182,6 +182,6 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
     }
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
+    public void onDialogNegativeClick(DialogFragment dialog) {}
 
 }
