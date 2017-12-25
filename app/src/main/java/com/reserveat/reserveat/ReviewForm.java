@@ -1,6 +1,7 @@
 package com.reserveat.reserveat;
 
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -88,6 +89,8 @@ public class ReviewForm extends AppCompatActivity {
                     insertDataToDB(review);
                     addStarToUser();
                     Toast.makeText(ReviewForm.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(ReviewForm.this, MyReviewActivity.class );
+                    startActivity(intent);
                 } else{
                     Toast.makeText(ReviewForm.this, "FAILED: PLEASE ANSWER ALL QUESTIONS", Toast.LENGTH_LONG).show();
 

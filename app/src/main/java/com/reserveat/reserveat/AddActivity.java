@@ -13,6 +13,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -107,7 +109,7 @@ public class AddActivity extends AppCompatActivity {
                 int year = current.get(Calendar.YEAR);
                 int month = current.get(Calendar.MONTH);
                 int day = current.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dpd = new DatePickerDialog(AddActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dpd = new DatePickerDialog(AddActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
                         DateFormat dateFormat = new SimpleDateFormat(Common.dateFormatUser, Locale.getDefault());
@@ -128,7 +130,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int hour = current.get(Calendar.HOUR_OF_DAY);
                 int minutes = current.get(Calendar.MINUTE);
-                TimePickerDialog tpd = new TimePickerDialog(AddActivity.this , new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog tpd = new TimePickerDialog(AddActivity.this, R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
                         DateFormat dateFormat = new SimpleDateFormat(Common.hourFormat, Locale.getDefault());
@@ -142,6 +144,7 @@ public class AddActivity extends AppCompatActivity {
                 tpd.show();
             }
         });
+
 
         isReservationOnMyName = findViewById(R.id.isReservationOnMyName);
         isReservationOnMyName.setText(R.string.is_reservation_on_my_name);
@@ -165,7 +168,6 @@ public class AddActivity extends AppCompatActivity {
                 attemptAddReservation();
             }
         });
-
     }
 
 

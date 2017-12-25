@@ -9,7 +9,6 @@
     <string name="logOut">LOG OUT</string>
 
 
-
     <!-- Strings related to login -->
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -77,5 +76,6 @@
         <item>4</item>
         <item>5 - most busy</item>
     </string-array>
+    <string name="title_activity_main2">Main2Activity</string>
 
 </resources>
