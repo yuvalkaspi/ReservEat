@@ -31,6 +31,7 @@ public class Common {
 
     private static final int OK = 0;
 
+
     public static void updateUI(FirebaseUser currentUser , Context packageContext){
         if (currentUser != null){
             Intent intent = new Intent(packageContext, MainActivity.class );
