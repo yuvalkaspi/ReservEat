@@ -11,6 +11,4 @@
         android:clickable="true"
         android:layout_gravity="left|center_vertical"
         android:numStars="5"/>
-
-
 </LinearLayout>

@@ -12,18 +12,20 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="5dp"
-        android:text="@string/add_cancellation"
-        android:textColor="#293eb1"
+        android:text="@string/add_reservation"
+        android:textColor="@color/colorPrimary"
         android:textSize="24sp"
         android:typeface="serif" />
 
-    <EditText
-        android:id="@+id/restaurant"
-        android:layout_width="fill_parent"
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
+
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="@string/restaurant"
-        android:inputType="textPersonName" />
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment" />
 
     <EditText
         android:id="@+id/branch"
@@ -33,7 +35,12 @@
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="@string/branch"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:visibility="gone"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
 
     <EditText
         android:id="@+id/date"
@@ -45,6 +52,10 @@
         android:hint="@string/date"
         android:inputType="none" />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
+
     <EditText
         android:id="@+id/hour"
         android:layout_width="fill_parent"
@@ -55,6 +66,10 @@
         android:hint="@string/hour"
         android:inputType="none" />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
+
     <EditText
         android:id="@+id/numOfPeople"
         android:layout_width="fill_parent"
@@ -63,11 +78,19 @@
         android:hint="@string/num_of_people"
         android:inputType="numberDecimal" />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
+
     <Switch
         android:id="@+id/isReservationOnMyName"
         android:textSize="20sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
 
     <EditText
         android:id="@+id/reservationName"
@@ -76,6 +99,10 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="@string/reservation_name"
         android:inputType="textPersonName" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
 
     <Button
         android:id="@+id/add"

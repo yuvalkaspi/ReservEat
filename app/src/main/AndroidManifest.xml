@@ -42,6 +42,9 @@
         </service>
         <activity android:name=".MyReviewActivity" />
         <activity android:name=".ReviewForm"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyASnWV66HR-viWkJ9kbn9t4dWM1cacExP4"/>
     </application>
 
 </manifest>
