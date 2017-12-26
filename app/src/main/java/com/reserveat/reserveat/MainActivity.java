@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -28,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.Common;
+import com.reserveat.reserveat.common.DBUtils;
 import com.reserveat.reserveat.common.Reservation;
 import com.reserveat.reserveat.common.ReservationHolder;
 import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogFragment;
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
     FirebaseUser currentUser;
     String key;
     private PopupWindow mPopupWindow;
+    public static int numOfStarsPerPick = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +111,7 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
                     public void onItemClick(View view, int position) {
                         key = getRef(position).getKey();
                         LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-
-                        final View customView = inflater.inflate(R.layout.pop_up_reservation_layout, null);
+                        final View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
                         mPopupWindow = new PopupWindow(
                                 customView,
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
                     nameTextView.setText(reservation.getReservationName());
                     noteTextView.setVisibility(View.VISIBLE);
                     noteTextView.setText(" it is your responsibility to validate the resrvation");
+                    DBUtils.updateStarsToUser(numOfStarsPerPick);
 
                 } else {
                     Log.w(TAG, "pick reservation:failure", task.getException());
