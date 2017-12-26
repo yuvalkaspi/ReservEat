@@ -5,41 +5,21 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    tools:context="com.reserveat.reserveat.MySurveyActivity">
-
-        <TextView
-            android:id="@+id/surveysToFill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="5dp"
-            android:text="SURVEYS TO FILL-IN"
-            android:textColor="#1e55c2"
-            android:textSize="24sp"
-            android:typeface="serif" />
-
-    <Button
-        android:id="@+id/SURVEY1"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/contact_form_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:elevation="4dp"
-        android:paddingLeft="70dp"
-        android:paddingRight="70dp"
-        android:text="SURVEY 1" />
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/mySurvey"
+        android:textColor="#1e55c2"
+        android:textSize="20sp"
+        android:typeface="serif" />
 
-        <TextView
-            android:id="@+id/surveysFilled"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="5dp"
-            android:text="SURVEYS YOU ALREADY FILLED-IN"
-            android:textColor="#1e55c2"
-            android:textSize="24sp"
-            android:typeface="serif" />
-
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

@@ -1,16 +1,13 @@
 package com.reserveat.reserveat.common;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.ImageButton;
+import android.widget.PopupWindow;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.reserveat.reserveat.MainActivity;
@@ -24,8 +21,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 
 public class Common {
@@ -133,7 +128,7 @@ public class Common {
         hourTextView.setText(hour);
 
         TextView numOfPeopleTextView = (TextView) customView.findViewById(R.id.popup_num_of_people);
-        numOfPeopleTextView.setText("" + reservation.getNumOfPeople());
+        numOfPeopleTextView.setText(reservation.getNumOfPeople());
 
         ImageButton closeButton = (ImageButton) customView.findViewById(R.id.ib_close);
         closeButton.setOnClickListener(new View.OnClickListener() {
@@ -143,5 +138,47 @@ public class Common {
                 mPopupWindow.dismiss();
             }
         });
+    }
+
+
+    public static void myPopulateViewHolderSurvey(ReservationHolder viewHolder, Reservation model) {
+        String fullDate = model.getDate();
+        viewHolder.setRestaurant(model.getRestaurant());
+        viewHolder.setBranch(model.getBranch());
+        viewHolder.setDate(fullDate);
+    }
+
+    private boolean isValidValues(String[] mandatoryFeildsValues, TextView[] mandatoryFields, String TAG) {
+
+        View focusView = null;
+        int numOfMandatoryFields = mandatoryFeildsValues.length;
+        int [] mandatoryFieldsError = new int[mandatoryFeildsValues.length];
+        for(int i = 0; i < numOfMandatoryFields; i++){
+            mandatoryFieldsError[i] = Common.isEmptyTextField(mandatoryFeildsValues[i]);
+        }
+
+        for (int i = 0; i < numOfMandatoryFields; i ++){
+            int result = mandatoryFieldsError[i];
+            TextView textView = mandatoryFields[i];
+            if (result != 0){ //error
+                //textView.setError(getString(result));
+                focusView = textView;
+            } else {
+                textView.setError(null); //Reset error
+            }
+        }
+        if (focusView != null) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            Log.w(TAG, "fields verification error: field was entered incorrect");
+            focusView.requestFocus();
+            return false;
+        } else {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            Log.i(TAG, "fields verification: success");
+            return true;
+        }
+
     }
 }

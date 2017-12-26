@@ -3,6 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#5640ff</color>
+    <color name="answeredButtonInReview">#EFB3B9</color>
+
+
     <color name="colorHeadline">#293eb1</color>
     <color name="pop_up_text_color">#131315</color>
 </resources>

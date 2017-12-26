@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.reserveat.reserveat.common.Common;
+import com.reserveat.reserveat.common.DBUtils;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -122,8 +123,10 @@ public class SignUpActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-                            mDatabase = FirebaseDatabase.getInstance().getReference();
+                            mDatabase = DBUtils.getDatabaseRef();
                             mDatabase.child("users").child(user.getUid()).child("instanceId").setValue(refreshedToken);
+                            mDatabase.child("users").child(user.getUid()).child("stars").setValue(0);
+                            mDatabase.child("users").child(user.getUid()).child("spamReports").setValue(0);
                             //todo- check value?
 
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()

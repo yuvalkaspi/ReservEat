@@ -47,7 +47,7 @@ public class ReservationHolder extends RecyclerView.ViewHolder {
         hour.setText(h);
     }
 
-    public void setNumOfPeople(int n){
+    public void setNumOfPeople(String n){
         numOfPeople.setText(String.valueOf(n));
     }
 
