@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -109,7 +110,8 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
                     public void onItemClick(View view, int position) {
                         key = getRef(position).getKey();
                         LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                        final View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
+
+                        final View customView = inflater.inflate(R.layout.pop_up_reservation_layout, null);
                         mPopupWindow = new PopupWindow(
                                 customView,
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -172,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
                     nameTextView.setVisibility(View.VISIBLE);
                     nameTextView.setText(reservation.getReservationName());
                     noteTextView.setVisibility(View.VISIBLE);
-                    noteTextView.setText("*note it is your responsibility to validate the resrvation");
+                    noteTextView.setText(" it is your responsibility to validate the resrvation");
 
                 } else {
                     Log.w(TAG, "pick reservation:failure", task.getException());
@@ -216,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
                 startActivity(intent_res_list);
                 return true;
             case R.id.mySurveys:
-                Intent mySurveyIntent = new Intent(MainActivity.this, MySurveyActivity.class );
+                Intent mySurveyIntent = new Intent(MainActivity.this, MyReviewActivity.class );
                 startActivity(mySurveyIntent);
                 return true;
             default:

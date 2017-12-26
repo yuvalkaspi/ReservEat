@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -23,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.Common;
+import com.reserveat.reserveat.common.DBUtils;
 import com.reserveat.reserveat.common.Reservation;
 import com.reserveat.reserveat.common.ReservationHolder;
 
@@ -41,7 +44,8 @@ public class MyReservationsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_reservations_list);
 
-        String currentUserID = currentUser.getUid();
+        String currentUserID = DBUtils.getCurrentUserID();
+
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserID).child("reservations");
 
@@ -63,35 +67,51 @@ public class MyReservationsListActivity extends AppCompatActivity {
                     public void onItemClick(View view, int position) {
                         final String key = getRef(position).getKey();
                         LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                        final View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
+                        final View customView = inflater.inflate(R.layout.pop_up_my_reservations,null);
                         mPopupWindow = new PopupWindow(
                                 customView,
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                         );
+                        mPopupWindow.setElevation(5.0f);
 
-                        Common.popUpWindowCreate(mPopupWindow, customView, reservation);
-
-                        Button spamButton = (Button) customView.findViewById(R.id.spam_Button);
-                        spamButton.setVisibility(View.VISIBLE);
-
+                        Button spamButton = (Button) customView.findViewById(R.id.popup_spam_Button);
                         spamButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 popUpSpamClick(reservation, customView, key);
                             }
                         });
-                        Button removeButton = (Button) customView.findViewById(R.id.remove_Button);
-                        removeButton.setVisibility(View.VISIBLE);
 
+                        Button removeButton = (Button) customView.findViewById(R.id.popup_remove_Button);
                         removeButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 popUpRemoveClick(reservation, customView, key);
                             }
                         });
+
+                        Button reviewButton = (Button) customView.findViewById(R.id.popup_review_Button);
+                        reviewButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(MyReservationsListActivity.this, ReviewForm.class );
+                                intent.putExtra("reservation", reservation);
+                                startActivity(intent);
+                            }
+                        });
+
+                        ImageButton closeButton = (ImageButton) customView.findViewById(R.id.ib_popup_close);
+                        closeButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // Dismiss the popup window
+                                mPopupWindow.dismiss();
+                            }
+                        });
+
                         mPopupWindow.setFocusable(true);
-                        mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.activity_main_page), Gravity.CENTER,0,0);
+                        mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.my_reservations_list), Gravity.CENTER,0,0);
                     }
                 });
                 Log.i(TAG, "populateViewHolder: success");
@@ -126,8 +146,6 @@ public class MyReservationsListActivity extends AppCompatActivity {
     private void popUpSpamClick(Reservation reservation, View customView, String key) {
         //Todo
         Toast.makeText(getApplicationContext() , "handle spam", Toast.LENGTH_LONG).show();
-        Button spamButton = (Button) customView.findViewById(R.id.spam_Button);
-        spamButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -135,8 +153,11 @@ public class MyReservationsListActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser == null) {
-            Intent intent = new Intent(MyReservationsListActivity.this, LoginActivity.class);
+        if(currentUser != null){
+//            String name = currentUser.getDisplayName();
+//            Toast.makeText(getApplicationContext(),"Hello " + name, Toast.LENGTH_SHORT).show();
+        }else{
+            Intent intent = new Intent(MyReservationsListActivity.this, LoginActivity.class );
             startActivity(intent);
         }
     }
