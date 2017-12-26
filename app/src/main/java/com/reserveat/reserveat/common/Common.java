@@ -28,6 +28,7 @@ public class Common {
     public static final String hourFormat = "HH:mm";
     public static final String dateFormatUser = "dd/MM/yyyy";
     public static final String dateFormatDB = "yyyy/MM/dd";
+    public static final String fullDateFormatDB = dateFormatDB + " " + hourFormat;
 
     private static final int OK = 0;
 

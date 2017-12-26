@@ -2,6 +2,7 @@ package com.reserveat.reserveat;
 
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +36,11 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
     static final int NUM_OF_QUESTIONS = 3;
     private Button[] buttons = new Button[NUM_OF_QUESTIONS];
     final HashMap<Integer, Float> userAnswers = new HashMap<>();
+    FirebaseUser currentUser;
+    public static int numOfStarsPerReview = 1;
+
     private static final String TAG = "SurveyFormActivity";
+
 
 
 
@@ -92,7 +99,7 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
                 if(checkAllQuestionsFilled()){
                     Review review = new Review(userAnswers);
                     insertDataToDB(review);
-                    addStarToUser();
+                    DBUtils.updateStarsToUser(numOfStarsPerReview);
                     Toast.makeText(ReviewForm.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
                 } else{
                     Toast.makeText(ReviewForm.this, "FAILED: PLEASE ANSWER ALL QUESTIONS", Toast.LENGTH_LONG).show();
@@ -103,25 +110,18 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
         });
     }
 
-    private void addStarToUser() {
-        Log.i(TAG, "adding a new start user");
 
-        DatabaseReference ref = DBUtils.getDatabaseRef().child("users").child(DBUtils.getCurrentUserID());
-
-        //DBUtils.getDatabaseRef().child("users").child(DBUtils.getCurrentUserID()).setValue(["stars": stars+1]);
-
-        Query query = DBUtils.getDatabaseRef().child("users").child(DBUtils.getCurrentUserID()).child("stars");
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //Long starsNum = (Long)dataSnapshot.getValue();
-               // DBUtils.updateStarsToUser(starsNum + 1, DBUtils.getCurrentUserID());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null){
+            Intent intent = new Intent(ReviewForm.this, LoginActivity.class );
+            startActivity(intent);
+        }
     }
+
 
     private void insertDataToDB(Review review) {
         Log.i(TAG, "adding a new review to DB");

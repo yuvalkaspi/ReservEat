@@ -13,7 +13,7 @@ public class ChoiceDialogFragment extends OurDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final int[] selectedItem = new int[1];
-
+        selectedItem[0] = 1;//initializing
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(titleStringId)
                 .setSingleChoiceItems(contentId, 0,

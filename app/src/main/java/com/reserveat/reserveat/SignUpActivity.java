@@ -120,35 +120,8 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.i(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-
                             String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-                            mDatabase = DBUtils.getDatabaseRef();
-                            mDatabase.child("users").child(user.getUid()).child("instanceId").setValue(refreshedToken);
-                            mDatabase.child("users").child(user.getUid()).child("stars").setValue(0);
-                            mDatabase.child("users").child(user.getUid()).child("spamReports").setValue(0);
-                            //todo- check value?
-
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(firstName + " " + lastName)
-                                    .build();
-
-                            user.updateProfile(profileUpdates)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Log.i(TAG, "updateProfile:success");
-                                            }else{
-                                                Log.w(TAG, "updateProfile:failure", task.getException());
-                                                Toast.makeText(SignUpActivity.this, "Update failed.",
-                                                        Toast.LENGTH_SHORT).show();
-                                            }
-                                            Common.updateUI(mAuth.getCurrentUser(),SignUpActivity.this);
-                                        }
-                                    });
-                            //todo: nullpointerexception?
-
+                            DBUtils.initUser(refreshedToken, firstName + " " + lastName, SignUpActivity.this);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -156,7 +129,6 @@ public class SignUpActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                             Common.updateUI(null,SignUpActivity.this);
                         }
-
                     }
                 });
     }

@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.Common;
+import com.reserveat.reserveat.common.DBUtils;
 import com.reserveat.reserveat.common.Reservation;
 import com.reserveat.reserveat.common.ReservationHolder;
 import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogFragment;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
     FirebaseUser currentUser;
     String key;
     private PopupWindow mPopupWindow;
+    public static int numOfStarsPerPick = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
                     nameTextView.setText(reservation.getReservationName());
                     noteTextView.setVisibility(View.VISIBLE);
                     noteTextView.setText("*note it is your responsibility to validate the resrvation");
+                    DBUtils.updateStarsToUser(numOfStarsPerPick);
 
                 } else {
                     Log.w(TAG, "pick reservation:failure", task.getException());
