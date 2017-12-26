@@ -20,10 +20,10 @@ class Review {
     private static final int RATE = 3;
 
 
-    public Review(HashMap<Integer, Object> userAnswers) {
-        this.busyWhenArrive = (Integer)userAnswers.get(BUSY_WHEN_ARRIVE);
-        this.busyWhenLeft = (Integer)userAnswers.get(BUSY_WHEN_LEFT);
-        this.rate = (Float)userAnswers.get(RATE);
+    public Review(HashMap<Integer, Float> userAnswers) {
+        this.busyWhenArrive = userAnswers.get(BUSY_WHEN_ARRIVE).intValue();
+        this.busyWhenLeft = userAnswers.get(BUSY_WHEN_LEFT).intValue();
+        this.rate = userAnswers.get(RATE);
     }
 
     @Exclude

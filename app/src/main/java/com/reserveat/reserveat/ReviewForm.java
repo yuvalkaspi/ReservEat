@@ -1,6 +1,8 @@
 package com.reserveat.reserveat;
 
 
+import android.content.Intent;
+import android.app.DialogFragment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,19 +19,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogFragment;
+import com.reserveat.reserveat.common.Common;
 import com.reserveat.reserveat.common.DBUtils;
+import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
+import com.reserveat.reserveat.common.dialogFragment.RatingDialogFragment;
 import com.reserveat.reserveat.common.Reservation;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.reserveat.reserveat.common.DialogUtils.showRadioButtonDialog;
-import static com.reserveat.reserveat.common.DialogUtils.showRatingDialog;
-
-public class ReviewForm extends AppCompatActivity {
+public class ReviewForm extends AppCompatActivity implements OurDialogFragment.NoticeDialogListener {
 
     static final int NUM_OF_QUESTIONS = 3;
-    final HashMap<Integer, Object> userAnswers = new HashMap<>();
+    private Button[] buttons = new Button[NUM_OF_QUESTIONS];
+    final HashMap<Integer, Float> userAnswers = new HashMap<>();
     private static final String TAG = "SurveyFormActivity";
 
 
@@ -49,33 +53,36 @@ public class ReviewForm extends AppCompatActivity {
         Reservation reservation = (Reservation) extras.get("reservation");
         setReservationDetails(reservation);
 
-        Button q1Button = findViewById(R.id.q1);
-        q1Button.setOnClickListener(new View.OnClickListener() {
+        buttons[0] = findViewById(R.id.q1);
+        buttons[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int result  = showRadioButtonDialog(R.string.q1, R.array.SurveyBusyRestaurantOptions, ReviewForm.this, view)[0];
-                userAnswers.put(1, result);
+                OurDialogFragment newFragment = new ChoiceDialogFragment();
+                OurDialogFragment.initDialog(newFragment, R.string.q1, R.array.SurveyBusyRestaurantOptions,1);
+                newFragment.show(getFragmentManager(), "q1ChoiceDialogFragment");
             }
         });
 
-        Button q2Button = findViewById(R.id.q2);
-        q2Button.setOnClickListener(new View.OnClickListener() {
+        buttons[1] = findViewById(R.id.q2);
+        buttons[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int result = showRadioButtonDialog(R.string.q2, R.array.SurveyBusyRestaurantOptions, ReviewForm.this, view)[0];
-                userAnswers.put(2, result);
+                OurDialogFragment newFragment = new ChoiceDialogFragment();
+                OurDialogFragment.initDialog(newFragment, R.string.q2, R.array.SurveyBusyRestaurantOptions,2);
+                newFragment.show(getFragmentManager(), "q2ChoiceDialogFragment");
             }
         });
 
 
 
 
-        Button q3Button = findViewById(R.id.q3);
-        q3Button.setOnClickListener(new View.OnClickListener() {
+        buttons[2]= findViewById(R.id.q3);
+        buttons[2].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                float result = showRatingDialog(getString(R.string.q3), ReviewForm.this, R.layout.rating, view)[0];
-               userAnswers.put(3, result);
+                OurDialogFragment newFragment = new RatingDialogFragment();
+                OurDialogFragment.initDialog(newFragment, R.string.q3,R.layout.rating,3);
+                newFragment.show(getFragmentManager(), "q3ChoiceDialogFragment");
             }
         });
 
@@ -88,6 +95,8 @@ public class ReviewForm extends AppCompatActivity {
                     insertDataToDB(review);
                     addStarToUser();
                     Toast.makeText(ReviewForm.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(ReviewForm.this, MyReviewActivity.class );
+                    startActivity(intent);
                 } else{
                     Toast.makeText(ReviewForm.this, "FAILED: PLEASE ANSWER ALL QUESTIONS", Toast.LENGTH_LONG).show();
 
@@ -165,6 +174,14 @@ public class ReviewForm extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, int dialogIndex, float result) {
+        Toast.makeText(ReviewForm.this, "Saved!", Toast.LENGTH_LONG).show();
+        userAnswers.put(dialogIndex, result);
+        buttons[dialogIndex - 1].setBackgroundResource(R.color.answeredButtonInReview);
+    }
 
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {}
 
 }

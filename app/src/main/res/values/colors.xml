@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#832237</color>
+    <color name="colorPrimaryDark">#832237</color>
     <color name="colorAccent">#5640ff</color>
     <color name="answeredButtonInReview">#EFB3B9</color>
-
-
+    <color name="lightGray">#A7A7A7</color>
     <color name="colorHeadline">#293eb1</color>
     <color name="pop_up_text_color">#131315</color>
+    <color name="gray_background">#F2F2F2</color>
 </resources>

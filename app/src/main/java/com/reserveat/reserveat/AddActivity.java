@@ -13,6 +13,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +29,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,12 +41,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.Common;
+import com.reserveat.reserveat.common.DBUtils;
 import com.reserveat.reserveat.common.Reservation;
+
+import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
 
 public class AddActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
-    EditText restaurantEditText;
     EditText branchEditText;
     EditText dateEditText;
     EditText hourEditText;
@@ -48,8 +57,9 @@ public class AddActivity extends AppCompatActivity {
     private Switch isReservationOnMyName;
     FirebaseUser currentUser;
     private static final String TAG = "AddActivity";
-
+    private String restaurant;
     Calendar current = Calendar.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +68,6 @@ public class AddActivity extends AppCompatActivity {
 
         //Calendar myCalendar = Calendar.getInstance();
 
-        restaurantEditText = findViewById(R.id.restaurant);
         branchEditText = findViewById(R.id.branch);
         dateEditText = findViewById(R.id.date);
         hourEditText = findViewById(R.id.hour);
@@ -66,13 +75,41 @@ public class AddActivity extends AppCompatActivity {
         reservationNameEditText = findViewById(R.id.reservationName);
         Button addButton = findViewById(R.id.add);
 
+        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(TYPE_RESTAURANT).setCountry("IL")
+                .build();
+
+        autocompleteFragment.setFilter(typeFilter);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Log.i(TAG, "Place: " + place.getName());
+                restaurant = place.getName().toString();
+                branchEditText.setText(place.getAddress());
+                branchEditText.setVisibility(View.VISIBLE);
+                DBUtils.addingPlaceToDB(place, TAG);
+                autocompleteFragment.setMenuVisibility(false);
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });
+
+
+
         dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int year = current.get(Calendar.YEAR);
                 int month = current.get(Calendar.MONTH);
                 int day = current.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dpd = new DatePickerDialog(AddActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dpd = new DatePickerDialog(AddActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
                         DateFormat dateFormat = new SimpleDateFormat(Common.dateFormatUser, Locale.getDefault());
@@ -93,7 +130,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int hour = current.get(Calendar.HOUR_OF_DAY);
                 int minutes = current.get(Calendar.MINUTE);
-                TimePickerDialog tpd = new TimePickerDialog(AddActivity.this , new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog tpd = new TimePickerDialog(AddActivity.this, R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
                         DateFormat dateFormat = new SimpleDateFormat(Common.hourFormat, Locale.getDefault());
@@ -107,6 +144,7 @@ public class AddActivity extends AppCompatActivity {
                 tpd.show();
             }
         });
+
 
         isReservationOnMyName = findViewById(R.id.isReservationOnMyName);
         isReservationOnMyName.setText(R.string.is_reservation_on_my_name);
@@ -130,8 +168,9 @@ public class AddActivity extends AppCompatActivity {
                 attemptAddReservation();
             }
         });
-
     }
+
+
 
 
     @Override
@@ -148,7 +187,7 @@ public class AddActivity extends AppCompatActivity {
 
     private void attemptAddReservation() {
 
-        String restaurant = restaurantEditText.getText().toString().trim();
+        //String restaurant = restaurantEditText.getText().toString().trim();
         String branch = branchEditText.getText().toString().trim();
         String date = dateEditText.getText().toString().trim();
         String hour = hourEditText.getText().toString().trim();
@@ -157,7 +196,7 @@ public class AddActivity extends AppCompatActivity {
 
 
         TextView[] formTextViewArr = {reservationNameEditText, numOfPeopleEditText,
-                hourEditText, dateEditText, branchEditText, restaurantEditText};//order desc
+                hourEditText, dateEditText, branchEditText};//order desc
 
         int[] formTextViewErrCodeArr = new int[formTextViewArr.length];
 
@@ -172,7 +211,6 @@ public class AddActivity extends AppCompatActivity {
         formTextViewErrCodeArr[2] = Common.isEmptyTextField(hour);
         formTextViewErrCodeArr[3] = Common.isEmptyTextField(date);
         formTextViewErrCodeArr[4] = Common.isEmptyTextField(branch);
-        formTextViewErrCodeArr[5] = Common.isEmptyTextField(restaurant);
 
 
         for (int i = 0; i < formTextViewArr.length; i ++){

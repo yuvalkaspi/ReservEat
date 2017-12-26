@@ -5,5 +5,5 @@
     <item  android:id="@+id/MyReservations"
         android:title="@string/my_reservations"/>
     <item  android:id="@+id/mySurveys"
-        android:title="@string/mySurvey"/>
+        android:title="@string/myPickedReservations"/>
 </menu>
