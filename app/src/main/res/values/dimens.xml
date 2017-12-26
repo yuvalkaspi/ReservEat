@@ -5,7 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="main_activity_horizontal_margin">0dp</dimen>
     <dimen name="main_activity_vertical_margin">0dp</dimen>
-    <dimen name="pop_up_text_size">15sp</dimen>
+    <dimen name="pop_up_text_size">20sp</dimen>
     <dimen name="pop_up_icon_size">20sp</dimen>
     <dimen name="pop_up_padding">12sp</dimen>
     <dimen name="spaceSize">10dp</dimen>

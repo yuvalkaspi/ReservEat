@@ -97,44 +97,44 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
 
         final FirebaseRecyclerAdapter<Reservation, ReservationHolder> adapter =
                 new FirebaseRecyclerAdapter<Reservation, ReservationHolder>(Reservation.class, R.layout.reservation,ReservationHolder.class, mDatabase.orderByChild(orderByOption)) {
+            @Override
+            protected void populateViewHolder(ReservationHolder viewHolder, Reservation model, int position) {
+                try{
+                    Common.myPopulateViewHolder(viewHolder, model);
+                }catch(ParseException e){
+                    Toast.makeText(MainActivity.this, "error!", Toast.LENGTH_LONG).show();
+                    Log.w(TAG, "populateViewHolder: failure");
+                }
+                final Reservation reservation = model;
+                viewHolder.setOnClickListener(new ReservationHolder.ClickListener() {
                     @Override
-                    protected void populateViewHolder(ReservationHolder viewHolder, Reservation model, int position) {
-                        try{
-                            Common.myPopulateViewHolder(viewHolder, model);
-                        }catch(ParseException e){
-                            Toast.makeText(MainActivity.this, "error!", Toast.LENGTH_LONG).show();
-                            Log.w(TAG, "populateViewHolder: failure");
-                        }
-                        final Reservation reservation = model;
-                        viewHolder.setOnClickListener(new ReservationHolder.ClickListener() {
+                    public void onItemClick(View view, int position) {
+                        key = getRef(position).getKey();
+                        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                        final View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
+                        mPopupWindow = new PopupWindow(
+                                customView,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                        );
+
+                        Common.popUpWindowCreate(mPopupWindow, customView, reservation);
+
+                        Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
+                        pickButton.setVisibility(View.VISIBLE);
+                        pickButton.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onItemClick(View view, int position) {
-                                key = getRef(position).getKey();
-                                LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                                final View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
-                                mPopupWindow = new PopupWindow(
-                                        customView,
-                                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                                        LinearLayout.LayoutParams.WRAP_CONTENT
-                                );
-
-                                Common.popUpWindowCreate(mPopupWindow, customView, reservation);
-
-                                Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
-                                pickButton.setVisibility(View.VISIBLE);
-                                pickButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        popUpPickClick(reservation, customView);
-                                    }
-                                });
-                                mPopupWindow.setFocusable(true);
-                                mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.activity_main_page), Gravity.CENTER,0,0);
+                            public void onClick(View view) {
+                                popUpPickClick(reservation, customView);
                             }
                         });
-                        Log.i(TAG, "populateViewHolder: success");
+                        mPopupWindow.setFocusable(true);
+                        mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.activity_main_page), Gravity.CENTER,0,0);
                     }
-                };
+                });
+                Log.i(TAG, "populateViewHolder: success");
+            }
+        };
 
         recyclerView.setAdapter(adapter);
     }
@@ -209,18 +209,18 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.logOut:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class );
+                startActivity(intent);
+                return true;
             case R.id.MyReservations:
                 Intent intent_res_list = new Intent(MainActivity.this, MyReservationsListActivity.class );
                 startActivity(intent_res_list);
                 return true;
             case R.id.mySurveys:
-                Intent mySurveyIntent = new Intent(MainActivity.this, MyReviewActivity.class );
+                Intent mySurveyIntent = new Intent(MainActivity.this, MySurveyActivity.class );
                 startActivity(mySurveyIntent);
-                return true;
-            case R.id.logOut:
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class );
-                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

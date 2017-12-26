@@ -1,8 +1,8 @@
 package com.reserveat.reserveat;
 
 
-import android.app.DialogFragment;
 import android.content.Intent;
+import android.app.DialogFragment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,13 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogFragment;
-import com.reserveat.reserveat.common.Common;
 import com.reserveat.reserveat.common.DBUtils;
 import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
 import com.reserveat.reserveat.common.dialogFragment.RatingDialogFragment;
@@ -47,6 +41,7 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        final HashMap<Integer, Object> surveyAnswers = new HashMap<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey_form);
 
@@ -101,6 +96,8 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
                     insertDataToDB(review);
                     DBUtils.updateStarsToUser(numOfStarsPerReview);
                     Toast.makeText(ReviewForm.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(ReviewForm.this, MyReviewActivity.class );
+                    startActivity(intent);
                 } else{
                     Toast.makeText(ReviewForm.this, "FAILED: PLEASE ANSWER ALL QUESTIONS", Toast.LENGTH_LONG).show();
 
@@ -108,6 +105,9 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
 
             }
         });
+
+
+
     }
 
 
