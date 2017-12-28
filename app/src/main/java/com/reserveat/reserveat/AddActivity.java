@@ -247,7 +247,7 @@ public class AddActivity extends AppCompatActivity {
             if(reservationName.equals("")){
                 reservationName = currentUser.getDisplayName();
             }
-            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, newFullDateString, numOfPeople, reservationName);
+            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, newFullDateString, numOfPeople, reservationName,0);
             Map<String, Object> reservationValues = reservation.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
             childUpdates.put("/reservations/" + key, reservationValues);
