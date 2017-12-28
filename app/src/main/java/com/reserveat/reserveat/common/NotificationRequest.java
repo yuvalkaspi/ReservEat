@@ -14,17 +14,18 @@ public class NotificationRequest implements Serializable {
 
     private String uid;
     private String restaurant;
+    private String branch;
+    private String placeId;
     private String fullDate;
     private String numOfPeople;
     private boolean isFlexible;
 
-    public NotificationRequest() {
-        // Default constructor required for calls to DataSnapshot.getValue(Post.class)
-    }
 
-    public NotificationRequest(String uid, String restaurant, String fullDate, String numOfPeople, boolean isFlexible ) {
+    public NotificationRequest(String uid, String restaurant, String branch, String placeID, String newFullDateString, String numOfPeople, boolean isFlexible) {
         this.uid = uid;
         this.restaurant = restaurant;
+        this.branch = branch;
+        this.placeId = placeID;
         this.fullDate = fullDate;
         this.numOfPeople = numOfPeople;
         this.isFlexible = isFlexible;
@@ -35,6 +36,8 @@ public class NotificationRequest implements Serializable {
         HashMap<String, Object> result = new HashMap<>();
         result.put("uid", uid);
         result.put("restaurant", restaurant);
+        result.put("branch", branch);
+        result.put("placeId", placeId);
         result.put("date", fullDate);
         result.put("numOfPeople", numOfPeople);
         result.put("isFlexible", isFlexible);
@@ -44,6 +47,14 @@ public class NotificationRequest implements Serializable {
 
     public String getRestaurant(){
         return this.restaurant;
+    }
+
+    public String getBranch(){
+        return this.branch;
+    }
+
+    public String getPlaceId(){
+        return this.placeId;
     }
 
     public String getFullDate(){

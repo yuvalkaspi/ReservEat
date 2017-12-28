@@ -58,6 +58,7 @@ public class AddActivity extends AppCompatActivity {
     FirebaseUser currentUser;
     private static final String TAG = "AddActivity";
     private String restaurant;
+    private String placeID;
     Calendar current = Calendar.getInstance();
 
     @Override
@@ -89,6 +90,7 @@ public class AddActivity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 Log.i(TAG, "Place: " + place.getName());
                 restaurant = place.getName().toString();
+                placeID = place.getId();
                 branchEditText.setText(place.getAddress());
                 branchEditText.setVisibility(View.VISIBLE);
                 DBUtils.addingPlaceToDB(place, TAG);
@@ -247,7 +249,7 @@ public class AddActivity extends AppCompatActivity {
             if(reservationName.equals("")){
                 reservationName = currentUser.getDisplayName();
             }
-            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, newFullDateString, numOfPeople, reservationName);
+            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName);
             Map<String, Object> reservationValues = reservation.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
             childUpdates.put("/reservations/" + key, reservationValues);

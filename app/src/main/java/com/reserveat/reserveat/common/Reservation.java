@@ -18,12 +18,13 @@ public class Reservation implements Serializable {
     private String fullDate;
     private String numOfPeople;
     private String reservationName;
+    private String placeId;
 
     public Reservation() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Reservation(String uid, String restaurant, String branch, String fullDate, String numOfPeople, String reservationName) {
+    public Reservation(String uid, String restaurant, String branch, String placeId, String fullDate, String numOfPeople, String reservationName) {
         this.uid = uid;
         this.pickedByUid = "none"; // new reservation is not picked yet
         this.restaurant = restaurant;
@@ -31,6 +32,7 @@ public class Reservation implements Serializable {
         this.fullDate = fullDate;
         this.numOfPeople = numOfPeople;
         this.reservationName = reservationName;
+        this.placeId = placeId;
     }
 
     @Exclude
@@ -43,6 +45,7 @@ public class Reservation implements Serializable {
         result.put("date", fullDate);
         result.put("numOfPeople", numOfPeople);
         result.put("reservationName", reservationName);
+        result.put("placeId", placeId);
 
         return result;
     }
@@ -51,11 +54,17 @@ public class Reservation implements Serializable {
         return restaurant;
     }
 
+    public String getPlaceId() {
+        return placeId;
+    }
+
     public String getUid() {
         return uid;
     }
 
     public void setPicker(String pickedByUid) { this.pickedByUid = pickedByUid; }
+
+    public void setPlaceId(String placeId) { this.placeId = placeId; }
 
     public void setRestaurant(String restaurant) {
         this.restaurant = restaurant;
