@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
                 Log.i(TAG, "populateViewHolder: success");
             }
         };
+        linearLayoutManager.setStackFromEnd(sortByDescOrder);
         linearLayoutManager.setReverseLayout(sortByDescOrder);
         recyclerView.setAdapter(adapter);
     }
