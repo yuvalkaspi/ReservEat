@@ -130,7 +130,7 @@ public class Common {
         hourTextView.setText(hour);
 
         TextView numOfPeopleTextView = (TextView) customView.findViewById(R.id.popup_num_of_people);
-        numOfPeopleTextView.setText(reservation.getNumOfPeople());
+        numOfPeopleTextView.setText(Integer.toString(reservation.getNumOfPeople()));
 
         ImageButton closeButton = (ImageButton) customView.findViewById(R.id.ib_close);
         closeButton.setOnClickListener(new View.OnClickListener() {
