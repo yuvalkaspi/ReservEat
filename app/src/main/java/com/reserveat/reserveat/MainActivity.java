@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
                         Common.popUpWindowCreate(mPopupWindow, customView, reservation);
 
                         Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
+                        //Todo make gery when uid is current user
                         pickButton.setVisibility(View.VISIBLE);
                         pickButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -155,11 +156,12 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
         final TextView nameTextView = (TextView) customView.findViewById(R.id.popup_name);
         final TextView noteTextView = (TextView) customView.findViewById(R.id.popup_note);
 
-        reservation.setPicker(currentUser.getUid());
+        reservation.setPickedByUid(currentUser.getUid());
         Map<String, Object> reservationValues = reservation.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
 
         childUpdates.put("/users/" + currentUser.getUid() + "/pickedReservations/" + key, reservationValues);
+        childUpdates.put("/users/" + reservation.getUid() + "/reservations/" + key , reservationValues);
         childUpdates.put("/historyReservations/" + key, reservationValues);
         childUpdates.put("/reservations/" + key, null);
 
@@ -218,9 +220,10 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
                 Intent intent_res_list = new Intent(MainActivity.this, MyReservationsListActivity.class );
                 startActivity(intent_res_list);
                 return true;
-            case R.id.mySurveys:
-                Intent mySurveyIntent = new Intent(MainActivity.this, MyReviewActivity.class );
-                startActivity(mySurveyIntent);
+            case R.id.pickedReservationsList:
+                Intent intent_picked_res_list = new Intent(MainActivity.this, MyReservationsListActivity.class );
+                intent_picked_res_list.putExtra("isMyReservations" , false);
+                startActivity(intent_picked_res_list);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

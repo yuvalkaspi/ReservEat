@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -38,16 +39,22 @@ public class MyReservationsListActivity extends AppCompatActivity {
     private static final String TAG = "MyReservationsActivity";
     FirebaseUser currentUser;
     private PopupWindow mPopupWindow;
+    boolean isMyReservations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_reservations_list);
+        isMyReservations = getIntent().getBooleanExtra("isMyReservations" , true);
+        TextView listTitleTV = (TextView) findViewById(R.id.reservation_list_title);
+        if(!isMyReservations)
+            listTitleTV.setText(getResources().getString(R.string.myPickedReservations));
 
         String currentUserID = DBUtils.getCurrentUserID();
 
 
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserID).child("reservations");
+        String resToGet =  isMyReservations? "reservations" : "pickedReservations";
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserID).child(resToGet);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -75,32 +82,6 @@ public class MyReservationsListActivity extends AppCompatActivity {
                         );
                         mPopupWindow.setElevation(5.0f);
 
-                        Button spamButton = (Button) customView.findViewById(R.id.popup_spam_Button);
-                        spamButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                popUpSpamClick(reservation, customView, key);
-                            }
-                        });
-
-                        Button removeButton = (Button) customView.findViewById(R.id.popup_remove_Button);
-                        removeButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                popUpRemoveClick(reservation, customView, key);
-                            }
-                        });
-
-                        Button reviewButton = (Button) customView.findViewById(R.id.popup_review_Button);
-                        reviewButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(MyReservationsListActivity.this, ReviewForm.class );
-                                intent.putExtra("reservation", reservation);
-                                startActivity(intent);
-                            }
-                        });
-
                         ImageButton closeButton = (ImageButton) customView.findViewById(R.id.ib_popup_close);
                         closeButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -109,6 +90,50 @@ public class MyReservationsListActivity extends AppCompatActivity {
                                 mPopupWindow.dismiss();
                             }
                         });
+
+                        //Todo make grey when reported
+                        Button spamButton = (Button) customView.findViewById(R.id.popup_spam_Button);
+
+                        if(isMyReservations && !reservation.isPicked())
+                            makeButtonGrey(spamButton);
+                        else
+                        spamButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                popUpSpamClick(reservation, customView, key);
+                            }
+                        });
+
+                        Button removeButton = (Button) customView.findViewById(R.id.popup_remove_Button);
+                        if(!isMyReservations)
+                            removeButton.setVisibility(View.GONE);
+                        else{
+                            Toast.makeText(getApplicationContext() , reservation.getPickedByUid(), Toast.LENGTH_LONG).show();
+                            if (reservation.isPicked())
+                                makeButtonGrey(removeButton);
+                            else
+                                removeButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        popUpRemoveClick(reservation, customView, key);
+                                    }
+                                });
+                        }
+
+                        Button reviewButton = (Button) customView.findViewById(R.id.popup_review_Button);
+                        if(isMyReservations)
+                            reviewButton.setVisibility(View.GONE);
+                        else{
+                            //Todo make gery when answered
+                            reviewButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(MyReservationsListActivity.this, ReviewForm.class );
+                                    intent.putExtra("reservation", reservation);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
 
                         mPopupWindow.setFocusable(true);
                         mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.my_reservations_list), Gravity.CENTER,0,0);
@@ -120,6 +145,10 @@ public class MyReservationsListActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
+    }
+
+    private void makeButtonGrey(Button button) {
+        button.setTextColor(getResources().getColor(R.color.lightGray));
     }
 
     private void popUpRemoveClick(Reservation reservation, View customView, String key) {
@@ -147,6 +176,8 @@ public class MyReservationsListActivity extends AppCompatActivity {
         //Todo
         Toast.makeText(getApplicationContext() , "handle spam", Toast.LENGTH_LONG).show();
     }
+
+
 
     @Override
     public void onStart() {

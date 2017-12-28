@@ -55,7 +55,9 @@ public class Reservation implements Serializable {
         return uid;
     }
 
-    public void setPicker(String pickedByUid) { this.pickedByUid = pickedByUid; }
+    public void setPickedByUid(String pickedByUid) { this.pickedByUid = pickedByUid; }
+
+    public String getPickedByUid() { return pickedByUid; }
 
     public void setRestaurant(String restaurant) {
         this.restaurant = restaurant;
@@ -81,16 +83,14 @@ public class Reservation implements Serializable {
         return numOfPeople;
     }
 
-    public void setNumOfPeople(String numOfPeople) {
-        this.numOfPeople = numOfPeople;
-    }
-
     public String getReservationName() {
         return reservationName;
     }
 
-    public void setReservationName(String reservationName) {
-        this.reservationName = reservationName;
+
+    public boolean isPicked() {
+        return (!"none".equals(pickedByUid));
     }
+
 
 }
