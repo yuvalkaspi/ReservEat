@@ -143,8 +143,8 @@ public class NotifyActivity extends AppCompatActivity {
             String hour = hourEditText.getText().toString().trim();
             String numOfPeople = numOfPeopleEditText.getText().toString().trim();
             boolean isFlexible = isFlexibleSwitch.isChecked();
-            String[] mandatoryFeildsValues = {restaurant, date, hour, numOfPeople};
-            if (!isValidValues(mandatoryFeildsValues)) {
+            String[] mandatoryFieldsValues = {restaurant, date, hour, numOfPeople};
+            if (!isValidValues(mandatoryFieldsValues)) {
                 Toast.makeText(NotifyActivity.this, "PLEASE FILL AT LEAST ONE FIELD", Toast.LENGTH_LONG).show();
                 return;
             }
@@ -154,7 +154,7 @@ public class NotifyActivity extends AppCompatActivity {
 
             String newFullDateString = dateNewFormat + " " + hour;
             //check if a reservation is already exist
-            NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, newFullDateString, numOfPeople, isFlexible);
+            NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, newFullDateString, Integer.valueOf(numOfPeople), isFlexible);
             addNotificationRequestToDB(notificationRequest);
 
         } catch (ParseException e) {

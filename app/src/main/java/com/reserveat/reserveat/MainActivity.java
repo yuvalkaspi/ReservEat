@@ -39,12 +39,14 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements OurDialogFragment.NoticeDialogListener {
 
-    private final String[] sortBy = {"date","numOfPeople"};
+    private final String[] sortBy = {"date", "numOfPeople", "hotness"};
+    private final Boolean[] sortByDescOrder = {false , false, true};
     private static final String TAG = "MainActivity";
     DatabaseReference mDatabase;
     DatabaseReference popUpDatabase;
     RecyclerView recyclerView;
     FirebaseUser currentUser;
+    LinearLayoutManager linearLayoutManager;
     String key;
     private PopupWindow mPopupWindow;
     public static int numOfStarsPerPick = 2;
@@ -86,12 +88,13 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
         popUpDatabase = FirebaseDatabase.getInstance().getReference();
 
         recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
-        createAdapter("date");
+        createAdapter("date",false);
     }
 
-    private void createAdapter(String orderByOption) {
+    private void createAdapter(String orderByOption, Boolean sortByDescOrder) {
 
         Log.i(TAG, "Sorting reservations by " + orderByOption);
 
@@ -135,13 +138,14 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
                 Log.i(TAG, "populateViewHolder: success");
             }
         };
-
+        linearLayoutManager.setReverseLayout(sortByDescOrder);
         recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, int dialogIndex, float result) {
-        createAdapter(sortBy[(int)result - 1]);
+        int index = (int)result - 1;
+        createAdapter(sortBy[index], sortByDescOrder[index]);
     }
 
     @Override

@@ -16,7 +16,7 @@ public class Reservation implements Serializable {
     private String restaurant;
     private String branch;
     private String fullDate;
-    private String numOfPeople;
+    private int numOfPeople;
     private String reservationName;
     private int hotness;
 
@@ -24,7 +24,7 @@ public class Reservation implements Serializable {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Reservation(String uid, String restaurant, String branch, String fullDate, String numOfPeople, String reservationName, int hotness) {
+    public Reservation(String uid, String restaurant, String branch, String fullDate, int numOfPeople, String reservationName, int hotness) {
         this.uid = uid;
         this.pickedByUid = "none"; // new reservation is not picked yet
         this.restaurant = restaurant;
@@ -80,11 +80,11 @@ public class Reservation implements Serializable {
         this.fullDate = date;
     }
 
-    public String getNumOfPeople() {
+    public int getNumOfPeople() {
         return numOfPeople;
     }
 
-    public void setNumOfPeople(String numOfPeople) {
+    public void setNumOfPeople(int numOfPeople) {
         this.numOfPeople = numOfPeople;
     }
 
