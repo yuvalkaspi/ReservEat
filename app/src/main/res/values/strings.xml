@@ -53,6 +53,7 @@
     <string-array name="SortByOptions">
         <item>RESERVATION DATE</item>
         <item>NUMBER OF PEOPLE</item>
+        <item>HOTNESS</item>
     </string-array>
 
     <string name="submit">SUBMIT</string>

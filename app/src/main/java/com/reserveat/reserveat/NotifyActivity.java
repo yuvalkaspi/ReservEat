@@ -56,6 +56,7 @@ import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
 public class NotifyActivity extends AppCompatActivity {
 
     private static final String TAG = "NotifyActivity";
+    private EditText restaurantEditText;
     private EditText dateEditText;
     private EditText hourEditText;
     private EditText numOfPeopleEditText;
@@ -113,7 +114,7 @@ public class NotifyActivity extends AppCompatActivity {
                 int year = current.get(Calendar.YEAR);
                 int month = current.get(Calendar.MONTH);
                 int day = current.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dpd = new DatePickerDialog(NotifyActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dpd = new DatePickerDialog(NotifyActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
                         DateFormat dateFormat = new SimpleDateFormat(Common.dateFormatUser, Locale.getDefault());
@@ -134,7 +135,7 @@ public class NotifyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int hour = current.get(Calendar.HOUR_OF_DAY);
                 int minutes = current.get(Calendar.MINUTE);
-                TimePickerDialog tpd = new TimePickerDialog(NotifyActivity.this , new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog tpd = new TimePickerDialog(NotifyActivity.this , R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
                         DateFormat dateFormat = new SimpleDateFormat(Common.hourFormat, Locale.getDefault());
@@ -190,7 +191,7 @@ public class NotifyActivity extends AppCompatActivity {
 
             String newFullDateString = dateNewFormat + " " + hour;
             //check if a reservation is already exist
-            NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, isFlexible);
+            NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, Integer.valueOf(numOfPeople), isFlexible);
             addNotificationRequestToDB(notificationRequest);
 
         } catch (ParseException e) {
