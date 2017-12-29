@@ -22,6 +22,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.reserveat.reserveat.common.Common.Day.FRIDAY;
+import static com.reserveat.reserveat.common.Common.Day.MONDAY;
+import static com.reserveat.reserveat.common.Common.Day.SATURDAY;
+import static com.reserveat.reserveat.common.Common.Day.SUNDAY;
+import static com.reserveat.reserveat.common.Common.Day.THURSDAY;
+import static com.reserveat.reserveat.common.Common.Day.TUESDAY;
+import static com.reserveat.reserveat.common.Common.Day.WEDNESDAY;
+import static com.reserveat.reserveat.common.Common.TimeOfDay.AFTERNOON;
+import static com.reserveat.reserveat.common.Common.TimeOfDay.EVENING;
+import static com.reserveat.reserveat.common.Common.TimeOfDay.MORNING;
+import static com.reserveat.reserveat.common.Common.TimeOfDay.NIGHT;
+import static com.reserveat.reserveat.common.Common.TimeOfDay.NOON;
 
 
 public class Common {
@@ -30,7 +42,6 @@ public class Common {
     public static final String dateFormatUser = "dd/MM/yyyy";
     public static final String dateFormatDB = "yyyy/MM/dd";
     public static final String fullDateFormatDB = dateFormatDB + " " + hourFormat;
-
     private static final int OK = 0;
 
 
@@ -186,31 +197,56 @@ public class Common {
     }
 
 
-    public static String getDaybyDate(Calendar calendar) {
+    public static Day getDaybyDate(Calendar calendar) {
 
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 
         switch (day) {
             case Calendar.SUNDAY:
-                return "Sunday";
+                return SUNDAY;
 
             case Calendar.MONDAY:
-                return "Monday";
+                return MONDAY;
 
             case Calendar.TUESDAY:
-                return "Tuesday";
+                return TUESDAY;
 
             case Calendar.WEDNESDAY:
-                return "Wednesday";
+                return WEDNESDAY;
 
             case Calendar.THURSDAY:
-                return "Thursday";
+                return THURSDAY;
 
             case Calendar.FRIDAY:
-                return "Friday";
+                return FRIDAY;
         }
+        return SATURDAY;
+    }
 
-        return "Saturday";
+    public static TimeOfDay getTimeOfDay(String time){
+
+        int hour = Integer.valueOf(time.split(":")[0]);
+        if(hour <= 12){
+            return MORNING;
+        } else if(hour <= 15){
+            return NOON;
+        } else if(hour <= 18){
+            return AFTERNOON;
+        } else if(hour <= 21){
+            return EVENING;
+        }
+        return NIGHT;
+    }
+
+
+    public enum Day {
+        SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
+        THURSDAY, FRIDAY, SATURDAY
+    }
+
+    public enum TimeOfDay {
+        MORNING, NOON, AFTERNOON, EVENING,
+        NIGHT
     }
 
 

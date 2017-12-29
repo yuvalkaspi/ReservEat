@@ -4,8 +4,11 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.reserveat.reserveat.common.Common.*;
 
 
 @IgnoreExtraProperties
@@ -20,14 +23,14 @@ public class Reservation implements Serializable {
     private String reservationName;
     private String placeId;
     private int hotness;
-    private String day;
-
+    private Day day;
+    private TimeOfDay timeOfDay;
 
     public Reservation() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Reservation(String uid, String restaurant, String branch, String placeId, String fullDate, int numOfPeople, String reservationName, int hotness, String day) {
+    public Reservation(String uid, String restaurant, String branch, String placeId, String fullDate, int numOfPeople, String reservationName, int hotness, Day day, TimeOfDay timeOfDay) {
         this.uid = uid;
         this.pickedByUid = "none"; // new reservation is not picked yet
         this.restaurant = restaurant;
@@ -38,6 +41,7 @@ public class Reservation implements Serializable {
         this.hotness = hotness;
         this.placeId = placeId;
         this.day = day;
+        this.timeOfDay = timeOfDay;
     }
 
     @Exclude
@@ -53,6 +57,7 @@ public class Reservation implements Serializable {
         result.put("placeId", placeId);
         result.put("hotness", hotness);
         result.put("day", day);
+        result.put("timeOfDay", timeOfDay);
 
         return result;
     }
@@ -69,10 +74,13 @@ public class Reservation implements Serializable {
         return uid;
     }
 
-    public String getDay() {
+    public Day getDay() {
         return day;
     }
 
+    public TimeOfDay getTimeOfDay() {
+        return timeOfDay;
+    }
 
     public void setPicker(String pickedByUid) { this.pickedByUid = pickedByUid; }
 

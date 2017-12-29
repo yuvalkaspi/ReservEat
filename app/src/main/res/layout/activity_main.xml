@@ -65,12 +65,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.92"
+                android:orientation="vertical"
                 android:background="@color/gray_background">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+                
             </LinearLayout>
 
             <View
