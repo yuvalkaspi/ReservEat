@@ -51,7 +51,7 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
         if (extras == null) {
             //The key argument here must match that used in the other activity
         }
-        Reservation reservation = (Reservation) extras.get("reservation");
+        final Reservation reservation = (Reservation) extras.get("reservation");
         setReservationDetails(reservation);
 
         buttons[0] = findViewById(R.id.q1);
@@ -93,7 +93,7 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
             public void onClick(View view) {
                 if(checkAllQuestionsFilled()){
                     Review review = new Review(userAnswers);
-                    insertDataToDB(review);
+                    insertDataToDB(review, reservation);
                     DBUtils.updateStarsToUser(numOfStarsPerReview);
                     Toast.makeText(ReviewForm.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(ReviewForm.this, MyReviewActivity.class );
@@ -123,14 +123,15 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
     }
 
 
-    private void insertDataToDB(Review review) {
+    private void insertDataToDB(Review review, Reservation reservation) {
         Log.i(TAG, "adding a new review to DB");
 
-        String key = DBUtils.getDatabaseRef().child("reviews").push().getKey();
+        String placeId = reservation.getPlaceId();
+        String key = DBUtils.getDatabaseRef().child("reviews").child(placeId).push().getKey();
         Map<String, Object> reviewValues = review.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/reviews/" + key, reviewValues);
+        childUpdates.put("/reviews/" + placeId + "/" + key, reviewValues);
         childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/reviews/" + key, reviewValues);
 
         DBUtils.getDatabaseRef().updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -60,6 +60,7 @@ public class AddActivity extends AppCompatActivity {
     private String restaurant;
     private String placeID;
     Calendar current = Calendar.getInstance();
+    final String[] reservationDay = new String[1];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +120,7 @@ public class AddActivity extends AppCompatActivity {
                         calendar.set(Calendar.YEAR, year);
                         calendar.set(Calendar.MONTH, monthOfYear);
                         calendar.set(Calendar.DATE, dayOfMonth);
+                        reservationDay[0] = Common.getDaybyDate(calendar);
                         Date dateObj = calendar.getTime();
                         dateEditText.setText(dateFormat.format(dateObj));
                     }
@@ -249,7 +251,7 @@ public class AddActivity extends AppCompatActivity {
             if(reservationName.equals("")){
                 reservationName = currentUser.getDisplayName();
             }
-            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0);
+            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0]);
             Map<String, Object> reservationValues = reservation.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
             childUpdates.put("/reservations/" + key, reservationValues);

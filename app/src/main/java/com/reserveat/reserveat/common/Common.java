@@ -17,6 +17,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -183,4 +184,35 @@ public class Common {
         }
 
     }
+
+
+    public static String getDaybyDate(Calendar calendar) {
+
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+        switch (day) {
+            case Calendar.SUNDAY:
+                return "Sunday";
+
+            case Calendar.MONDAY:
+                return "Monday";
+
+            case Calendar.TUESDAY:
+                return "Tuesday";
+
+            case Calendar.WEDNESDAY:
+                return "Wednesday";
+
+            case Calendar.THURSDAY:
+                return "Thursday";
+
+            case Calendar.FRIDAY:
+                return "Friday";
+        }
+
+        return "Saturday";
+    }
+
+
 }
+

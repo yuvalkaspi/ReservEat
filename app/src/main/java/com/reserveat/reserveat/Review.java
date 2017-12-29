@@ -1,6 +1,7 @@
 package com.reserveat.reserveat;
 
 import com.google.firebase.database.Exclude;
+import com.reserveat.reserveat.common.Reservation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,9 @@ class Review {
     private int busyWhenArrive;
     private int busyWhenLeft;
     private float rate;
+    private String userId; //id of user who filled the review
+    private String reservationId;
+
 
     private static final int BUSY_WHEN_ARRIVE = 1;
     private static final int BUSY_WHEN_LEFT = 2;
