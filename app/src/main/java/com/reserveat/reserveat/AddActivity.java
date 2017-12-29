@@ -198,6 +198,7 @@ public class AddActivity extends AppCompatActivity {
         String numOfPeople = numOfPeopleEditText.getText().toString();
         String reservationName = reservationNameEditText.getText().toString().trim();
 
+        String[] mandatoryFieldsValues = {reservationName, numOfPeople, hour, date, branch};
 
         TextView[] formTextViewArr = {reservationNameEditText, numOfPeopleEditText,
                 hourEditText, dateEditText, branchEditText};//order desc
@@ -206,16 +207,14 @@ public class AddActivity extends AppCompatActivity {
 
         View focusView = null;
 
-        if (isReservationOnMyName.isChecked()){
-            formTextViewErrCodeArr[0] = 0;//reservation on user's name
-        }else{
-            formTextViewErrCodeArr[0] = Common.isEmptyTextField(reservationName);
+        for (int i = 0 ; i < formTextViewErrCodeArr.length ; i ++ ){
+            formTextViewErrCodeArr[i] = Common.isEmptyTextField(mandatoryFieldsValues[i]);
         }
-        formTextViewErrCodeArr[1] = Common.isEmptyTextField(numOfPeople);
-        formTextViewErrCodeArr[2] = Common.isEmptyTextField(hour);
-        formTextViewErrCodeArr[3] = Common.isEmptyTextField(date);
-        formTextViewErrCodeArr[4] = Common.isEmptyTextField(branch);
 
+        if (isReservationOnMyName.isChecked()){//reservation on user's name
+            formTextViewErrCodeArr[0] = 0;
+            reservationNameEditText.setError(null);
+        }
 
         for (int i = 0; i < formTextViewArr.length; i ++){
             int res = formTextViewErrCodeArr[i];

@@ -67,6 +67,14 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />
+    <Switch
+        android:id="@+id/isFlexible"
+        android:textSize="20sp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
     <EditText
         android:id="@+id/numOfPeople"
         android:layout_width="fill_parent"
@@ -74,14 +82,6 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="Number Of People"
         android:inputType="numberDecimal" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/spaceSize" />
-    <Switch
-        android:id="@+id/isFlexible"
-        android:textSize="20sp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />

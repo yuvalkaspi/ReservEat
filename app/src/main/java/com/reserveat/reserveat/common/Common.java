@@ -68,6 +68,8 @@ public class Common {
         return OK;
     }
 
+    /* Receives string represents date in format- oldFormat
+       Returns  string represents the same date in format- newFormat */
     public static String switchDateFormat(String date, String oldFormat, String newFormat) throws ParseException{
         DateFormat dateFormat = new SimpleDateFormat(oldFormat, Locale.getDefault());
         Date d = dateFormat.parse(date);
@@ -151,13 +153,13 @@ public class Common {
         viewHolder.setDate(fullDate);
     }
 
-    private boolean isValidValues(String[] mandatoryFeildsValues, TextView[] mandatoryFields, String TAG) {
+    public static boolean isValidValues(String[] mandatoryFieldsValues, TextView[] mandatoryFields, String TAG) {
 
         View focusView = null;
-        int numOfMandatoryFields = mandatoryFeildsValues.length;
-        int [] mandatoryFieldsError = new int[mandatoryFeildsValues.length];
+        int numOfMandatoryFields = mandatoryFieldsValues.length;
+        int [] mandatoryFieldsError = new int[mandatoryFieldsValues.length];
         for(int i = 0; i < numOfMandatoryFields; i++){
-            mandatoryFieldsError[i] = Common.isEmptyTextField(mandatoryFeildsValues[i]);
+            mandatoryFieldsError[i] = Common.isEmptyTextField(mandatoryFieldsValues[i]);
         }
 
         for (int i = 0; i < numOfMandatoryFields; i ++){
@@ -177,8 +179,6 @@ public class Common {
             focusView.requestFocus();
             return false;
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             Log.i(TAG, "fields verification: success");
             return true;
         }
