@@ -127,11 +127,11 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
         Log.i(TAG, "adding a new review to DB");
 
         String placeId = reservation.getPlaceId();
-        String key = DBUtils.getDatabaseRef().child("reviews").child(placeId).push().getKey();
+        String key = DBUtils.getDatabaseRef().child("reviews").child(placeId).child(reservation.getDay().name()).child(reservation.getTimeOfDay().name()).push().getKey();
         Map<String, Object> reviewValues = review.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/reviews/" + placeId + "/" + key, reviewValues);
+        childUpdates.put("/reviews/" + placeId + "/" + reservation.getDay().name() + "/" + reservation.getTimeOfDay().name() +  "/" + key, reviewValues);
         childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/reviews/" + key, reviewValues);
 
         DBUtils.getDatabaseRef().updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
