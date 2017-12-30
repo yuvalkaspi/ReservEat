@@ -107,6 +107,59 @@ public class DBUtils {
     }
 
 
+    /*
+Add stars to user and update starRemoveDate field
+ */
+
+    public static void updateSpamToUser(final String userId) {
+
+        final DatabaseReference userRef = mDatabase.child("users").child(userId);
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int currNumOfSpam = dataSnapshot.child("spamReports").getValue(Integer.class);
+
+                Map<String, Object> childUpdates = new HashMap<>();
+
+                childUpdates.put("/users/" + userId + "/spamReports", currNumOfSpam+1);
+
+                switch (currNumOfSpam+1){
+                    case 1:
+                        // warn
+                        break;
+                    case 2:
+                        // remove stars
+                        childUpdates.put("/users/" + userId + "/stars", 0);
+                        childUpdates.put("/users/" + userId + "/starRemoveDate", null);
+                        break;
+                    case 3:
+                        // block user
+                        break;
+                }
+
+                mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.i(TAG, "Update spam to user: success");
+                        } else {
+                            Log.w(TAG, "Update spam to user: failure", task.getException());
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
     public static void addingPlaceToDB(Place place, final String TAG) {
 
         Log.i(TAG, "adding a new reservation to DB");
