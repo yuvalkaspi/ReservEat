@@ -61,8 +61,7 @@
 
 
     <!-- Strings related to survey form -->
-    <string name="q1">How busy was the restaurant when you arrived?</string>
-    <string name="q2">How busy was the restaurant when you left?</string>
+    <string name="q1">How busy was the restaurant?</string>
     <string name="q3">How do you rate the restaurant?</string>
     <string name="save">SAVE</string>
     <string name="survey_form">SURVEY FORM</string>
