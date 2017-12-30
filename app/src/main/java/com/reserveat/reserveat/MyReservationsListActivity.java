@@ -108,7 +108,6 @@ public class MyReservationsListActivity extends AppCompatActivity {
                         if(!isMyReservations)
                             removeButton.setVisibility(View.GONE);
                         else{
-                            Toast.makeText(getApplicationContext() , reservation.getPickedByUid(), Toast.LENGTH_LONG).show();
                             if (reservation.isPicked())
                                 makeButtonGrey(removeButton);
                             else
@@ -173,8 +172,23 @@ public class MyReservationsListActivity extends AppCompatActivity {
     }
 
     private void popUpSpamClick(Reservation reservation, View customView, String key) {
-        //Todo
-        Toast.makeText(getApplicationContext() , "handle spam", Toast.LENGTH_LONG).show();
+
+        String spammer;
+        if(isMyReservations) {
+            // my reservation picker is spammer
+            spammer = "picker";
+            DBUtils.updateSpamToUser(reservation.getPickedByUid());
+        }else{
+            // I picked reservation owner is spammer
+            spammer = "reservation owner";
+            DBUtils.updateSpamToUser(reservation.getUid());
+        }
+
+        Button spamButton = (Button) customView.findViewById(R.id.popup_spam_Button);
+        makeButtonGrey(spamButton);
+        Toast.makeText(getApplicationContext() ,spammer + " is reported", Toast.LENGTH_LONG).show();
+        mPopupWindow.dismiss();
+
     }
 
 
