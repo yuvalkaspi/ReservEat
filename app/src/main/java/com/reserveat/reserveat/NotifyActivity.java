@@ -77,7 +77,7 @@ public class NotifyActivity extends AppCompatActivity {
                 int year = current.get(Calendar.YEAR);
                 int month = current.get(Calendar.MONTH);
                 int day = current.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dpd = new DatePickerDialog(NotifyActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dpd = new DatePickerDialog(NotifyActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
                         DateFormat dateFormat = new SimpleDateFormat(Common.dateFormatUser, Locale.getDefault());
@@ -98,7 +98,7 @@ public class NotifyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int hour = current.get(Calendar.HOUR_OF_DAY);
                 int minutes = current.get(Calendar.MINUTE);
-                TimePickerDialog tpd = new TimePickerDialog(NotifyActivity.this , new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog tpd = new TimePickerDialog(NotifyActivity.this , R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
                         DateFormat dateFormat = new SimpleDateFormat(Common.hourFormat, Locale.getDefault());
@@ -143,8 +143,8 @@ public class NotifyActivity extends AppCompatActivity {
             String hour = hourEditText.getText().toString().trim();
             String numOfPeople = numOfPeopleEditText.getText().toString().trim();
             boolean isFlexible = isFlexibleSwitch.isChecked();
-            String[] mandatoryFeildsValues = {restaurant, date, hour, numOfPeople};
-            if (!isValidValues(mandatoryFeildsValues)) {
+            String[] mandatoryFieldsValues = {restaurant, date, hour, numOfPeople};
+            if (!isValidValues(mandatoryFieldsValues)) {
                 Toast.makeText(NotifyActivity.this, "PLEASE FILL AT LEAST ONE FIELD", Toast.LENGTH_LONG).show();
                 return;
             }
@@ -154,7 +154,7 @@ public class NotifyActivity extends AppCompatActivity {
 
             String newFullDateString = dateNewFormat + " " + hour;
             //check if a reservation is already exist
-            NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, newFullDateString, numOfPeople, isFlexible);
+            NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, newFullDateString, Integer.valueOf(numOfPeople), isFlexible);
             addNotificationRequestToDB(notificationRequest);
 
         } catch (ParseException e) {

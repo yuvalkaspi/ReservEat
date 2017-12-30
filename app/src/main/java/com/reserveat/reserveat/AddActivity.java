@@ -229,12 +229,12 @@ public class AddActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             Log.i(TAG, "fields verification: success");
-            addReservationToDB(restaurant, branch, date, hour, numOfPeople, reservationName);
+            addReservationToDB(restaurant, branch, date, hour, Integer.valueOf(numOfPeople), reservationName);
 
         }
     }
 
-    private void addReservationToDB(String restaurant, String branch, String date, String hour, String numOfPeople, String reservationName) {
+    private void addReservationToDB(String restaurant, String branch, String date, String hour, int numOfPeople, String reservationName) {
 
         Log.i(TAG, "adding a new reservation to DB");
         String key = mDatabase.child("reservations").push().getKey();
@@ -244,7 +244,7 @@ public class AddActivity extends AppCompatActivity {
             if(reservationName.equals("")){
                 reservationName = currentUser.getDisplayName();
             }
-            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, newFullDateString, numOfPeople, reservationName);
+            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, newFullDateString, numOfPeople, reservationName,0);
             Map<String, Object> reservationValues = reservation.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
             childUpdates.put("/reservations/" + key, reservationValues);
