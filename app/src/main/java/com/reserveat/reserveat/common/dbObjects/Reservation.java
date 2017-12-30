@@ -1,14 +1,13 @@
-package com.reserveat.reserveat.common;
+package com.reserveat.reserveat.common.dbObjects;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.reserveat.reserveat.common.Common.*;
+import static com.reserveat.reserveat.common.utils.DateUtils.*;
 
 
 @IgnoreExtraProperties

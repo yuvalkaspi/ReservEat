@@ -10,11 +10,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.reserveat.reserveat.common.Common;
-import com.reserveat.reserveat.common.DBUtils;
-import com.reserveat.reserveat.common.Reservation;
-import com.reserveat.reserveat.common.ReservationHolder;
+import com.reserveat.reserveat.common.utils.ReservationUtils;
+import com.reserveat.reserveat.common.utils.DBUtils;
+import com.reserveat.reserveat.common.dbObjects.Reservation;
+import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
 
 import java.text.ParseException;
 
@@ -38,12 +40,12 @@ public class MyReviewActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(ReservationHolder viewHolder, Reservation model, int position) {
                 try {
-                    Common.myPopulateViewHolder(viewHolder, model);
+                    ReservationUtils.myPopulateViewHolder(viewHolder, model);
                     final Reservation reservation = model;
                     viewHolder.setOnClickListener(new ReservationHolder.ClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {
-                            Intent intent = new Intent(MyReviewActivity.this, ReviewForm.class );
+                            Intent intent = new Intent(MyReviewActivity.this, ReviewFormActivity.class );
                             intent.putExtra("reservation", reservation);
                             startActivity(intent);
                         }
@@ -57,7 +59,15 @@ public class MyReviewActivity extends AppCompatActivity {
         };
 
         recyclerView.setAdapter(adapter);
+    }
 
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null){
+            Intent intent = new Intent(MyReviewActivity.this, LoginActivity.class );
+            startActivity(intent);
+        }
     }
 }

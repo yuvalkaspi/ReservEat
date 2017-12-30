@@ -1,4 +1,4 @@
-package com.reserveat.reserveat.common;
+package com.reserveat.reserveat.common.dbObjects;
 
 import com.google.firebase.database.Exclude;
 
@@ -9,7 +9,7 @@ import java.util.Map;
  * Created by Golan on 24/12/2017.
  */
 
-class Restaurant {
+public class Restaurant {
 
     private String restaurantName;
     private String branch;

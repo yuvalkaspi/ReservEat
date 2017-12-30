@@ -1,6 +1,7 @@
-package com.reserveat.reserveat.common;
+package com.reserveat.reserveat.common.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -16,7 +17,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.reserveat.reserveat.SignUpActivity;
+import com.reserveat.reserveat.MainActivity;
+import com.reserveat.reserveat.common.dbObjects.Restaurant;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -71,7 +73,7 @@ public class DBUtils {
                 int finalNumOfStars = Math.min(maxNumOfStars, currNumOfStars + numOfStars);
                 childUpdates.put("/users/" + userId + "/stars", finalNumOfStars);
 
-                DateFormat dateFormat = new SimpleDateFormat(Common.fullDateFormatDB, Locale.getDefault());
+                DateFormat dateFormat = new SimpleDateFormat(DateUtils.fullDateFormatDB, Locale.getDefault());
                 Calendar cal = Calendar.getInstance();
                 Date date;
                 if (currNumOfStars > 0) {//starRemoveDate exists
@@ -173,7 +175,8 @@ public class DBUtils {
                             Toast.makeText(context, "Update failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        Common.updateUI(getCurrentUser(), context);
+                        Intent intent = new Intent(context, MainActivity.class );
+                        context.startActivity(intent);
                     }
                 });
         //todo: nullpointerexception?

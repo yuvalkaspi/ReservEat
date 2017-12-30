@@ -42,7 +42,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.reserveat.reserveat.common.Common;
+import com.reserveat.reserveat.common.utils.ValidationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,12 +114,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         textView.setHighlightColor(Color.TRANSPARENT);
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        Common.updateUI(currentUser,LoginActivity.this);
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null){
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class );
+            startActivity(intent);
+        }
     }
 
     private void populateAutoComplete() {
@@ -183,8 +186,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         View focusView = null;
 
-        formTextViewErrCodeArr[0] = Common.isPasswordValid(password);
-        formTextViewErrCodeArr[1] = Common.isEmailValid(email);
+        formTextViewErrCodeArr[0] = ValidationUtils.isPasswordValid(password);
+        formTextViewErrCodeArr[1] = ValidationUtils.isEmailValid(email);
 
 
         for (int i = 0; i < formTextViewArr.length; i ++){
@@ -226,13 +229,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             FirebaseUser currentUser = mAuth.getCurrentUser();
                             mDatabase = FirebaseDatabase.getInstance().getReference();
                             mDatabase.child("users").child(currentUser.getUid()).child("instanceId").setValue(refreshedToken);
-                            Common.updateUI(currentUser,LoginActivity.this);
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class );
+                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            Common.updateUI(null,LoginActivity.this);
                         }
                     }
                 });
