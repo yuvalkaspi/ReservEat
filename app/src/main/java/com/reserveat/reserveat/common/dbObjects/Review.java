@@ -1,16 +1,11 @@
-package com.reserveat.reserveat;
+package com.reserveat.reserveat.common.dbObjects;
 
 import com.google.firebase.database.Exclude;
-import com.reserveat.reserveat.common.Reservation;
 
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Golan on 18/12/2017.
- */
-
-class Review {
+public class Review {
 
     private int busyRate;
     private float rate;

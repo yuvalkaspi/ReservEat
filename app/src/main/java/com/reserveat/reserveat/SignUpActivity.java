@@ -14,13 +14,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.reserveat.reserveat.common.Common;
-import com.reserveat.reserveat.common.DBUtils;
+import com.reserveat.reserveat.common.utils.DBUtils;
+import com.reserveat.reserveat.common.utils.ValidationUtils;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -52,14 +49,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        Common.updateUI(currentUser,SignUpActivity.this);
-    }
-
     /**
      * Attempts to sign up.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -78,10 +67,10 @@ public class SignUpActivity extends AppCompatActivity {
 
         View focusView = null;
 
-        formTextViewErrCodeArr[0] = Common.isPasswordValid(password);
-        formTextViewErrCodeArr[1] = Common.isEmailValid(email);
-        formTextViewErrCodeArr[2] = Common.isEmptyTextField(lastName);
-        formTextViewErrCodeArr[3] = Common.isEmptyTextField(firstName);
+        formTextViewErrCodeArr[0] = ValidationUtils.isPasswordValid(password);
+        formTextViewErrCodeArr[1] = ValidationUtils.isEmailValid(email);
+        formTextViewErrCodeArr[2] = ValidationUtils.isEmptyTextField(lastName);
+        formTextViewErrCodeArr[3] = ValidationUtils.isEmptyTextField(firstName);
 
         //todo: check if first name and last name contain only letters
 
@@ -127,7 +116,6 @@ public class SignUpActivity extends AppCompatActivity {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(SignUpActivity.this, "Registration failed.",
                                     Toast.LENGTH_SHORT).show();
-                            Common.updateUI(null,SignUpActivity.this);
                         }
                     }
                 });

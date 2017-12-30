@@ -1,9 +1,8 @@
-package com.reserveat.reserveat.common;
+package com.reserveat.reserveat.common.dbObjects;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.reserveat.reserveat.R;
 

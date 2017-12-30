@@ -1,6 +1,5 @@
 package com.reserveat.reserveat;
 
-
 import android.content.Intent;
 import android.app.DialogFragment;
 import android.support.annotation.NonNull;
@@ -16,16 +15,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.reserveat.reserveat.common.dbObjects.Review;
 import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogFragment;
-import com.reserveat.reserveat.common.DBUtils;
+import com.reserveat.reserveat.common.utils.DBUtils;
 import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
 import com.reserveat.reserveat.common.dialogFragment.RatingDialogFragment;
-import com.reserveat.reserveat.common.Reservation;
+import com.reserveat.reserveat.common.dbObjects.Reservation;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ReviewForm extends AppCompatActivity implements OurDialogFragment.NoticeDialogListener {
+public class ReviewFormActivity extends AppCompatActivity implements OurDialogFragment.NoticeDialogListener {
 
     static final int NUM_OF_QUESTIONS = 2;
     private Button[] buttons = new Button[NUM_OF_QUESTIONS];
@@ -34,8 +34,6 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
     public static int numOfStarsPerReview = 1;
 
     private static final String TAG = "SurveyFormActivity";
-
-
 
 
     @Override
@@ -83,11 +81,11 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
                     Review review = new Review(userAnswers);
                     insertDataToDB(review, reservation);
                     DBUtils.updateStarsToUser(numOfStarsPerReview);
-                    Toast.makeText(ReviewForm.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(ReviewForm.this, MyReviewActivity.class );
+                    Toast.makeText(ReviewFormActivity.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(ReviewFormActivity.this, MyReviewActivity.class );
                     startActivity(intent);
                 } else{
-                    Toast.makeText(ReviewForm.this, "FAILED: PLEASE ANSWER ALL QUESTIONS", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ReviewFormActivity.this, "FAILED: PLEASE ANSWER ALL QUESTIONS", Toast.LENGTH_LONG).show();
 
                 }
 
@@ -102,7 +100,7 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null){
-            Intent intent = new Intent(ReviewForm.this, LoginActivity.class );
+            Intent intent = new Intent(ReviewFormActivity.this, LoginActivity.class );
             startActivity(intent);
         }
     }
@@ -156,7 +154,7 @@ public class ReviewForm extends AppCompatActivity implements OurDialogFragment.N
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, int dialogIndex, float result) {
-        Toast.makeText(ReviewForm.this, "Saved!", Toast.LENGTH_LONG).show();
+        Toast.makeText(ReviewFormActivity.this, "Saved!", Toast.LENGTH_LONG).show();
         userAnswers.put(dialogIndex, result);
         buttons[dialogIndex - 1].setBackgroundResource(R.color.answeredButtonInReview);
     }

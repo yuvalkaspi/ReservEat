@@ -13,8 +13,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,9 +38,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.reserveat.reserveat.common.Common;
-import com.reserveat.reserveat.common.DBUtils;
-import com.reserveat.reserveat.common.Reservation;
+import com.reserveat.reserveat.common.utils.DBUtils;
+import com.reserveat.reserveat.common.utils.DateUtils;
+import com.reserveat.reserveat.common.dbObjects.Reservation;
+import com.reserveat.reserveat.common.utils.ValidationUtils;
 
 import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
 
@@ -60,7 +59,7 @@ public class AddActivity extends AppCompatActivity {
     private String restaurant;
     private String placeID;
     Calendar current = Calendar.getInstance();
-    final Common.Day[] reservationDay = new Common.Day[1];
+    final DateUtils.Day[] reservationDay = new DateUtils.Day[1];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,12 +114,12 @@ public class AddActivity extends AppCompatActivity {
                 DatePickerDialog dpd = new DatePickerDialog(AddActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                        DateFormat dateFormat = new SimpleDateFormat(Common.dateFormatUser, Locale.getDefault());
+                        DateFormat dateFormat = new SimpleDateFormat(DateUtils.dateFormatUser, Locale.getDefault());
                         Calendar calendar = Calendar.getInstance();
                         calendar.set(Calendar.YEAR, year);
                         calendar.set(Calendar.MONTH, monthOfYear);
                         calendar.set(Calendar.DATE, dayOfMonth);
-                        reservationDay[0] = Common.getDaybyDate(calendar);
+                        reservationDay[0] = DateUtils.getDaybyDate(calendar);
                         Date dateObj = calendar.getTime();
                         dateEditText.setText(dateFormat.format(dateObj));
                     }
@@ -137,7 +136,7 @@ public class AddActivity extends AppCompatActivity {
                 TimePickerDialog tpd = new TimePickerDialog(AddActivity.this, R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
-                        DateFormat dateFormat = new SimpleDateFormat(Common.hourFormat, Locale.getDefault());
+                        DateFormat dateFormat = new SimpleDateFormat(DateUtils.hourFormat, Locale.getDefault());
                         Calendar calendar = Calendar.getInstance();
                         calendar.set(Calendar.HOUR_OF_DAY, hour);
                         calendar.set(Calendar.MINUTE, minutes);
@@ -180,7 +179,6 @@ public class AddActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null){
             Intent intent = new Intent(AddActivity.this, LoginActivity.class );
@@ -208,7 +206,7 @@ public class AddActivity extends AppCompatActivity {
         View focusView = null;
 
         for (int i = 0 ; i < formTextViewErrCodeArr.length ; i ++ ){
-            formTextViewErrCodeArr[i] = Common.isEmptyTextField(mandatoryFieldsValues[i]);
+            formTextViewErrCodeArr[i] = ValidationUtils.isEmptyTextField(mandatoryFieldsValues[i]);
         }
 
         if (isReservationOnMyName.isChecked()){//reservation on user's name
@@ -245,12 +243,12 @@ public class AddActivity extends AppCompatActivity {
         Log.i(TAG, "adding a new reservation to DB");
         String key = mDatabase.child("reservations").push().getKey();
         try{
-            String dateNewFormat = Common.switchDateFormat(date, Common.dateFormatUser, Common.dateFormatDB);
+            String dateNewFormat = DateUtils.switchDateFormat(date, DateUtils.dateFormatUser, DateUtils.dateFormatDB);
             String newFullDateString = dateNewFormat + " " + hour;
             if(reservationName.equals("")){
                 reservationName = currentUser.getDisplayName();
             }
-            Common.TimeOfDay timeInDay = Common.getTimeOfDay(hour);
+            DateUtils.TimeOfDay timeInDay = DateUtils.getTimeOfDay(hour);
             Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay);
             Map<String, Object> reservationValues = reservation.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
