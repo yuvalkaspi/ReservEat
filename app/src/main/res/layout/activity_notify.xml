@@ -22,13 +22,24 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />
+
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment" />
+
     <EditText
-        android:id="@+id/restaurant"
+        android:id="@+id/branch"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="Restaurant"
-        android:inputType="textPersonName" />
+        android:hint="@string/branch"
+        android:inputType="textEmailAddress"
+        android:visibility="gone"/>
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />
@@ -56,6 +67,14 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />
+    <Switch
+        android:id="@+id/isFlexible"
+        android:textSize="20sp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
     <EditText
         android:id="@+id/numOfPeople"
         android:layout_width="fill_parent"
@@ -63,14 +82,6 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="Number Of People"
         android:inputType="numberDecimal" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/spaceSize" />
-    <Switch
-        android:id="@+id/isFlexible"
-        android:textSize="20sp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />

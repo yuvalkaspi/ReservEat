@@ -19,6 +19,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +51,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
+
 public class NotifyActivity extends AppCompatActivity {
 
     private static final String TAG = "NotifyActivity";
@@ -56,6 +63,9 @@ public class NotifyActivity extends AppCompatActivity {
     private Switch isFlexibleSwitch;
     private Calendar current = Calendar.getInstance();
     private FirebaseUser currentUser;
+    private String restaurant = "";
+    private String placeID;
+    private EditText branchEditText;
 
 
     @Override
@@ -64,8 +74,35 @@ public class NotifyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notify);
 
         //Calendar myCalendar = Calendar.getInstance();
+        branchEditText = findViewById(R.id.branch);
 
-        restaurantEditText = findViewById(R.id.restaurant);
+        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(TYPE_RESTAURANT).setCountry("IL")
+                .build();
+
+        autocompleteFragment.setFilter(typeFilter);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Log.i(TAG, "Place: " + place.getName());
+                restaurant = place.getName().toString();
+                placeID = place.getId();
+                branchEditText.setText(place.getAddress());
+                branchEditText.setVisibility(View.VISIBLE);
+                DBUtils.addingPlaceToDB(place, TAG);
+                autocompleteFragment.setMenuVisibility(false);
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });
+
         dateEditText = findViewById(R.id.date);
         hourEditText = findViewById(R.id.hour);
         numOfPeopleEditText = findViewById(R.id.numOfPeople);
@@ -114,7 +151,8 @@ public class NotifyActivity extends AppCompatActivity {
         });
 
         isFlexibleSwitch = (Switch) findViewById(R.id.isFlexible);
-        isFlexibleSwitch.setText("is flexible?");
+        isFlexibleSwitch.setText("Is time flexible?");
+        isFlexibleSwitch.setChecked(true);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,23 +176,22 @@ public class NotifyActivity extends AppCompatActivity {
     private void notifyOnCancel() {
 
         try {
-            String restaurant = restaurantEditText.getText().toString().trim();
+            String branch = branchEditText.getText().toString().trim();
             String date = dateEditText.getText().toString().trim();
             String hour = hourEditText.getText().toString().trim();
             String numOfPeople = numOfPeopleEditText.getText().toString().trim();
             boolean isFlexible = isFlexibleSwitch.isChecked();
-            String[] mandatoryFieldsValues = {restaurant, date, hour, numOfPeople};
-            if (!isValidValues(mandatoryFieldsValues)) {
-                Toast.makeText(NotifyActivity.this, "PLEASE FILL AT LEAST ONE FIELD", Toast.LENGTH_LONG).show();
+
+            if (!isValidValues(numOfPeople, date, hour, numOfPeopleEditText, dateEditText, hourEditText)){
                 return;
             }
-            String dateNewFormat = "";
-            if(date != null && !date.isEmpty())
-                dateNewFormat = Common.switchDateFormat(date, Common.dateFormatUser, Common.dateFormatDB);
 
-            String newFullDateString = dateNewFormat + " " + hour;
+            String newFullDateString = "";
+            if(Common.isEmptyTextField(date) == 0) {//date exists
+                newFullDateString = Common.switchDateFormat(date, Common.dateFormatUser, Common.dateFormatDB) + " " + hour;
+            }
             //check if a reservation is already exist
-            NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, newFullDateString, Integer.valueOf(numOfPeople), isFlexible);
+            NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, Integer.valueOf(numOfPeople), isFlexible);
             addNotificationRequestToDB(notificationRequest);
 
         } catch (ParseException e) {
@@ -166,14 +203,34 @@ public class NotifyActivity extends AppCompatActivity {
     *  returns true if at least one of them is not empty
     *  otherwise returns false
     * */
-    private boolean isValidValues(String[] feildsValues) {
-        boolean foundFilledFeild = false;
-        for(String val : feildsValues){
-            if(val != null && !val.isEmpty()){
-                foundFilledFeild = true;
-            }
+    private boolean isValidValues(String numOfPeople, String date, String hour, EditText numOfPeopleEditText, EditText dateEditText, EditText hourEditText ) {
+        int resNumOfPeople = Common.isEmptyTextField(numOfPeople);
+        int resDate = Common.isEmptyTextField(date);
+        int resHour = Common.isEmptyTextField(hour);
+
+        View focusView = null;
+        numOfPeopleEditText.setError(null);
+        hourEditText.setError(null);
+        dateEditText.setError(null);
+
+        if(resNumOfPeople != 0){
+            numOfPeopleEditText.setError(getString(resNumOfPeople));
+            focusView = numOfPeopleEditText;
         }
-        return foundFilledFeild;
+        if((resDate != 0 && resHour == 0)){
+            dateEditText.setError(getString(resDate));
+            focusView = dateEditText;
+        }
+        if((resDate == 0 && resHour != 0)){
+            hourEditText.setError(getString(resHour));
+            focusView = hourEditText;
+        }
+        if (focusView != null) {
+            Log.w(TAG, "fields verification error: field was entered incorrect");
+            focusView.requestFocus();
+            return false;
+        }
+        return true;
     }
 
     private void addNotificationRequestToDB(NotificationRequest notificationRequest){

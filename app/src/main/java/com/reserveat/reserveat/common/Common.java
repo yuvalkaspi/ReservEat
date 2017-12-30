@@ -17,10 +17,23 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.reserveat.reserveat.common.Common.Day.FRIDAY;
+import static com.reserveat.reserveat.common.Common.Day.MONDAY;
+import static com.reserveat.reserveat.common.Common.Day.SATURDAY;
+import static com.reserveat.reserveat.common.Common.Day.SUNDAY;
+import static com.reserveat.reserveat.common.Common.Day.THURSDAY;
+import static com.reserveat.reserveat.common.Common.Day.TUESDAY;
+import static com.reserveat.reserveat.common.Common.Day.WEDNESDAY;
+import static com.reserveat.reserveat.common.Common.TimeOfDay.AFTERNOON;
+import static com.reserveat.reserveat.common.Common.TimeOfDay.EVENING;
+import static com.reserveat.reserveat.common.Common.TimeOfDay.MORNING;
+import static com.reserveat.reserveat.common.Common.TimeOfDay.NIGHT;
+import static com.reserveat.reserveat.common.Common.TimeOfDay.NOON;
 
 
 public class Common {
@@ -29,7 +42,6 @@ public class Common {
     public static final String dateFormatUser = "dd/MM/yyyy";
     public static final String dateFormatDB = "yyyy/MM/dd";
     public static final String fullDateFormatDB = dateFormatDB + " " + hourFormat;
-
     private static final int OK = 0;
 
 
@@ -67,6 +79,8 @@ public class Common {
         return OK;
     }
 
+    /* Receives string represents date in format- oldFormat
+       Returns  string represents the same date in format- newFormat */
     public static String switchDateFormat(String date, String oldFormat, String newFormat) throws ParseException{
         DateFormat dateFormat = new SimpleDateFormat(oldFormat, Locale.getDefault());
         Date d = dateFormat.parse(date);
@@ -130,7 +144,7 @@ public class Common {
         hourTextView.setText(hour);
 
         TextView numOfPeopleTextView = (TextView) customView.findViewById(R.id.popup_num_of_people);
-        numOfPeopleTextView.setText("" + reservation.getNumOfPeople());
+        numOfPeopleTextView.setText(Integer.toString(reservation.getNumOfPeople()));
 
         ImageButton closeButton = (ImageButton) customView.findViewById(R.id.ib_close);
         closeButton.setOnClickListener(new View.OnClickListener() {
@@ -150,13 +164,13 @@ public class Common {
         viewHolder.setDate(fullDate);
     }
 
-    private boolean isValidValues(String[] mandatoryFeildsValues, TextView[] mandatoryFields, String TAG) {
+    public static boolean isValidValues(String[] mandatoryFieldsValues, TextView[] mandatoryFields, String TAG) {
 
         View focusView = null;
-        int numOfMandatoryFields = mandatoryFeildsValues.length;
-        int [] mandatoryFieldsError = new int[mandatoryFeildsValues.length];
+        int numOfMandatoryFields = mandatoryFieldsValues.length;
+        int [] mandatoryFieldsError = new int[mandatoryFieldsValues.length];
         for(int i = 0; i < numOfMandatoryFields; i++){
-            mandatoryFieldsError[i] = Common.isEmptyTextField(mandatoryFeildsValues[i]);
+            mandatoryFieldsError[i] = Common.isEmptyTextField(mandatoryFieldsValues[i]);
         }
 
         for (int i = 0; i < numOfMandatoryFields; i ++){
@@ -176,11 +190,65 @@ public class Common {
             focusView.requestFocus();
             return false;
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             Log.i(TAG, "fields verification: success");
             return true;
         }
 
     }
+
+
+    public static Day getDaybyDate(Calendar calendar) {
+
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+        switch (day) {
+            case Calendar.SUNDAY:
+                return SUNDAY;
+
+            case Calendar.MONDAY:
+                return MONDAY;
+
+            case Calendar.TUESDAY:
+                return TUESDAY;
+
+            case Calendar.WEDNESDAY:
+                return WEDNESDAY;
+
+            case Calendar.THURSDAY:
+                return THURSDAY;
+
+            case Calendar.FRIDAY:
+                return FRIDAY;
+        }
+        return SATURDAY;
+    }
+
+    public static TimeOfDay getTimeOfDay(String time){
+
+        int hour = Integer.valueOf(time.split(":")[0]);
+        if(hour <= 12){
+            return MORNING;
+        } else if(hour <= 15){
+            return NOON;
+        } else if(hour <= 18){
+            return AFTERNOON;
+        } else if(hour <= 21){
+            return EVENING;
+        }
+        return NIGHT;
+    }
+
+
+    public enum Day {
+        SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
+        THURSDAY, FRIDAY, SATURDAY
+    }
+
+    public enum TimeOfDay {
+        MORNING, NOON, AFTERNOON, EVENING,
+        NIGHT
+    }
+
+
 }
+

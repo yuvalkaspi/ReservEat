@@ -3,6 +3,7 @@ package com.reserveat.reserveat;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button addButton = findViewById(R.id.add_cancellation);
+        FloatingActionButton addButton = findViewById(R.id.add_cancellation);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
                 Log.i(TAG, "populateViewHolder: success");
             }
         };
+        linearLayoutManager.setStackFromEnd(sortByDescOrder);
         linearLayoutManager.setReverseLayout(sortByDescOrder);
         recyclerView.setAdapter(adapter);
     }

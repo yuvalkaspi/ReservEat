@@ -58,7 +58,9 @@ public class AddActivity extends AppCompatActivity {
     FirebaseUser currentUser;
     private static final String TAG = "AddActivity";
     private String restaurant;
+    private String placeID;
     Calendar current = Calendar.getInstance();
+    final Common.Day[] reservationDay = new Common.Day[1];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +91,7 @@ public class AddActivity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 Log.i(TAG, "Place: " + place.getName());
                 restaurant = place.getName().toString();
+                placeID = place.getId();
                 branchEditText.setText(place.getAddress());
                 branchEditText.setVisibility(View.VISIBLE);
                 DBUtils.addingPlaceToDB(place, TAG);
@@ -115,6 +118,7 @@ public class AddActivity extends AppCompatActivity {
                         calendar.set(Calendar.YEAR, year);
                         calendar.set(Calendar.MONTH, monthOfYear);
                         calendar.set(Calendar.DATE, dayOfMonth);
+                        reservationDay[0] = Common.getDaybyDate(calendar);
                         Date dateObj = calendar.getTime();
                         dateEditText.setText(dateFormat.format(dateObj));
                     }
@@ -191,6 +195,7 @@ public class AddActivity extends AppCompatActivity {
         String numOfPeople = numOfPeopleEditText.getText().toString();
         String reservationName = reservationNameEditText.getText().toString().trim();
 
+        String[] mandatoryFieldsValues = {reservationName, numOfPeople, hour, date, branch};
 
         TextView[] formTextViewArr = {reservationNameEditText, numOfPeopleEditText,
                 hourEditText, dateEditText, branchEditText};//order desc
@@ -199,16 +204,14 @@ public class AddActivity extends AppCompatActivity {
 
         View focusView = null;
 
-        if (isReservationOnMyName.isChecked()){
-            formTextViewErrCodeArr[0] = 0;//reservation on user's name
-        }else{
-            formTextViewErrCodeArr[0] = Common.isEmptyTextField(reservationName);
+        for (int i = 0 ; i < formTextViewErrCodeArr.length ; i ++ ){
+            formTextViewErrCodeArr[i] = Common.isEmptyTextField(mandatoryFieldsValues[i]);
         }
-        formTextViewErrCodeArr[1] = Common.isEmptyTextField(numOfPeople);
-        formTextViewErrCodeArr[2] = Common.isEmptyTextField(hour);
-        formTextViewErrCodeArr[3] = Common.isEmptyTextField(date);
-        formTextViewErrCodeArr[4] = Common.isEmptyTextField(branch);
 
+        if (isReservationOnMyName.isChecked()){//reservation on user's name
+            formTextViewErrCodeArr[0] = 0;
+            reservationNameEditText.setError(null);
+        }
 
         for (int i = 0; i < formTextViewArr.length; i ++){
             int res = formTextViewErrCodeArr[i];
@@ -244,7 +247,8 @@ public class AddActivity extends AppCompatActivity {
             if(reservationName.equals("")){
                 reservationName = currentUser.getDisplayName();
             }
-            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, newFullDateString, numOfPeople, reservationName,0);
+            Common.TimeOfDay timeInDay = Common.getTimeOfDay(hour);
+            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay);
             Map<String, Object> reservationValues = reservation.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
             childUpdates.put("/reservations/" + key, reservationValues);
