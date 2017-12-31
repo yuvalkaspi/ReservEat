@@ -29,24 +29,25 @@
         <activity android:name=".NotifyActivity" />
         <activity android:name=".MyReservationsListActivity" />
 
-        <service android:name=".common.FBMessagingService">
+        <service android:name=".common.notification.FBMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".common.FBInstanceIDService">
+        <service android:name=".common.notification.FBInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
         <activity android:name=".MyReviewActivity" />
-        <activity android:name=".ReviewForm" />
+        <activity android:name=".ReviewFormActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyASnWV66HR-viWkJ9kbn9t4dWM1cacExP4" />
 
+        <activity android:name=".MatchedReservationActivity"></activity>
     </application>
 
 </manifest>

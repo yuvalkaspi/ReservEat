@@ -1,4 +1,4 @@
-package com.reserveat.reserveat.common;
+package com.reserveat.reserveat.common.dbObjects;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 

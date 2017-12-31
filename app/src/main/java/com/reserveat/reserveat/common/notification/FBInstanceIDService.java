@@ -1,4 +1,4 @@
-package com.reserveat.reserveat.common;
+package com.reserveat.reserveat.common.notification;
 
 
 import android.util.Log;

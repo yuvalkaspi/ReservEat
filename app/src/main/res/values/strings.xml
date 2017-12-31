@@ -78,5 +78,6 @@
         <item>5 - most busy</item>
     </string-array>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="matchedReservation">MATCHED RESERVATIONS</string>
 
 </resources>

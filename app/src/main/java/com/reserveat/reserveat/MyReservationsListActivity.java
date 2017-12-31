@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -25,10 +24,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.reserveat.reserveat.common.Common;
-import com.reserveat.reserveat.common.DBUtils;
-import com.reserveat.reserveat.common.Reservation;
-import com.reserveat.reserveat.common.ReservationHolder;
+import com.reserveat.reserveat.common.utils.ReservationUtils;
+import com.reserveat.reserveat.common.utils.DBUtils;
+import com.reserveat.reserveat.common.dbObjects.Reservation;
+import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
 
 import java.text.ParseException;
 import java.util.HashMap;
@@ -63,7 +62,7 @@ public class MyReservationsListActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(ReservationHolder viewHolder, Reservation model, int position) {
                 try{
-                    Common.myPopulateViewHolder(viewHolder, model);
+                    ReservationUtils.myPopulateViewHolder(viewHolder, model);
                 }catch(ParseException e){
                     Toast.makeText(MyReservationsListActivity.this, "error!", Toast.LENGTH_LONG).show();
                     Log.w(TAG, "populateViewHolder: failure");
@@ -196,12 +195,8 @@ public class MyReservationsListActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser != null){
-//            String name = currentUser.getDisplayName();
-//            Toast.makeText(getApplicationContext(),"Hello " + name, Toast.LENGTH_SHORT).show();
-        }else{
+        if (currentUser == null){
             Intent intent = new Intent(MyReservationsListActivity.this, LoginActivity.class );
             startActivity(intent);
         }
