@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.google.android.gms.location.places.GeoDataApi;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
@@ -62,7 +63,6 @@ public class ReservationUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
 
         TextView hourTextView = (TextView) customView.findViewById(R.id.popup_hour);
         hourTextView.setText(hour);

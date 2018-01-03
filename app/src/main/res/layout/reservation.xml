@@ -41,7 +41,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_below="@+id/hourHolder"
                 android:contentDescription="@string/clock_icon"
-                app:srcCompat="@mipmap/clock_icon" />
+                app:srcCompat="@mipmap/clock" />
 
             <TextView
                 android:id="@+id/dateHolder"
@@ -70,7 +70,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/hourHolder"
                 android:contentDescription="@string/man_icon"
-                app:srcCompat="@mipmap/man_icon" />
+                app:srcCompat="@mipmap/user" />
 
             <TextView
                 android:id="@+id/numOfPeopleHolder"

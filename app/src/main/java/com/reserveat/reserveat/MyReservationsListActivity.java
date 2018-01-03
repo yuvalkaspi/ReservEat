@@ -126,9 +126,9 @@ public class MyReservationsListActivity extends AppCompatActivity {
                             reviewButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Intent intent = new Intent(MyReservationsListActivity.this, ReviewForm.class );
+                                    Intent intent = new Intent(MyReservationsListActivity.this, ReviewFormActivity.class );
                                     intent.putExtra("reservation", reservation);
-                                    startActivity(intent);
+                                    startActivityForResult(intent , 0);
                                 }
                             });
                         }

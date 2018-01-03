@@ -39,6 +39,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:gravity="center_horizontal"
+                android:background="@null"
                 android:src="@mipmap/close" />
     </RelativeLayout>
 
@@ -135,7 +136,7 @@
         <ImageView
             android:layout_width="@dimen/pop_up_icon_size"
             android:layout_height="@dimen/pop_up_icon_size"
-            android:src="@mipmap/clock_icon"
+            android:src="@mipmap/clock"
             android:layout_gravity="center"
             />
         <TextView
@@ -165,7 +166,7 @@
         <ImageView
             android:layout_width="@dimen/pop_up_icon_size"
             android:layout_height="@dimen/pop_up_icon_size"
-            android:src="@mipmap/man_icon"
+            android:src="@mipmap/user"
             android:layout_gravity="center"
             />
         <TextView

@@ -94,8 +94,9 @@ public class ReviewFormActivity extends AppCompatActivity implements OurDialogFr
                     insertDataToDB(review, reservation);
                     DBUtils.updateStarsToUser(numOfStarsPerReview);
                     Toast.makeText(ReviewFormActivity.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(ReviewFormActivity.this, MyReviewActivity.class );
-                    startActivity(intent);
+                    //Intent intent = new Intent(ReviewFormActivity.this, MyReviewActivity.class );
+                    //startActivity(intent);
+                    finish();
                 } else{
                     Toast.makeText(ReviewFormActivity.this, "FAILED: PLEASE ANSWER ALL QUESTIONS", Toast.LENGTH_LONG).show();
 

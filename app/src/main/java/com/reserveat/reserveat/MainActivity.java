@@ -2,6 +2,7 @@ package com.reserveat.reserveat;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,8 +20,12 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.utils.ReservationUtils;
@@ -152,9 +157,18 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
     public void onStart() {
         super.onStart();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser == null){
+        if (currentUser == null ){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class );
             startActivity(intent);
+        }else{
+            //check if current user has a valid token i.e. user is not disabled
+            Task<GetTokenResult> x = currentUser.getIdToken(true).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class );
+                    startActivity(intent);
+                }
+            });
         }
     }
 

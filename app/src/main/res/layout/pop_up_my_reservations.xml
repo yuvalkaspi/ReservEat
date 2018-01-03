@@ -32,6 +32,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:src="@mipmap/close"
+            android:background="@null"
             android:layout_marginLeft="35dp"
             />
 
@@ -41,7 +42,7 @@
         android:id="@+id/popup_review_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/review"
+        android:drawableLeft="@mipmap/clipboard"
         android:gravity="left|center_vertical"
         android:text=" review"
         android:textSize="@dimen/pop_up_text_size"
@@ -56,7 +57,7 @@
         android:id="@+id/popup_remove_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/dustbin"
+        android:drawableLeft="@mipmap/rubbish_black"
         android:gravity="left|center_vertical"
         android:text=" remove"
         android:textSize="@dimen/pop_up_text_size"
