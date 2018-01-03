@@ -79,5 +79,6 @@
     </string-array>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="matchedReservation">MATCHED RESERVATIONS</string>
+    <string name="Homepage">HOMEPAGE</string>
 
 </resources>

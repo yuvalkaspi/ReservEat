@@ -112,30 +112,17 @@ public class DBUtils {
     /*
     Add spamReport to user , spam logic is in backend
      */
-    public static void updateSpamToUser(final String userId) {
+    public static void updateSpamToUser(final String spammerUserId, final String reporterUserId,final String listToUpdate, final String key ) {
 
-        final DatabaseReference userRef = mDatabase.child("users").child(userId);
+        final DatabaseReference userRef = mDatabase.child("users").child(spammerUserId);
 
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int currNumOfSpam = dataSnapshot.child("spamReports").getValue(Integer.class);
                 Map<String, Object> childUpdates = new HashMap<>();
-                childUpdates.put("/users/" + userId + "/spamReports", currNumOfSpam+1);
-
-//                switch (currNumOfSpam+1){
-//                    case 1:
-//                        // warn
-//                        break;
-//                    case 2:
-//                        // remove stars
-//                        childUpdates.put("/users/" + userId + "/stars", 0);
-//                        childUpdates.put("/users/" + userId + "/starRemoveDate", null);
-//                        break;
-//                    case 3:
-//                        // block user
-//                        break;
-//                }
+                childUpdates.put("/users/" + spammerUserId + "/spamReports", currNumOfSpam+1);
+                childUpdates.put("/users/" + reporterUserId + "/" + listToUpdate + "/" + key + "/isSpam", true);
 
                 mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

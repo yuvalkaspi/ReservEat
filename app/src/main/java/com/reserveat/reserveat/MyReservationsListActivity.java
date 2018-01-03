@@ -33,7 +33,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyReservationsListActivity extends AppCompatActivity {
+public class MyReservationsListActivity extends BaseActivity {
 
     private static final String TAG = "MyReservationsActivity";
     FirebaseUser currentUser;
@@ -92,8 +92,7 @@ public class MyReservationsListActivity extends AppCompatActivity {
 
                         //Todo make grey when reported
                         Button spamButton = (Button) customView.findViewById(R.id.popup_spam_Button);
-
-                        if(isMyReservations && !reservation.isPicked())
+                        if((isMyReservations && !reservation.isPicked()) || reservation.getIsSpam())
                             makeButtonGrey(spamButton);
                         else
                         spamButton.setOnClickListener(new View.OnClickListener() {
@@ -123,14 +122,20 @@ public class MyReservationsListActivity extends AppCompatActivity {
                             reviewButton.setVisibility(View.GONE);
                         else{
                             //Todo make gery when answered
-                            reviewButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Intent intent = new Intent(MyReservationsListActivity.this, ReviewFormActivity.class );
-                                    intent.putExtra("reservation", reservation);
-                                    startActivityForResult(intent , 0);
-                                }
-                            });
+                            if(reservation.getIsReviewed())
+                                makeButtonGrey(reviewButton);
+                            else{
+                                reviewButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(MyReservationsListActivity.this, ReviewFormActivity.class );
+                                        intent.putExtra("reservation", reservation);
+                                        intent.putExtra("restaurantKey", key);
+                                        startActivityForResult(intent , 0);
+                                        mPopupWindow.dismiss();
+                                    }
+                                });
+                            }
                         }
 
                         mPopupWindow.setFocusable(true);
@@ -173,14 +178,15 @@ public class MyReservationsListActivity extends AppCompatActivity {
     private void popUpSpamClick(Reservation reservation, View customView, String key) {
 
         String spammer;
+        reservation.setIsSpam(true);
         if(isMyReservations) {
             // my reservation picker is spammer
             spammer = "picker";
-            DBUtils.updateSpamToUser(reservation.getPickedByUid());
+            DBUtils.updateSpamToUser(reservation.getPickedByUid(), reservation.getUid(),"reservations", key);
         }else{
             // I picked reservation owner is spammer
             spammer = "reservation owner";
-            DBUtils.updateSpamToUser(reservation.getUid());
+            DBUtils.updateSpamToUser(reservation.getUid(), reservation.getPickedByUid(),"pickedReservations", key);
         }
 
         Button spamButton = (Button) customView.findViewById(R.id.popup_spam_Button);

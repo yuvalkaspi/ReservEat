@@ -24,6 +24,8 @@ public class Reservation implements Serializable {
     private int hotness;
     private Day day;
     private TimeOfDay timeOfDay;
+    private boolean isReviewed;
+    private boolean isSpam;
 
     public Reservation() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -57,6 +59,8 @@ public class Reservation implements Serializable {
         result.put("hotness", hotness);
         result.put("day", day);
         result.put("timeOfDay", timeOfDay);
+//        result.put("isSpam", isSpam);
+//        result.put("isReviewed", isReviewed);
 
         return result;
     }
@@ -120,10 +124,16 @@ public class Reservation implements Serializable {
         return reservationName;
     }
 
-
     public boolean isPicked() {
         return (!"none".equals(pickedByUid));
     }
 
+    public boolean getIsReviewed() { return isReviewed; }
+
+    public void setIsReviewed(boolean reviewed) { isReviewed = reviewed; }
+
+    public boolean getIsSpam() { return isSpam; }
+
+    public void setIsSpam(boolean spam) { isSpam = spam; }
 
 }

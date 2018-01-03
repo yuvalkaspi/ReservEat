@@ -25,7 +25,7 @@ import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
 
 import java.text.ParseException;
 
-public class MatchedReservationActivity extends AppCompatActivity {
+public class MatchedReservationActivity extends BaseActivity {
 
     private static final String TAG = "MatchedReservActivity";
     FirebaseUser currentUser;

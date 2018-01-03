@@ -188,6 +188,38 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/pop_up_icon_size"
+            android:layout_height="@dimen/pop_up_icon_size"
+            android:src="@mipmap/phone"
+            android:layout_gravity="center"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/pop_up_padding"
+            android:text="Phone:       "
+            android:textSize="@dimen/pop_up_text_size"
+            android:textColor="@color/cardview_dark_background"/>
+
+        <TextView
+            android:id="@+id/popup_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/pop_up_padding"
+            android:text="phone"
+            android:textSize="@dimen/pop_up_text_size"
+            android:textColor="@color/cardview_dark_background"
+            android:autoLink="phone"
+            android:linksClickable="false"/>
+
+    </LinearLayout>
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />

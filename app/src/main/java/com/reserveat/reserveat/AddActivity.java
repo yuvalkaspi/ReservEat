@@ -45,7 +45,7 @@ import com.reserveat.reserveat.common.utils.ValidationUtils;
 
 import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
 
-public class AddActivity extends AppCompatActivity {
+public class AddActivity extends BaseActivity {
 
     private DatabaseReference mDatabase;
     EditText branchEditText;

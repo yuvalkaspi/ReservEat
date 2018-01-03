@@ -25,7 +25,7 @@ import com.reserveat.reserveat.common.dbObjects.Reservation;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ReviewFormActivity extends AppCompatActivity implements OurDialogFragment.NoticeDialogListener {
+public class ReviewFormActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener {
 
     static final int NUM_OF_QUESTIONS = 3;
     private Button[] buttons = new Button[NUM_OF_QUESTIONS];
@@ -51,6 +51,8 @@ public class ReviewFormActivity extends AppCompatActivity implements OurDialogFr
         }
         final Reservation reservation = (Reservation) extras.get("reservation");
         setReservationDetails(reservation);
+
+        final String restaurantKey = (String) extras.get("restaurantKey");
 
         buttons[0] = findViewById(R.id.q1);
         buttons[0].setOnClickListener(new View.OnClickListener() {
@@ -91,7 +93,7 @@ public class ReviewFormActivity extends AppCompatActivity implements OurDialogFr
             public void onClick(View view) {
                 if(checkAllQuestionsFilled()){
                     Review review = new Review(userAnswers);
-                    insertDataToDB(review, reservation);
+                    insertDataToDB(review, reservation, restaurantKey);
                     DBUtils.updateStarsToUser(numOfStarsPerReview);
                     Toast.makeText(ReviewFormActivity.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
                     //Intent intent = new Intent(ReviewFormActivity.this, MyReviewActivity.class );
@@ -119,7 +121,7 @@ public class ReviewFormActivity extends AppCompatActivity implements OurDialogFr
     }
 
 
-    private void insertDataToDB(Review review, Reservation reservation) {
+    private void insertDataToDB(Review review, Reservation reservation, String restaurantKey) {
         Log.i(TAG, "adding a new review to DB");
 
         String placeId = reservation.getPlaceId();
@@ -129,6 +131,7 @@ public class ReviewFormActivity extends AppCompatActivity implements OurDialogFr
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/reviews/" + placeId + "/" + reservation.getDay().name() + "/" + reservation.getTimeOfDay().name() +  "/" + key, reviewValues);
         childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/reviews/" + key, reviewValues);
+        childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/pickedReservations/" + restaurantKey + "/isReviewed", true);
 
         DBUtils.getDatabaseRef().updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

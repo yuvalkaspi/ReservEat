@@ -2,6 +2,7 @@ package com.reserveat.reserveat.common.utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,10 +14,16 @@ import android.widget.Toast;
 import com.google.android.gms.location.places.GeoDataApi;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.reserveat.reserveat.AddActivity;
 import com.reserveat.reserveat.R;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
+import com.reserveat.reserveat.common.dbObjects.Restaurant;
 
 import java.text.ParseException;
 import java.util.HashMap;
@@ -42,7 +49,7 @@ public class ReservationUtils {
         viewHolder.setNumOfPeople(model.getNumOfPeople());
     }
 
-    public static void popUpWindowCreate(final PopupWindow mPopupWindow, View customView, Reservation reservation) {
+    public static void popUpWindowCreate(final PopupWindow mPopupWindow, final View customView, Reservation reservation) {
         mPopupWindow.setElevation(5.0f);
 
         TextView restaurantTextView = (TextView) customView.findViewById(R.id.popup_resturant_name);
@@ -76,6 +83,24 @@ public class ReservationUtils {
             public void onClick(View view) {
                 // Dismiss the popup window
                 mPopupWindow.dismiss();
+            }
+        });
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("restaurants").child(reservation.getPlaceId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.w(TAG, "get restaurant:success");
+                Restaurant retuarant = dataSnapshot.getValue(Restaurant.class);
+                TextView phoneTextView = (TextView) customView.findViewById(R.id.popup_phone);
+                phoneTextView.setText(retuarant.getPhoneNumber());
+                //phoneTextView.setMovementMethod(LinkMovementMethod.getInstance());
+                //android:linksClickable="true"
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "get restaurant:failure");
             }
         });
     }

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,7 +24,6 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +36,7 @@ import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
 
 import java.text.ParseException;
 
-public class MainActivity extends AppCompatActivity implements OurDialogFragment.NoticeDialogListener {
+public class MainActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener {
 
     private final String[] sortBy = {"date", "numOfPeople", "hotness"};
     private final Boolean[] sortByDescOrder = {false , false, true};
@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
                         );
 
                         ReservationUtils.popUpWindowCreate(mPopupWindow, customView, reservation);
+                        //Linkify.addLinks(text, Linkify.PHONE_NUMBERS);
 
                         Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
                         //Todo make gery when uid is current user
@@ -172,33 +173,5 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_menu, menu);//Menu Resource, Menu
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logOut:
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class );
-                startActivity(intent);
-                return true;
-            case R.id.MyReservations:
-                Intent intent_res_list = new Intent(MainActivity.this, MyReservationsListActivity.class );
-                startActivity(intent_res_list);
-                return true;
-            case R.id.pickedReservationsList:
-                Intent intent_picked_res_list = new Intent(MainActivity.this, MyReservationsListActivity.class );
-                intent_picked_res_list.putExtra("isMyReservations" , false);
-                startActivity(intent_picked_res_list);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
 }
