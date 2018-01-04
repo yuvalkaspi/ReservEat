@@ -2,12 +2,14 @@ package com.reserveat.reserveat;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Gravity;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -117,8 +120,8 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                         );
 
-                        ReservationUtils.popUpWindowCreate(mPopupWindow, customView, reservation);
-                        //Linkify.addLinks(text, Linkify.PHONE_NUMBERS);
+
+                        ReservationUtils.popUpWindowCreate(mPopupWindow, customView, reservation, MainActivity.this);
 
                         Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
                         //Todo make gery when uid is current user
@@ -151,7 +154,6 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
     public void onDialogNegativeClick(DialogFragment dialog) {
         // Do nothing
     }
-
 
 
     @Override

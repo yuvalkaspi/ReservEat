@@ -71,7 +71,7 @@ public class MatchedReservationActivity extends BaseActivity {
                         );
 
                         mPopupWindow.setElevation(5.0f);
-                        ReservationUtils.popUpWindowCreate(mPopupWindow, customView, reservation);
+                        ReservationUtils.popUpWindowCreate(mPopupWindow, customView, reservation, MatchedReservationActivity.this);
 
                         Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
                         pickButton.setVisibility(View.VISIBLE);

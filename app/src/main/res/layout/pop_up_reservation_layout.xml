@@ -216,7 +216,9 @@
             android:textSize="@dimen/pop_up_text_size"
             android:textColor="@color/cardview_dark_background"
             android:autoLink="phone"
-            android:linksClickable="false"/>
+            android:linksClickable="false"
+            android:clickable="true"
+            />
 
     </LinearLayout>
 
@@ -236,6 +238,7 @@
             android:layout_marginLeft="@dimen/fab_margin"
             android:background="@color/colorPrimary"
             android:text="pick"
+            android:visibility="gone"
             android:textColor="@android:color/white"
             android:textSize="@dimen/pop_up_text_size" />
     </RelativeLayout>

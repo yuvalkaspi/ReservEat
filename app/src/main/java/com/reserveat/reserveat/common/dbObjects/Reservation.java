@@ -88,8 +88,6 @@ public class Reservation implements Serializable {
         return timeOfDay;
     }
 
-    public void setPicker(String pickedByUid) { this.pickedByUid = pickedByUid; }
-
     public void setPlaceId(String placeId) { this.placeId = placeId; }
 
     public void setRestaurant(String restaurant) {

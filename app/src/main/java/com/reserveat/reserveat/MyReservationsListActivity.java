@@ -90,6 +90,16 @@ public class MyReservationsListActivity extends BaseActivity {
                             }
                         });
 
+                        Button detailsButton = (Button) customView.findViewById(R.id.popup_details_Button);
+                        detailsButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // Dismiss the popup window
+                                mPopupWindow.dismiss();
+                                popUpDetailsClick(reservation, key);
+                            }
+                        });
+
                         //Todo make grey when reported
                         Button spamButton = (Button) customView.findViewById(R.id.popup_spam_Button);
                         if((isMyReservations && !reservation.isPicked()) || reservation.getIsSpam())
@@ -194,6 +204,30 @@ public class MyReservationsListActivity extends BaseActivity {
         Toast.makeText(getApplicationContext() ,spammer + " is reported", Toast.LENGTH_LONG).show();
         mPopupWindow.dismiss();
 
+    }
+
+    private void popUpDetailsClick(Reservation reservation, String key) {
+        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View detailsCustomView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
+        PopupWindow mPopupWindow = new PopupWindow(
+                detailsCustomView,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        ReservationUtils.popUpWindowCreate(mPopupWindow, detailsCustomView, reservation, MyReservationsListActivity.this);
+
+        if(!isMyReservations){
+            final TextView nameFormTextView = (TextView) detailsCustomView.findViewById(R.id.popup_name_form);
+            final TextView nameTextView = (TextView) detailsCustomView.findViewById(R.id.popup_name);
+            nameFormTextView.setVisibility(View.VISIBLE);
+            nameFormTextView.setText("Reservation name is : ");
+            nameTextView.setVisibility(View.VISIBLE);
+            nameTextView.setText(reservation.getReservationName());
+        }
+
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.my_reservations_list), Gravity.CENTER,0,0);
     }
 
 
