@@ -109,6 +109,43 @@ public class DBUtils {
     }
 
 
+    /*
+    Add spamReport to user , spam logic is in backend
+     */
+    public static void updateSpamToUser(final String spammerUserId, final String reporterUserId,final String listToUpdate, final String key ) {
+
+        final DatabaseReference userRef = mDatabase.child("users").child(spammerUserId);
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int currNumOfSpam = dataSnapshot.child("spamReports").getValue(Integer.class);
+                Map<String, Object> childUpdates = new HashMap<>();
+                childUpdates.put("/users/" + spammerUserId + "/spamReports", currNumOfSpam+1);
+                childUpdates.put("/users/" + reporterUserId + "/" + listToUpdate + "/" + key + "/isSpam", true);
+
+                mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.i(TAG, "Update spam to user: success");
+                        } else {
+                            Log.w(TAG, "Update spam to user: failure", task.getException());
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
     public static void addingPlaceToDB(Place place, final String TAG) {
 
         Log.i(TAG, "adding a new reservation to DB");

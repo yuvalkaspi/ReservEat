@@ -45,7 +45,7 @@ import com.reserveat.reserveat.common.utils.ValidationUtils;
 
 import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
 
-public class AddActivity extends AppCompatActivity {
+public class AddActivity extends BaseActivity {
 
     private DatabaseReference mDatabase;
     EditText branchEditText;
@@ -103,8 +103,6 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-
-
         dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,7 +145,6 @@ public class AddActivity extends AppCompatActivity {
                 tpd.show();
             }
         });
-
 
         isReservationOnMyName = findViewById(R.id.isReservationOnMyName);
         isReservationOnMyName.setText(R.string.is_reservation_on_my_name);

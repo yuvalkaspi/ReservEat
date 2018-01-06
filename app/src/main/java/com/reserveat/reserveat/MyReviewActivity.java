@@ -20,7 +20,7 @@ import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
 
 import java.text.ParseException;
 
-public class MyReviewActivity extends AppCompatActivity {
+public class MyReviewActivity extends BaseActivity {
 
     private static final String TAG = "MyReviewActivity";
 

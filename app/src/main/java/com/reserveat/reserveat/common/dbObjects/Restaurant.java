@@ -25,6 +25,10 @@ public class Restaurant {
         this.priceLevel = priceLevel;
     }
 
+    public Restaurant() {
+    // Default constructor required for calls to DataSnapshot.getValue(Post.class)
+    }
+
     public String getRestaurantName() {
         return restaurantName;
     }

@@ -2,11 +2,15 @@ package com.reserveat.reserveat;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,11 +20,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.utils.ReservationUtils;
@@ -31,7 +39,7 @@ import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
 
 import java.text.ParseException;
 
-public class MainActivity extends AppCompatActivity implements OurDialogFragment.NoticeDialogListener {
+public class MainActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener {
 
     private final String[] sortBy = {"date", "numOfPeople", "hotness"};
     private final Boolean[] sortByDescOrder = {false , false, true};
@@ -112,9 +120,11 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                         );
 
-                        ReservationUtils.popUpWindowCreate(mPopupWindow, customView, reservation);
+
+                        ReservationUtils.popUpWindowCreate(mPopupWindow, customView, reservation, MainActivity.this);
 
                         Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
+                        //Todo make gery when uid is current user
                         pickButton.setVisibility(View.VISIBLE);
                         pickButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -146,43 +156,24 @@ public class MainActivity extends AppCompatActivity implements OurDialogFragment
     }
 
 
-
     @Override
     public void onStart() {
         super.onStart();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser == null){
+        if (currentUser == null ){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class );
             startActivity(intent);
+        }else{
+            //check if current user has a valid token i.e. user is not disabled
+            Task<GetTokenResult> x = currentUser.getIdToken(true).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class );
+                    startActivity(intent);
+                }
+            });
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_menu, menu);//Menu Resource, Menu
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logOut:
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class );
-                startActivity(intent);
-                return true;
-            case R.id.MyReservations:
-                Intent intent_res_list = new Intent(MainActivity.this, MyReservationsListActivity.class );
-                startActivity(intent_res_list);
-                return true;
-            case R.id.mySurveys:
-                Intent mySurveyIntent = new Intent(MainActivity.this, MyReviewActivity.class );
-                startActivity(mySurveyIntent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
 }

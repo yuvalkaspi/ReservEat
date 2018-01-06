@@ -40,7 +40,7 @@ import java.util.Map;
 
 import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
 
-public class NotifyActivity extends AppCompatActivity {
+public class NotifyActivity extends BaseActivity {
 
     private static final String TAG = "NotifyActivity";
     private EditText restaurantEditText;
