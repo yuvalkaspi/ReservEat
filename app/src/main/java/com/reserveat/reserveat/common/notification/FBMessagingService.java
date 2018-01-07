@@ -19,6 +19,7 @@ import com.reserveat.reserveat.R;
 public class FBMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "FBMessagingService";
+    private static int notificationId = 0;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -50,13 +51,15 @@ public class FBMessagingService extends FirebaseMessagingService {
         if(reservationId != null){
             resultIntent = new Intent(this, MatchedReservationActivity.class);
             resultIntent.putExtra("reservationId", reservationId);
+            resultIntent.setAction(Long.toString(System.currentTimeMillis()));
+
         }
         else{
             resultIntent = new Intent(this, MainActivity.class);
         }
 
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_UPDATE_CURRENT| PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
@@ -71,6 +74,7 @@ public class FBMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0, notificationBuilder.build());
+        notificationManager.notify(notificationId, notificationBuilder.build());
+        notificationId++;
     }
 }
