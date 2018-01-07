@@ -18,10 +18,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -58,6 +61,8 @@ public class AddActivity extends BaseActivity {
     private static final String TAG = "AddActivity";
     private String restaurant;
     private String placeID;
+    private Spinner dropdown;
+    private String sittingPlace;
     Calendar current = Calendar.getInstance();
     final DateUtils.Day[] reservationDay = new DateUtils.Day[1];
 
@@ -74,6 +79,8 @@ public class AddActivity extends BaseActivity {
         hourEditText = findViewById(R.id.hour);
         numOfPeopleEditText = findViewById(R.id.numOfPeople);
         reservationNameEditText = findViewById(R.id.reservationName);
+        dropdown = findViewById(R.id.spinner);
+
         Button addButton = findViewById(R.id.add);
 
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -159,6 +166,23 @@ public class AddActivity extends BaseActivity {
                 }
             }
         });
+
+        String[] items = new String[]{"Inside", "Outside", "Bar"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                sittingPlace = position == 0 ? "Inside" : position == 1 ? "Outside" : "Bar";
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -246,7 +270,7 @@ public class AddActivity extends BaseActivity {
                 reservationName = currentUser.getDisplayName();
             }
             DateUtils.TimeOfDay timeInDay = DateUtils.getTimeOfDay(hour);
-            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay);
+            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay, sittingPlace);
             Map<String, Object> reservationValues = reservation.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
             childUpdates.put("/reservations/" + key, reservationValues);

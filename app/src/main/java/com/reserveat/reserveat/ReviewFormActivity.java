@@ -80,7 +80,7 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
             @Override
             public void onClick(View view) {
                 if(checkAllQuestionsFilled()){
-                    Review review = new Review(userAnswers);
+                    Review review = new Review(userAnswers, DBUtils.getCurrentUserID());
                     insertDataToDB(review, reservation, restaurantKey);
                     DBUtils.updateStarsToUser(numOfStarsPerReview);
                     Toast.makeText(ReviewFormActivity.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();

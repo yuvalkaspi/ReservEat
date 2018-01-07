@@ -9,14 +9,15 @@ public class Review {
 
     private int busyRate;
     private float rate;
+    private String userId;
 
     private static final int BUSY_RATE = 1;
     private static final int RATE = 2;
 
-
-    public Review(HashMap<Integer, Float> userAnswers) {
+    public Review(HashMap<Integer, Float> userAnswers, String userId) {
         this.busyRate = userAnswers.get(BUSY_RATE).intValue();
         this.rate = userAnswers.get(RATE);
+        this.userId = userId;
     }
 
     @Exclude
@@ -25,6 +26,7 @@ public class Review {
         HashMap<String, Object> result = new HashMap<>();
         result.put("busyRate", busyRate);
         result.put("rate", rate);
+        result.put("userId", userId);
 
         return result;
     }
