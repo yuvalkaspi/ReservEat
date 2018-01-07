@@ -6,6 +6,7 @@
 
     <RatingBar
         android:id="@+id/ratingbar"
+        android:theme="@style/RatingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"

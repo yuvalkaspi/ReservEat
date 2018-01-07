@@ -11,7 +11,7 @@ public class Review {
     private float rate;
 
     private static final int BUSY_RATE = 1;
-    private static final int RATE = 3;
+    private static final int RATE = 2;
 
 
     public Review(HashMap<Integer, Float> userAnswers) {

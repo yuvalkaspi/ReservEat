@@ -34,6 +34,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,6 +56,7 @@ import com.reserveat.reserveat.common.utils.ValidationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -69,11 +77,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private FirebaseAuth mAuth;
     DatabaseReference mDatabase;
+    private CallbackManager mFacebookCallbackManager;
     private static final String TAG = "LoginActivity";
+    private LoginButton mFacebookSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
@@ -94,8 +105,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        String regularText = "Don't have an account?  ";
-        String clickableText = "sign up";
+        String regularText = "Don't Have an Account?  ";
+        String clickableText = "SIGN UP";
 
         SpannableString ss = new SpannableString(regularText + clickableText);
         ClickableSpan clickableSpan = new ClickableSpan() {

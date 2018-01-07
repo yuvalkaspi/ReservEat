@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -48,7 +49,18 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyASnWV66HR-viWkJ9kbn9t4dWM1cacExP4" />
 
-        <activity android:name=".MatchedReservationActivity"></activity>
+        <activity android:name=".MatchedReservationActivity" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity android:name=".FacebookActivity" />
+        <activity android:name=".ContactActivity"></activity>
     </application>
 
 </manifest>
