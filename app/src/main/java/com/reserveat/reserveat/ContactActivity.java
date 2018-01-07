@@ -3,7 +3,7 @@ package com.reserveat.reserveat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class ContactActivity extends AppCompatActivity {
+public class ContactActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

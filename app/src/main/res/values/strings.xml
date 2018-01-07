@@ -84,6 +84,7 @@
 
     <string name="facebook_app_id">451233721958584</string>
     <string name="fb_login_protocol_scheme">fb451233721958584</string>
+    <string name="contactUs">Contact Us</string>
 
 
 </resources>
