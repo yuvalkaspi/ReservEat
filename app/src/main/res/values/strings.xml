@@ -41,7 +41,6 @@
 
     <!-- Strings related to main activiry -->
     <string name="sort">SORT</string>
-    <string name="search">SEARCH</string>
     <string name="apply">APPLY</string>
     <string name="notification">NOTIFICATION</string>
     <string name="add">ADD</string>
@@ -95,15 +94,15 @@
     <string name="title_activity_profil">ProfilActivity</string>
     <string name="profile">My Profile</string>
     <string name="title_activity_statistics">Statistics</string>
-    <string name="statistics">STATISTICS</string>
-    <string name="timeOfDay">TIME OF DAY</string>
+    <string name="statistics">Statistics</string>
+    <string name="timeOfDay">Parts Of The Day</string>
     <string name="choosePartsOfTheDay">Choose Parts Of The Day...</string>
     <string-array name="timeOfDayOptions">
-        <item>MORNING</item>
-        <item>NOON</item>
-        <item>AFTERNOON</item>
-        <item>EVENING</item>
-        <item>NIGHT</item>
+        <item>Morning</item>
+        <item>Noon</item>
+        <item>Afternoon</item>
+        <item>Evening</item>
+        <item>Night</item>
     </string-array>
 
 </resources>
