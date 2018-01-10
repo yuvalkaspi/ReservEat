@@ -1,15 +1,63 @@
 package com.reserveat.reserveat.common.utils;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+import com.reserveat.reserveat.LoginActivity;
+import com.reserveat.reserveat.MainActivity;
 import com.reserveat.reserveat.R;
 
 public class ValidationUtils {
 
     private static final int OK = 0;
+
+
+//    public static void isUserValid(FirebaseUser currentUser, final Context context, final boolean isUesrEnterd, Resources resources, final View mLoginFormView, final View mProgressView ) {
+//        if (currentUser == null && isUesrEnterd){ //no user is signed in and in app, go to login
+//            Intent intent = new Intent(context, LoginActivity.class );
+//            context.startActivity(intent);
+//        }
+//        else{
+//
+//            //check if current user has a valid token i.e. user is not disabled
+//            Task<GetTokenResult> x = currentUser.getIdToken(true).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    if(isUesrEnterd){ //user is invalid and in app, go to login
+//                        Intent intent = new Intent(context, LoginActivity.class );
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        context.startActivity(intent);
+//                    }
+//                }
+//            });
+//
+//            x.addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
+//                @Override
+//                public void onSuccess(GetTokenResult getTokenResult) {
+//                    if(!isUesrEnterd) { //user is valid and not in app, go to main
+//                        Intent intent = new Intent(context, MainActivity.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        context.startActivity(intent);
+//                    }
+//                }
+//            });
+//        }
+//    }
 
     //returns errCode if email is invalid. else- returns 0
     public static int isEmailValid(String email) {
@@ -68,4 +116,39 @@ public class ValidationUtils {
         }
 
     }
+
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public static void showProgress(final boolean show, Resources resources, final View mLoginFormView, final View mProgressView) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime);
+
+            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
 }

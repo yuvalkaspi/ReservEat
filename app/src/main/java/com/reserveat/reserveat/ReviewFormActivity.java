@@ -109,7 +109,7 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
     }
 
 
-    private void insertDataToDB(Review review, Reservation reservation, String restaurantKey) {
+    private void insertDataToDB(final Review review, Reservation reservation, String restaurantKey) {
         Log.i(TAG, "adding a new review to DB");
 
         String placeId = reservation.getPlaceId();
@@ -117,7 +117,8 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
         Map<String, Object> reviewValues = review.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/reviews/" + placeId + "/" + reservation.getDay().name() + "/" + reservation.getTimeOfDay().name() +  "/" + key, reviewValues);
+        final String reviewPath = "/reviews/" + placeId + "/" + reservation.getDay().name() + "/" + reservation.getTimeOfDay().name();
+        childUpdates.put(reviewPath +  "/" + key, reviewValues);
         childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/reviews/" + key, reviewValues);
         childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/pickedReservations/" + restaurantKey + "/isReviewed", true);
 
@@ -126,6 +127,7 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     Log.i(TAG, "add new review: success", task.getException());
+                    DBUtils.updateReliabilityToUser(DBUtils.getCurrentUserID(), review, reviewPath);
                 }else{
                     Log.w(TAG, "add new review: failure", task.getException());
                 }

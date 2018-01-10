@@ -160,7 +160,7 @@ public class ReservationUtils {
                     noteTextView.setVisibility(View.VISIBLE);
                     noteTextView.setText(" it is your responsibility to validate the reservation");
                     DBUtils.updateStarsToUser(numOfStarsPerPick);
-
+                    DBUtils.updateReliabilityToUser(reservation.getUid(), reservation.getHotness());
                 } else {
                     Log.w(TAG, "pick reservation:failure", task.getException());
                     Toast.makeText(context , "Error!", Toast.LENGTH_LONG).show();

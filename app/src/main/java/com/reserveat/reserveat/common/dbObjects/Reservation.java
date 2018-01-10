@@ -118,6 +118,14 @@ public class Reservation implements Serializable {
         this.numOfPeople = numOfPeople;
     }
 
+    public int getHotness() {
+        return hotness;
+    }
+
+    public void setHotness(int hotness) {
+        this.hotness = hotness;
+    }
+
     public String getReservationName() {
         return reservationName;
     }

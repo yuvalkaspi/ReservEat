@@ -14,6 +14,10 @@ public class Review {
     private static final int RATE = 2;
 
 
+    public Review() {
+        // Default constructor required for calls to DataSnapshot.getValue(Post.class)
+    }
+
     public Review(HashMap<Integer, Float> userAnswers) {
         this.busyRate = userAnswers.get(BUSY_RATE).intValue();
         this.rate = userAnswers.get(RATE);
@@ -28,4 +32,9 @@ public class Review {
 
         return result;
     }
+
+    public int getBusyRate() { return busyRate; }
+
+    public float getRate() { return rate; }
+
 }

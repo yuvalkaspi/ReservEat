@@ -24,7 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,10 +38,12 @@ import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
 import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogFragment;
 import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
+import com.reserveat.reserveat.common.utils.ValidationUtils;
 
 import java.text.ParseException;
 
 public class MainActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener {
+
 
     private final String[] sortBy = {"date", "numOfPeople", "hotness"};
     private final Boolean[] sortByDescOrder = {false , false, true};
@@ -160,11 +164,13 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
     public void onStart() {
         super.onStart();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser == null ){
+
+        //ValidationUtils.isUserValid(currentUser, getApplicationContext(), true);
+        if (currentUser == null){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class );
             startActivity(intent);
         }else{
-            //check if current user has a valid token i.e. user is not disabled
+            ValidationUtils.showProgress(true, getResources(),findViewById(R.id.recycler_view),findViewById(R.id.main_progress));
             Task<GetTokenResult> x = currentUser.getIdToken(true).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
@@ -172,8 +178,13 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
                     startActivity(intent);
                 }
             });
+            x.addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
+                @Override
+                public void onSuccess(GetTokenResult getTokenResult) {
+                    ValidationUtils.showProgress(false, getResources(),findViewById(R.id.recycler_view),findViewById(R.id.main_progress));
+                }
+            });
         }
     }
-
 
 }
