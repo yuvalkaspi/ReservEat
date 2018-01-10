@@ -23,6 +23,7 @@ import com.reserveat.reserveat.common.dialogFragment.RatingDialogFragment;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ReviewFormActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener {
@@ -173,6 +174,11 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
         Toast.makeText(ReviewFormActivity.this, "Saved!", Toast.LENGTH_LONG).show();
         userAnswers.put(dialogIndex, result);
         buttons[dialogIndex - 1].setBackgroundResource(R.color.answeredButtonInReview);
+    }
+
+    @Override
+    public void onDialogPositiveClickMultipleChoice(DialogFragment dialog, int dialogIndex, List<Integer> mSelectedItems) {
+        // Do nothing
     }
 
     @Override

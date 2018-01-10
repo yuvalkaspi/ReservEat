@@ -41,7 +41,7 @@
 
     <!-- Strings related to main activiry -->
     <string name="sort">SORT</string>
-    <string name="search">SEARCH</string>
+    <string name="apply">APPLY</string>
     <string name="notification">NOTIFICATION</string>
     <string name="add">ADD</string>
     <string name="clock_icon">clock_icon</string>
@@ -80,5 +80,16 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="matchedReservation">MATCHED RESERVATIONS</string>
     <string name="Homepage">HOMEPAGE</string>
+    <string name="title_activity_statistics">Statistics</string>
+    <string name="statistics">STATISTICS</string>
+    <string name="timeOfDay">TIME OF DAY</string>
+    <string name="choosePartsOfTheDay">Choose Parts Of The Day...</string>
+    <string-array name="timeOfDayOptions">
+        <item>MORNING</item>
+        <item>NOON</item>
+        <item>AFTERNOON</item>
+        <item>EVENING</item>
+        <item>NIGHT</item>
+    </string-array>
 
 </resources>

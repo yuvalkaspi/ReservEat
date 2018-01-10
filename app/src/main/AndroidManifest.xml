@@ -48,7 +48,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyASnWV66HR-viWkJ9kbn9t4dWM1cacExP4" />
 
-        <activity android:name=".MatchedReservationActivity"></activity>
+        <activity android:name=".MatchedReservationActivity" />
+        <activity android:name=".StatisticsActivity"></activity>
     </application>
 
 </manifest>
