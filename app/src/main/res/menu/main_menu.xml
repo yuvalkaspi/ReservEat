@@ -8,6 +8,10 @@
         android:title="@string/myPickedReservations"/>
     <item  android:id="@+id/statistics"
         android:title="@string/statistics"/>
+    <item  android:id="@+id/contactUs"
+        android:title="@string/contactUs"/>
     <item  android:id="@+id/logOut"
         android:title="@string/logOut"/>
+    <item  android:id="@+id/profile"
+        android:title="@string/profile"/>
 </menu>

@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class ReviewFormActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener {
 
-    static final int NUM_OF_QUESTIONS = 3;
+    static final int NUM_OF_QUESTIONS = 2;
     private Button[] buttons = new Button[NUM_OF_QUESTIONS];
     final HashMap<Integer, Float> userAnswers = new HashMap<>();
     FirebaseUser currentUser;
@@ -65,25 +65,13 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
             }
         });
 
-        buttons[1] = findViewById(R.id.q2);
+
+        buttons[1]= findViewById(R.id.q2);
         buttons[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OurDialogFragment newFragment = new ChoiceDialogFragment();
-                OurDialogFragment.initDialog(newFragment, R.string.q2, R.array.SurveyBusyRestaurantOptions,2);
-                newFragment.show(getFragmentManager(), "q2ChoiceDialogFragment");
-            }
-        });
-
-
-
-
-        buttons[2]= findViewById(R.id.q3);
-        buttons[2].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 OurDialogFragment newFragment = new RatingDialogFragment();
-                OurDialogFragment.initDialog(newFragment, R.string.q3,R.layout.rating,3);
+                OurDialogFragment.initDialog(newFragment, R.string.q3,R.layout.rating,2);
                 newFragment.show(getFragmentManager(), "q3ChoiceDialogFragment");
             }
         });
@@ -93,7 +81,7 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
             @Override
             public void onClick(View view) {
                 if(checkAllQuestionsFilled()){
-                    Review review = new Review(userAnswers);
+                    Review review = new Review(userAnswers, DBUtils.getCurrentUserID());
                     insertDataToDB(review, reservation, restaurantKey);
                     DBUtils.updateStarsToUser(numOfStarsPerReview);
                     Toast.makeText(ReviewFormActivity.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();

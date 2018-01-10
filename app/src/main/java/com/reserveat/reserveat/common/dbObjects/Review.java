@@ -7,31 +7,26 @@ import java.util.Map;
 
 public class Review {
 
-    private int busyWhenArrive;
-    private int busyWhenLeft;
+    private int busyRate;
     private float rate;
-    private String userId; //id of user who filled the review
-    private String reservationId;
+    private String userId;
 
+    private static final int BUSY_RATE = 1;
+    private static final int RATE = 2;
 
-    private static final int BUSY_WHEN_ARRIVE = 1;
-    private static final int BUSY_WHEN_LEFT = 2;
-    private static final int RATE = 3;
-
-
-    public Review(HashMap<Integer, Float> userAnswers) {
-        this.busyWhenArrive = userAnswers.get(BUSY_WHEN_ARRIVE).intValue();
-        this.busyWhenLeft = userAnswers.get(BUSY_WHEN_LEFT).intValue();
+    public Review(HashMap<Integer, Float> userAnswers, String userId) {
+        this.busyRate = userAnswers.get(BUSY_RATE).intValue();
         this.rate = userAnswers.get(RATE);
+        this.userId = userId;
     }
 
     @Exclude
     public Map<String, Object> toMap() {
 
         HashMap<String, Object> result = new HashMap<>();
-        result.put("busyWhenArrive", busyWhenArrive);
-        result.put("busyWhenLeft", busyWhenLeft);
+        result.put("busyRate", busyRate);
         result.put("rate", rate);
+        result.put("userId", userId);
 
         return result;
     }

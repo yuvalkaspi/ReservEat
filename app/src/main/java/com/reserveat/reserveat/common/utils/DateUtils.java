@@ -100,7 +100,7 @@ public class DateUtils {
     public static TimeOfDay getTimeOfDay(String time){
 
         int hour = Integer.valueOf(time.split(":")[0]);
-        if(hour <= 12){
+        if(hour < 12){
             return MORNING;
         } else if(hour <= 15){
             return NOON;

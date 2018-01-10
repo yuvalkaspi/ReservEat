@@ -10,5 +10,6 @@
     <dimen name="pop_up_padding">12sp</dimen>
     <dimen name="spaceSize">10dp</dimen>
     <dimen name="my_res_pu_margin">6sp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
 
 </resources>

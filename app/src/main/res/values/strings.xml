@@ -5,8 +5,8 @@
 
     <!-- Strings related to menu -->
 
-    <string name="myPickedReservations">RESERVATIONS I PICKED OUT</string>
-    <string name="logOut">LOG OUT</string>
+    <string name="myPickedReservations">Reservations I Picked Out</string>
+    <string name="logOut">Log Out</string>
 
 
     <!-- Strings related to login -->
@@ -41,6 +41,7 @@
 
     <!-- Strings related to main activiry -->
     <string name="sort">SORT</string>
+    <string name="search">SEARCH</string>
     <string name="apply">APPLY</string>
     <string name="notification">NOTIFICATION</string>
     <string name="add">ADD</string>
@@ -51,9 +52,9 @@
     <string name="cancel">CANCEL</string>
 
     <string-array name="SortByOptions">
-        <item>RESERVATION DATE</item>
-        <item>NUMBER OF PEOPLE</item>
-        <item>HOTNESS</item>
+        <item>Reservation Date</item>
+        <item>Number Of People</item>
+        <item>Hot Reservestions</item>
     </string-array>
 
     <string name="submit">SUBMIT</string>
@@ -61,12 +62,11 @@
 
 
     <!-- Strings related to survey form -->
-    <string name="q1">How busy was the restaurant when you arrived?</string>
-    <string name="q2">How busy was the restaurant when you left?</string>
-    <string name="q3">How do you rate the restaurant?</string>
+    <string name="q1">How Busy Was The Restaurant?</string>
+    <string name="q3">How Whould You Rate The Restaurant?</string>
     <string name="save">SAVE</string>
-    <string name="survey_form">SURVEY FORM</string>
-    <string name="my_reservations">MY RESERVATIONS</string>
+    <string name="survey_form">REVIEW</string>
+    <string name="my_reservations">My Reservations</string>
     <string name="reservation_details">DETAILS</string>
 
 
@@ -79,7 +79,21 @@
     </string-array>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="matchedReservation">MATCHED RESERVATIONS</string>
-    <string name="Homepage">HOMEPAGE</string>
+    <string name="Homepage">Home</string>
+    <string name="welcomeHeadline">ReservEat</string>
+    <string name="CONTINUE">CONTINUE</string>
+
+    <string name="facebook_app_id">451233721958584</string>
+    <string name="fb_login_protocol_scheme">fb451233721958584</string>
+    <string name="contactUs">Contact Us</string>
+    <string name="emailAddress">contactUs@reserveat.com</string>
+    <string name="facebook">Facebook</string>
+    <string name="pickingNote">You are responsible to update the restaurant on the change</string>
+    <string name="title_activity_my_profile">MyProfileActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_profil">ProfilActivity</string>
+    <string name="profile">My Profile</string>
     <string name="title_activity_statistics">Statistics</string>
     <string name="statistics">STATISTICS</string>
     <string name="timeOfDay">TIME OF DAY</string>

@@ -1,5 +1,7 @@
 package com.reserveat.reserveat;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -66,7 +68,7 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
             }
         });
 
-        Button notifyButton = findViewById(R.id.notification);
+        LinearLayout notifyButton = findViewById(R.id.notification);
         notifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +77,7 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
             }
         });
 
-        Button sortButton = findViewById(R.id.sort);
+        LinearLayout sortButton = findViewById(R.id.sort);
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -44,6 +44,10 @@ public class BaseActivity extends AppCompatActivity{
                 Intent intent_home = new Intent(getApplicationContext(), MainActivity.class );
                 startActivity(intent_home);
                 return true;
+            case R.id.contactUs:
+                Intent intent_contact = new Intent(getApplicationContext(), ContactActivity.class );
+                startActivity(intent_contact);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -13,7 +13,6 @@
     android:orientation="vertical"
     android:background="@color/gray_background">
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -189,9 +188,10 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/phoneLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        >
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/pop_up_icon_size"
@@ -217,8 +217,7 @@
             android:textColor="@color/cardview_dark_background"
             android:autoLink="phone"
             android:linksClickable="false"
-            android:clickable="true"
-            />
+            android:clickable="true" />
 
     </LinearLayout>
 
@@ -274,13 +273,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="12sp"
-        android:drawableLeft="@mipmap/information"
         android:gravity="left|center_vertical"
-        android:text="name"
-        android:textSize="12sp"
+        android:text="@string/pickingNote"
+        android:textSize="@dimen/pop_up_text_size"
         android:textColor="@color/pop_up_text_color"
         android:visibility="gone"/>
 
 </LinearLayout>
-
 </ScrollView>

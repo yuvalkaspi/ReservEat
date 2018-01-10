@@ -49,6 +49,18 @@
             android:value="AIzaSyASnWV66HR-viWkJ9kbn9t4dWM1cacExP4" />
 
         <activity android:name=".MatchedReservationActivity" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity android:name=".FacebookActivity" />
+        <activity android:name=".ContactActivity" />
+        <activity android:name=".MatchedReservationActivity" />
         <activity android:name=".StatisticsActivity"></activity>
     </application>
 

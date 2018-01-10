@@ -19,7 +19,7 @@
         android:layout_marginTop="5dp"
         android:text="@string/add_reservation"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
+        android:textSize="26sp"
         android:typeface="serif" />
 
     <Space
@@ -82,6 +82,18 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="@string/num_of_people"
         android:inputType="numberDecimal" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@android:drawable/btn_dropdown"
+
+        android:spinnerMode="dropdown"/>
 
     <Space
         android:layout_width="match_parent"
