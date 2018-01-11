@@ -14,14 +14,16 @@ import java.util.Map;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -58,6 +60,8 @@ public class AddActivity extends BaseActivity {
     private static final String TAG = "AddActivity";
     private String restaurant;
     private String placeID;
+    private Spinner dropdown;
+    private String sittingPlace;
     Calendar current = Calendar.getInstance();
     final DateUtils.Day[] reservationDay = new DateUtils.Day[1];
 
@@ -74,6 +78,8 @@ public class AddActivity extends BaseActivity {
         hourEditText = findViewById(R.id.hour);
         numOfPeopleEditText = findViewById(R.id.numOfPeople);
         reservationNameEditText = findViewById(R.id.reservationName);
+        dropdown = findViewById(R.id.spinner);
+
         Button addButton = findViewById(R.id.add);
 
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -160,6 +166,23 @@ public class AddActivity extends BaseActivity {
             }
         });
 
+        String[] items = new String[]{"Inside", "Outside", "Bar"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                sittingPlace = position == 0 ? "Inside" : position == 1 ? "Outside" : "Bar";
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -194,12 +217,9 @@ public class AddActivity extends BaseActivity {
         String reservationName = reservationNameEditText.getText().toString().trim();
 
         String[] mandatoryFieldsValues = {reservationName, numOfPeople, hour, date, branch};
-
         TextView[] formTextViewArr = {reservationNameEditText, numOfPeopleEditText,
                 hourEditText, dateEditText, branchEditText};//order desc
-
         int[] formTextViewErrCodeArr = new int[formTextViewArr.length];
-
         View focusView = null;
 
         for (int i = 0 ; i < formTextViewErrCodeArr.length ; i ++ ){
@@ -222,13 +242,9 @@ public class AddActivity extends BaseActivity {
             }
         }
         if (focusView != null) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             Log.w(TAG, "fields verification error: field was entered incorrect");
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             Log.i(TAG, "fields verification: success");
             addReservationToDB(restaurant, branch, date, hour, Integer.valueOf(numOfPeople), reservationName);
 
@@ -246,7 +262,7 @@ public class AddActivity extends BaseActivity {
                 reservationName = currentUser.getDisplayName();
             }
             DateUtils.TimeOfDay timeInDay = DateUtils.getTimeOfDay(hour);
-            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay);
+            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay, sittingPlace);
             Map<String, Object> reservationValues = reservation.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
             childUpdates.put("/reservations/" + key, reservationValues);

@@ -14,6 +14,7 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
@@ -137,6 +138,7 @@ public class ReservationUtils {
         final TextView nameFormTextView = (TextView) customView.findViewById(R.id.popup_name_form);
         final TextView nameTextView = (TextView) customView.findViewById(R.id.popup_name);
         final TextView noteTextView = (TextView) customView.findViewById(R.id.popup_note);
+        final LinearLayout phoneLayout = customView.findViewById(R.id.phoneLayout);
 
         reservation.setPickedByUid(userId);
         Map<String, Object> reservationValues = reservation.toMap();
@@ -153,12 +155,12 @@ public class ReservationUtils {
                 if (task.isSuccessful()) {
                     Log.i(TAG, "pick reservation:success", task.getException());
                     pickButton.setVisibility(View.GONE);
+                    phoneLayout.setVisibility(View.VISIBLE);
                     nameFormTextView.setVisibility(View.VISIBLE);
                     nameFormTextView.setText("Reservation name is : ");
                     nameTextView.setVisibility(View.VISIBLE);
                     nameTextView.setText(reservation.getReservationName());
                     noteTextView.setVisibility(View.VISIBLE);
-                    noteTextView.setText(" it is your responsibility to validate the reservation");
                     DBUtils.updateStarsToUser(numOfStarsPerPick);
                     DBUtils.updateReliabilityToUser(reservation.getUid(), reservation.getHotness());
                 } else {

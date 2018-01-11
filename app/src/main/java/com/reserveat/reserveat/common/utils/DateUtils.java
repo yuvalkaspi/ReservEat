@@ -79,6 +79,24 @@ public class DateUtils {
         return SATURDAY;
     }
 
+//    public static Day convertDayFormat(String dayStr){
+//        switch (dayStr){
+//            case "SUNDAY":
+//                return SUNDAY;
+//            case "MONDAY":
+//                return MONDAY;
+//            case "TUESDAY":
+//                return TUESDAY;
+//            case "WEDNESDAY":
+//                return WEDNESDAY;
+//            case "THURSDAY":
+//                return THURSDAY;
+//            case "FRIDAY":
+//                return FRIDAY;
+//        }
+//        return SATURDAY;
+//    }
+
     public static TimeOfDay getTimeOfDay(String time){
 
         int hour = Integer.valueOf(time.split(":")[0]);
@@ -94,13 +112,30 @@ public class DateUtils {
         return NIGHT;
     }
 
+
     public enum Day {
-        SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
-        THURSDAY, FRIDAY, SATURDAY
+        SUNDAY(1), MONDAY(2), TUESDAY(3), WEDNESDAY(4),
+        THURSDAY(5), FRIDAY(6), SATURDAY(7);
+
+        int index;
+        Day(int i) {
+            index = i;
+        }
+        public int getIndex() {
+            return index;
+        }
     }
 
     public enum TimeOfDay {
-        MORNING, NOON, AFTERNOON, EVENING,
-        NIGHT
+        MORNING(1), NOON(2), AFTERNOON(3), EVENING(4),
+        NIGHT(5);
+
+        int index;
+        TimeOfDay(int i) {
+            index = i;
+        }
+        public int getIndex() {
+            return index;
+        }
     }
 }

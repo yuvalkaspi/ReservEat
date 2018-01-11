@@ -1,5 +1,7 @@
 package com.reserveat.reserveat;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -41,6 +43,7 @@ import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
 import com.reserveat.reserveat.common.utils.ValidationUtils;
 
 import java.text.ParseException;
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener {
 
@@ -69,7 +72,7 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
             }
         });
 
-        Button notifyButton = findViewById(R.id.notification);
+        LinearLayout notifyButton = findViewById(R.id.notification);
         notifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +81,7 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
             }
         });
 
-        Button sortButton = findViewById(R.id.sort);
+        LinearLayout sortButton = findViewById(R.id.sort);
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -152,6 +155,11 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
     public void onDialogPositiveClick(DialogFragment dialog, int dialogIndex, float result) {
         int index = (int)result - 1;
         createAdapter(sortBy[index], sortByDescOrder[index]);
+    }
+
+    @Override
+    public void onDialogPositiveClickMultipleChoice(DialogFragment dialog, int dialogIndex, List<Integer> mSelectedItems) {
+        // Do nothing
     }
 
     @Override

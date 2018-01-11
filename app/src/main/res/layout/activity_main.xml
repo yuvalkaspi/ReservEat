@@ -15,32 +15,65 @@
         style="@style/Divider"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:background="@color/white"
+        android:layout_weight="1.2">
 
-        <Button
-            android:id="@+id/sort"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id = "@+id/sort"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/white"
-            android:elevation="4dp"
-            android:text="@string/sort"
-            android:textSize="15sp" />
+            android:layout_width="0dp"
+            android:clickable="true"
+            android:gravity="center"
+            android:layout_weight="1">
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/sort" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="@string/sort" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray" />
 
-        <Button
-            android:id="@+id/notification"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id = "@+id/notification"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/white"
-            android:elevation="4dp"
-            android:text="@string/notification"
-            android:textSize="15sp" />
+            android:layout_width="0dp"
+            android:clickable="true"
+            android:gravity="center"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/notification" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="@string/notification" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"

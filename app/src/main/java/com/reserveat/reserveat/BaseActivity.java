@@ -36,6 +36,10 @@ public class BaseActivity extends AppCompatActivity{
                 intent_picked_res_list.putExtra("isMyReservations" , false);
                 startActivity(intent_picked_res_list);
                 return true;
+            case R.id.statistics:
+                Intent intent_statistics = new Intent(getApplicationContext(), StatisticsActivity.class );
+                startActivity(intent_statistics);
+                return true;
             case R.id.Homepage:
                 Intent intent_home = new Intent(getApplicationContext(), MainActivity.class );
                 startActivity(intent_home);

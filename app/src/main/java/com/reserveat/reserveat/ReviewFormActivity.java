@@ -23,6 +23,7 @@ import com.reserveat.reserveat.common.dialogFragment.RatingDialogFragment;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ReviewFormActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener {
@@ -80,7 +81,7 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
             @Override
             public void onClick(View view) {
                 if(checkAllQuestionsFilled()){
-                    Review review = new Review(userAnswers);
+                    Review review = new Review(userAnswers, DBUtils.getCurrentUserID());
                     insertDataToDB(review, reservation, restaurantKey);
                     DBUtils.updateStarsToUser(numOfStarsPerReview);
                     Toast.makeText(ReviewFormActivity.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
@@ -163,6 +164,11 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
         Toast.makeText(ReviewFormActivity.this, "Saved!", Toast.LENGTH_LONG).show();
         userAnswers.put(dialogIndex, result);
         buttons[dialogIndex - 1].setBackgroundResource(R.color.answeredButtonInReview);
+    }
+
+    @Override
+    public void onDialogPositiveClickMultipleChoice(DialogFragment dialog, int dialogIndex, List<Integer> mSelectedItems) {
+        // Do nothing
     }
 
     @Override
