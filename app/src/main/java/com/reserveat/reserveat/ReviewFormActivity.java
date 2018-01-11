@@ -3,7 +3,6 @@ package com.reserveat.reserveat;
 import android.content.Intent;
 import android.app.DialogFragment;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -83,7 +82,7 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
                 if(checkAllQuestionsFilled()){
                     Review review = new Review(userAnswers, DBUtils.getCurrentUserID());
                     insertDataToDB(review, reservation, restaurantKey);
-                    DBUtils.updateStarsToUser(numOfStarsPerReview);
+                    DBUtils.updateStarsToUser(numOfStarsPerReview, reservation.getPickedByUid());
                     Toast.makeText(ReviewFormActivity.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
                     //Intent intent = new Intent(ReviewFormActivity.this, MyReviewActivity.class );
                     //startActivity(intent);
