@@ -18,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.reserveat.reserveat.MainActivity;
-import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.dbObjects.Restaurant;
 import com.reserveat.reserveat.common.dbObjects.Review;
 
@@ -63,9 +62,8 @@ public class DBUtils {
     /*
     Add stars to user and update starRemoveDate field
      */
-    public static void updateStarsToUser(final int numOfStars) {
+    public static void updateStarsToUser(final int numOfStars, final String userId) {
 
-        final String userId = getCurrentUserID();
         final DatabaseReference userRef = mDatabase.child("users").child(userId);
 
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {

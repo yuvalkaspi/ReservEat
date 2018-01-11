@@ -139,6 +139,7 @@ public class ReservationUtils {
         final TextView nameTextView = (TextView) customView.findViewById(R.id.popup_name);
         final TextView noteTextView = (TextView) customView.findViewById(R.id.popup_note);
         final LinearLayout phoneLayout = customView.findViewById(R.id.phoneLayout);
+        final TextView phoneTextView = (TextView) customView.findViewById(R.id.popup_phone);
 
         reservation.setPickedByUid(userId);
         Map<String, Object> reservationValues = reservation.toMap();
@@ -154,14 +155,16 @@ public class ReservationUtils {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Log.i(TAG, "pick reservation:success", task.getException());
+
                     pickButton.setVisibility(View.GONE);
-                    phoneLayout.setVisibility(View.VISIBLE);
+                    if(!phoneTextView.getText().equals(""))
+                        phoneLayout.setVisibility(View.VISIBLE);
                     nameFormTextView.setVisibility(View.VISIBLE);
                     nameFormTextView.setText("Reservation name is : ");
                     nameTextView.setVisibility(View.VISIBLE);
                     nameTextView.setText(reservation.getReservationName());
                     noteTextView.setVisibility(View.VISIBLE);
-                    DBUtils.updateStarsToUser(numOfStarsPerPick);
+                    DBUtils.updateStarsToUser(numOfStarsPerPick, reservation.getUid());
                     DBUtils.updateReliabilityToUser(reservation.getUid(), reservation.getHotness());
                 } else {
                     Log.w(TAG, "pick reservation:failure", task.getException());
