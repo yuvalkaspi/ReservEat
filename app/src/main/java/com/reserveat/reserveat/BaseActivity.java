@@ -22,10 +22,13 @@ public class BaseActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.logOut:
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class );
-                startActivity(intent);
+            case R.id.Homepage:
+                Intent intent_home = new Intent(getApplicationContext(), MainActivity.class );
+                startActivity(intent_home);
+                return true;
+            case R.id.Profile:
+                Intent intent_profile = new Intent(getApplicationContext(), ProfileActivity.class );
+                startActivity(intent_profile);
                 return true;
             case R.id.MyReservations:
                 Intent intent_res_list = new Intent(getApplicationContext(), MyReservationsListActivity.class );
@@ -40,13 +43,14 @@ public class BaseActivity extends AppCompatActivity{
                 Intent intent_statistics = new Intent(getApplicationContext(), StatisticsActivity.class );
                 startActivity(intent_statistics);
                 return true;
-            case R.id.Homepage:
-                Intent intent_home = new Intent(getApplicationContext(), MainActivity.class );
-                startActivity(intent_home);
-                return true;
             case R.id.contactUs:
                 Intent intent_contact = new Intent(getApplicationContext(), ContactActivity.class );
                 startActivity(intent_contact);
+                return true;
+            case R.id.logOut:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class );
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

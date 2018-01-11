@@ -19,6 +19,7 @@
         android:textColor="@color/colorPrimary"
         android:textSize="26sp"
         android:typeface="serif" />
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />
@@ -43,6 +44,7 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />
+
     <EditText
         android:id="@+id/date"
         android:layout_width="fill_parent"
@@ -52,9 +54,11 @@
         android:focusable="false"
         android:hint="Date"
         android:inputType="none" />
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />
+
     <EditText
         android:id="@+id/hour"
         android:layout_width="fill_parent"

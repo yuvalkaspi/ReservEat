@@ -129,6 +129,10 @@ public class DBUtils {
                 childUpdates.put("/users/" + spammerUserId + "/spamReports", currNumOfSpam+1);
                 childUpdates.put("/users/" + reporterUserId + "/" + listToUpdate + "/" + key + "/isSpam", true);
 
+                if(listToUpdate.equals("pickedReservations")){
+                    childUpdates.put("/historyReservations/" + key + "/isSpam", true);
+                }
+
                 mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
