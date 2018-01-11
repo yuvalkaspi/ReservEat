@@ -32,7 +32,7 @@ public class Reservation implements Serializable {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Reservation(String uid, String restaurant, String branch, String placeId, String fullDate, int numOfPeople, String reservationName, int hotness, Day day, TimeOfDay timeOfDay, String sittingPlace) {
+    public Reservation(String uid, String restaurant, String branch, String placeId, String fullDate, int numOfPeople, String reservationName, int hotness, Day day, TimeOfDay timeOfDay, String sittingPlace, boolean isSpam) {
         this.uid = uid;
         this.pickedByUid = "none"; // new reservation is not picked yet
         this.restaurant = restaurant;
@@ -45,6 +45,7 @@ public class Reservation implements Serializable {
         this.day = day;
         this.timeOfDay = timeOfDay;
         this.sittingPlace = sittingPlace;
+        this.isSpam = isSpam;
     }
 
     @Exclude
@@ -62,8 +63,7 @@ public class Reservation implements Serializable {
         result.put("day", day);
         result.put("timeOfDay", timeOfDay);
         result.put("sittingPlace", sittingPlace);
-
-//        result.put("isSpam", isSpam);
+        result.put("isSpam", isSpam);
 //        result.put("isReviewed", isReviewed);
 
         return result;

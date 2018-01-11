@@ -262,7 +262,7 @@ public class AddActivity extends BaseActivity {
                 reservationName = currentUser.getDisplayName();
             }
             DateUtils.TimeOfDay timeInDay = DateUtils.getTimeOfDay(hour);
-            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay, sittingPlace);
+            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay, sittingPlace, false);
             Map<String, Object> reservationValues = reservation.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
             childUpdates.put("/reservations/" + key, reservationValues);
