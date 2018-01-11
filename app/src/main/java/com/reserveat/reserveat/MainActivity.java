@@ -40,6 +40,7 @@ import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogFragment;
 import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
 
 import java.text.ParseException;
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener {
 
@@ -150,6 +151,11 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
     public void onDialogPositiveClick(DialogFragment dialog, int dialogIndex, float result) {
         int index = (int)result - 1;
         createAdapter(sortBy[index], sortByDescOrder[index]);
+    }
+
+    @Override
+    public void onDialogPositiveClickMultipleChoice(DialogFragment dialog, int dialogIndex, List<Integer> mSelectedItems) {
+        // Do nothing
     }
 
     @Override

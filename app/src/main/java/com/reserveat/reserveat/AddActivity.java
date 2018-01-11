@@ -14,7 +14,6 @@ import java.util.Map;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -218,12 +217,9 @@ public class AddActivity extends BaseActivity {
         String reservationName = reservationNameEditText.getText().toString().trim();
 
         String[] mandatoryFieldsValues = {reservationName, numOfPeople, hour, date, branch};
-
         TextView[] formTextViewArr = {reservationNameEditText, numOfPeopleEditText,
                 hourEditText, dateEditText, branchEditText};//order desc
-
         int[] formTextViewErrCodeArr = new int[formTextViewArr.length];
-
         View focusView = null;
 
         for (int i = 0 ; i < formTextViewErrCodeArr.length ; i ++ ){
@@ -246,13 +242,9 @@ public class AddActivity extends BaseActivity {
             }
         }
         if (focusView != null) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             Log.w(TAG, "fields verification error: field was entered incorrect");
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             Log.i(TAG, "fields verification: success");
             addReservationToDB(restaurant, branch, date, hour, Integer.valueOf(numOfPeople), reservationName);
 

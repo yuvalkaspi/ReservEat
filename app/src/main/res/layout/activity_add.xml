@@ -40,7 +40,7 @@
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="@string/branch"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         android:visibility="gone"/>
 
     <Space

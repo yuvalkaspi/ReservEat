@@ -5,8 +5,6 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    tools:context="com.reserveat.reserveat.NotifyActivity">
-
 
     <TextView
         android:id="@+id/contact_form_title"
@@ -15,9 +13,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="5dp"
-        android:text="NOTIFY ON CANCEL"
+        android:text="STATISTICS"
         android:textColor="@color/colorPrimary"
-        android:textSize="26sp"
+        android:textSize="24sp"
         android:typeface="serif" />
     <Space
         android:layout_width="match_parent"
@@ -43,56 +41,41 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />
+
+
     <EditText
-        android:id="@+id/date"
+        android:id="@+id/timeOfDayChoice"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:clickable="true"
+        android:hint="@string/choosePartsOfTheDay"
         android:focusable="false"
-        android:hint="Date"
-        android:inputType="none" />
+        android:inputType="text" />
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />
-    <EditText
-        android:id="@+id/hour"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:clickable="true"
-        android:focusable="false"
-        android:hint="Hour"
-        android:inputType="none" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/spaceSize" />
-    <Switch
-        android:id="@+id/isFlexible"
-        android:textSize="20sp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/spaceSize" />
-    <EditText
-        android:id="@+id/numOfPeople"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="Number Of People"
-        android:inputType="numberDecimal" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/spaceSize" />
+
     <Button
-        android:id="@+id/save"
+        android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:elevation="4dp"
         android:paddingLeft="70dp"
         android:paddingRight="70dp"
-        android:text="@string/saveRequest" />
+        android:text="@string/apply" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:id="@+id/graph"
+        android:visibility="gone"/>
 
 </LinearLayout>

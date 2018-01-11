@@ -29,10 +29,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * Created by Golan on 13/12/2017.
- */
-
 public class DBUtils {
 
     private final static String RESTAURANT = "restaurant";
@@ -218,4 +214,8 @@ public class DBUtils {
                 });
         //todo: nullpointerexception?
     }
+
+
+
+
 }

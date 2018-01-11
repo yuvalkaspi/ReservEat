@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -61,7 +60,8 @@
             android:label="@string/app_name" />
         <activity android:name=".FacebookActivity" />
         <activity android:name=".ContactActivity" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".MatchedReservationActivity" />
+        <activity android:name=".StatisticsActivity"></activity>
     </application>
 
 </manifest>

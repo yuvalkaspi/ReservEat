@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.reserveat.reserveat.R;
 
+import java.util.List;
+
 
 public abstract class OurDialogFragment extends DialogFragment{
 
@@ -28,6 +30,7 @@ public abstract class OurDialogFragment extends DialogFragment{
 
     public interface NoticeDialogListener {
         void onDialogPositiveClick(DialogFragment dialog, int dialogIndex, float result);
+        void onDialogPositiveClickMultipleChoice(DialogFragment dialog, int dialogIndex, List<Integer> mSelectedItems);
         void onDialogNegativeClick(DialogFragment dialog);
     }
 

@@ -6,6 +6,8 @@
         android:title="@string/my_reservations"/>
     <item  android:id="@+id/pickedReservationsList"
         android:title="@string/myPickedReservations"/>
+    <item  android:id="@+id/statistics"
+        android:title="@string/statistics"/>
     <item  android:id="@+id/contactUs"
         android:title="@string/contactUs"/>
     <item  android:id="@+id/logOut"
