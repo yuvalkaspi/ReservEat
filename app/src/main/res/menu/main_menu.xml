@@ -2,16 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item  android:id="@+id/Homepage"
         android:title="@string/Homepage"/>
+    <item  android:id="@+id/Profile"
+        android:title="@string/profile"/>
+
     <item  android:id="@+id/MyReservations"
         android:title="@string/my_reservations"/>
+
     <item  android:id="@+id/pickedReservationsList"
         android:title="@string/myPickedReservations"/>
+
     <item  android:id="@+id/statistics"
         android:title="@string/statistics"/>
+
     <item  android:id="@+id/contactUs"
         android:title="@string/contactUs"/>
+
     <item  android:id="@+id/logOut"
         android:title="@string/logOut"/>
-    <item  android:id="@+id/profile"
-        android:title="@string/profile"/>
+
 </menu>

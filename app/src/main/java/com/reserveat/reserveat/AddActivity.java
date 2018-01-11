@@ -61,7 +61,7 @@ public class AddActivity extends BaseActivity {
     private String restaurant;
     private String placeID;
     private Spinner dropdown;
-    private String sittingPlace;
+    private String SestingArea;
     Calendar current = Calendar.getInstance();
     final DateUtils.Day[] reservationDay = new DateUtils.Day[1];
 
@@ -166,14 +166,14 @@ public class AddActivity extends BaseActivity {
             }
         });
 
-        String[] items = new String[]{"Inside", "Outside", "Bar"};
+        String[] items = new String[]{"Indoor", "Outdoor", "Bar"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-                sittingPlace = position == 0 ? "Inside" : position == 1 ? "Outside" : "Bar";
+                SestingArea = position == 0 ? "Inside" : position == 1 ? "Outside" : "Bar";
             }
 
             @Override
@@ -262,7 +262,7 @@ public class AddActivity extends BaseActivity {
                 reservationName = currentUser.getDisplayName();
             }
             DateUtils.TimeOfDay timeInDay = DateUtils.getTimeOfDay(hour);
-            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay, sittingPlace);
+            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay, SestingArea);
             Map<String, Object> reservationValues = reservation.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
             childUpdates.put("/reservations/" + key, reservationValues);

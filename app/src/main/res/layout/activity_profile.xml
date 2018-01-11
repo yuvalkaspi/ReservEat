@@ -11,6 +11,17 @@
         android:padding="16dp">
 
         <ImageView
+            android:id="@+id/star0"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:background="@null"
+            android:visibility="gone"
+            app:srcCompat="@mipmap/stars0" />
+
+        <ImageView
             android:id="@+id/star1"
             android:layout_width="128dp"
             android:layout_height="128dp"
