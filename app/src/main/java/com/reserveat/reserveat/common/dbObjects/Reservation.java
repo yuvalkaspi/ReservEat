@@ -26,13 +26,13 @@ public class Reservation implements Serializable {
     private TimeOfDay timeOfDay;
     private boolean isReviewed;
     private boolean isSpam;
-    private String SestingArea;
+    private String SeattingArea;
 
     public Reservation() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Reservation(String uid, String restaurant, String branch, String placeId, String fullDate, int numOfPeople, String reservationName, int hotness, Day day, TimeOfDay timeOfDay, String SestingArea) {
+    public Reservation(String uid, String restaurant, String branch, String placeId, String fullDate, int numOfPeople, String reservationName, int hotness, Day day, TimeOfDay timeOfDay, String SeattingArea, boolean isSpam) {
         this.uid = uid;
         this.pickedByUid = "none"; // new reservation is not picked yet
         this.restaurant = restaurant;
@@ -44,7 +44,8 @@ public class Reservation implements Serializable {
         this.placeId = placeId;
         this.day = day;
         this.timeOfDay = timeOfDay;
-        this.SestingArea = SestingArea;
+        this.SeattingArea = SeattingArea;
+        this.isSpam = isSpam;
     }
 
     @Exclude
@@ -61,9 +62,8 @@ public class Reservation implements Serializable {
         result.put("hotness", hotness);
         result.put("day", day);
         result.put("timeOfDay", timeOfDay);
-        result.put("SestingArea", SestingArea);
-
-//        result.put("isSpam", isSpam);
+        result.put("SeattingArea", SeattingArea);
+        result.put("isSpam", isSpam);
 //        result.put("isReviewed", isReviewed);
 
         return result;
@@ -132,8 +132,8 @@ public class Reservation implements Serializable {
 
     public boolean getIsReviewed() { return isReviewed; }
 
-    public String getSSestingArea() {
-        return SestingArea;
+    public String getSeattingArea() {
+        return SeattingArea;
     }
 
     public boolean getIsSpam() { return isSpam; }

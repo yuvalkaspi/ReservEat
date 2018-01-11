@@ -61,7 +61,7 @@ public class AddActivity extends BaseActivity {
     private String restaurant;
     private String placeID;
     private Spinner dropdown;
-    private String SestingArea;
+    private String SeattingArea;
     Calendar current = Calendar.getInstance();
     final DateUtils.Day[] reservationDay = new DateUtils.Day[1];
 
@@ -173,7 +173,7 @@ public class AddActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-                SestingArea = position == 0 ? "Inside" : position == 1 ? "Outside" : "Bar";
+                SeattingArea = position == 0 ? "Indoor" : position == 1 ? "Outdoor" : "Bar";
             }
 
             @Override
@@ -262,7 +262,7 @@ public class AddActivity extends BaseActivity {
                 reservationName = currentUser.getDisplayName();
             }
             DateUtils.TimeOfDay timeInDay = DateUtils.getTimeOfDay(hour);
-            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay, SestingArea);
+            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay, SeattingArea, false);
             Map<String, Object> reservationValues = reservation.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
             childUpdates.put("/reservations/" + key, reservationValues);
