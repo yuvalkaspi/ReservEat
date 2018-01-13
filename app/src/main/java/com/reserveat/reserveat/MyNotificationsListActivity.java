@@ -12,14 +12,19 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.reserveat.reserveat.common.dbObjects.NotificationRequest;
 import com.reserveat.reserveat.common.dbObjects.NotificationRequestHolder;
+import com.reserveat.reserveat.common.dbObjects.Review;
 import com.reserveat.reserveat.common.dialogFragment.contentDialogs.NotificationRequestListDialog;
 import com.reserveat.reserveat.common.utils.DialogUtils;
 import com.reserveat.reserveat.common.utils.ReservationUtils;
@@ -30,9 +35,10 @@ import com.reserveat.reserveat.common.dbObjects.Reservation;
 public class MyNotificationsListActivity extends BaseActivity  {
 
     private static final String TAG = "MyNotificationsActivity";
-    FirebaseUser currentUser;
-    private PopupWindow mPopupWindow;
-    boolean isMyReservations;
+    private FirebaseUser currentUser;
+    private RecyclerView recyclerView;
+    private TextView emptyView;
+    private FirebaseRecyclerAdapter<NotificationRequest, NotificationRequestHolder> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +48,11 @@ public class MyNotificationsListActivity extends BaseActivity  {
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserID).child("notificationRequests");
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        emptyView = (TextView) findViewById(R.id.empty_view);
 
-        FirebaseRecyclerAdapter<NotificationRequest, NotificationRequestHolder> adapter = new FirebaseRecyclerAdapter<NotificationRequest, NotificationRequestHolder>(NotificationRequest.class, R.layout.notification_request,NotificationRequestHolder.class, mDatabase) {
+        adapter = new FirebaseRecyclerAdapter<NotificationRequest, NotificationRequestHolder>(NotificationRequest.class, R.layout.notification_request,NotificationRequestHolder.class, mDatabase) {
             @Override
             protected void populateViewHolder(NotificationRequestHolder viewHolder, NotificationRequest model, int position) {
 
@@ -79,7 +86,6 @@ public class MyNotificationsListActivity extends BaseActivity  {
 
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -89,4 +95,28 @@ public class MyNotificationsListActivity extends BaseActivity  {
             startActivity(intent);
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DatabaseReference notificationsRef = DBUtils.getDatabaseRef().child("users").child(DBUtils.getCurrentUserID()).child("notificationRequests");
+        notificationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    recyclerView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                }else{
+                    recyclerView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }

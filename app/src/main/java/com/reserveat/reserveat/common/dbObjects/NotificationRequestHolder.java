@@ -1,19 +1,17 @@
 package com.reserveat.reserveat.common.dbObjects;
 
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.reserveat.reserveat.R;
-import com.reserveat.reserveat.common.utils.DBUtils;
 
 public class NotificationRequestHolder extends RecyclerView.ViewHolder {
 
     private TextView description;
-    private SwitchCompat isActiveSwitch;
+    private Switch isActiveSwitch;
 
     NotificationRequestHolder(View itemView) {
         super(itemView);

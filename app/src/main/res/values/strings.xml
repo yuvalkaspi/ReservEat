@@ -108,5 +108,7 @@
     <string name="notificationDescription">Notification description</string>
     <string name="notification_icon">notificationIcon</string>
     <string name="notification_request">NOTIFICATION REQUEST</string>
+    <string name="no_notifications_exist">No notification requests were found \u2639</string>
+    <string name="no_reservations_exist">No reservations were found \u2639</string>
 
 </resources>

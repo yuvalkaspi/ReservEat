@@ -2,15 +2,12 @@ package com.reserveat.reserveat.common.utils;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.VoiceInteractor;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
-import com.google.android.gms.location.places.GeoDataApi;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -28,8 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.reserveat.reserveat.AddActivity;
-import com.reserveat.reserveat.MainActivity;
 import com.reserveat.reserveat.R;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
@@ -134,6 +128,13 @@ public class ReservationUtils {
 
 
     public static void popUpPickClick(final Reservation reservation, View customView, String key, String userId, final Context context) {
+
+        //todo remove comments
+//        if(reservation.getUid().equals(userId)){
+//            Toast.makeText(context , "You cannot pick up your own reservation", Toast.LENGTH_LONG).show();
+//            return;
+//        }
+
         final Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
         final TextView nameFormTextView = (TextView) customView.findViewById(R.id.popup_name_form);
         final TextView nameTextView = (TextView) customView.findViewById(R.id.popup_name);
