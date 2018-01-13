@@ -37,6 +37,7 @@ import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
 import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.SingleChoiceDialog;
 import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.BaseChoiceDialog;
 import com.reserveat.reserveat.common.utils.ValidationUtils;
+import android.support.v7.app.ActionBar;
 
 import java.text.ParseException;
 import java.util.List;
