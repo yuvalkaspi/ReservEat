@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/nd_custom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="@dimen/pop_up_icon_size"
+                android:layout_height="@dimen/pop_up_icon_size"
+                android:src="@mipmap/restaurant"
+                android:layout_gravity="center" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="Restuarnt:"
+                android:textSize="@dimen/pop_up_text_size"
+                android:textColor="@color/cardview_dark_background"/>
+
+            <TextView
+                android:id="@+id/dialog_resturant_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="restuarnt"
+                android:textSize="@dimen/pop_up_text_size"
+                android:textColor="@color/cardview_dark_background"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="@dimen/pop_up_icon_size"
+                android:layout_height="@dimen/pop_up_icon_size"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="Branch:     "
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/pop_up_text_size" />
+
+            <TextView
+                android:id="@+id/dialog_branch"
+                android:layout_width="252dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="branch"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/pop_up_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="@dimen/pop_up_icon_size"
+                android:layout_height="@dimen/pop_up_icon_size"
+                android:src="@mipmap/calendar"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="Date:          "
+                android:textSize="@dimen/pop_up_text_size"
+                android:textColor="@color/cardview_dark_background"/>
+
+            <TextView
+                android:id="@+id/dialog_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="date"
+                android:textSize="@dimen/pop_up_text_size"
+                android:textColor="@color/cardview_dark_background"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="@dimen/pop_up_icon_size"
+                android:layout_height="@dimen/pop_up_icon_size"
+                android:src="@mipmap/clock"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="Hour:          "
+                android:textSize="@dimen/pop_up_text_size"
+                android:textColor="@color/cardview_dark_background"/>
+
+            <TextView
+                android:id="@+id/dialog_hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="hour"
+                android:textSize="@dimen/pop_up_text_size"
+                android:textColor="@color/cardview_dark_background"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="@dimen/pop_up_icon_size"
+                android:layout_height="@dimen/pop_up_icon_size"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="Flexible time:     "
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/pop_up_text_size" />
+
+            <TextView
+                android:id="@+id/timeFlexible"
+                android:layout_width="252dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="flexible"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/pop_up_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/pop_up_icon_size"
+                android:layout_height="@dimen/pop_up_icon_size"
+                android:src="@mipmap/user"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="People:      "
+                android:textSize="@dimen/pop_up_text_size"
+                android:textColor="@color/cardview_dark_background"/>
+
+            <TextView
+                android:id="@+id/dialog_num_of_people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="num"
+                android:textSize="@dimen/pop_up_text_size"
+                android:textColor="@color/cardview_dark_background"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

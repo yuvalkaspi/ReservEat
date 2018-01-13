@@ -11,6 +11,9 @@
     <item  android:id="@+id/pickedReservationsList"
         android:title="@string/myPickedReservations"/>
 
+    <item  android:id="@+id/myNotifications"
+        android:title="@string/myNotifications"/>
+
     <item  android:id="@+id/statistics"
         android:title="@string/statistics"/>
 

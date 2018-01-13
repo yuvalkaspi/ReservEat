@@ -71,11 +71,12 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />
-    <Switch
+    <android.support.v7.widget.SwitchCompat
         android:id="@+id/isFlexible"
         android:textSize="20sp"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:theme="@style/SwitchTheme"/>
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />
@@ -86,6 +87,16 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="Number Of People"
         android:inputType="numberDecimal" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spaceSize" />
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:hint="Notification Description"
+        android:inputType="text" />
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />

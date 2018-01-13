@@ -1,32 +1,22 @@
 package com.reserveat.reserveat;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -35,17 +25,18 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.reserveat.reserveat.common.utils.DialogUtils;
 import com.reserveat.reserveat.common.utils.ReservationUtils;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
-import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogFragment;
-import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
+import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.SingleChoiceDialog;
+import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.BaseChoiceDialog;
 import com.reserveat.reserveat.common.utils.ValidationUtils;
 
 import java.text.ParseException;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener {
+public class MainActivity extends BaseActivity implements BaseChoiceDialog.NoticeDialogListener {
 
 
     private final String[] sortBy = {"date", "numOfPeople", "hotness"};
@@ -85,9 +76,9 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OurDialogFragment newFragment = new ChoiceDialogFragment();
-                OurDialogFragment.initDialog(newFragment, R.string.sort_by, R.array.SortByOptions,-1);
-                newFragment.show(getFragmentManager(), "ChoiceDialogFragment");
+                BaseChoiceDialog newFragment = new SingleChoiceDialog();
+                DialogUtils.initChoiceDialog(newFragment, R.string.sort_by, R.array.SortByOptions,-1);
+                newFragment.show(getFragmentManager(), "SingleChoiceDialog");
             }
         });
 
@@ -159,11 +150,6 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
 
     @Override
     public void onDialogPositiveClickMultipleChoice(DialogFragment dialog, int dialogIndex, List<Integer> mSelectedItems) {
-        // Do nothing
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
         // Do nothing
     }
 

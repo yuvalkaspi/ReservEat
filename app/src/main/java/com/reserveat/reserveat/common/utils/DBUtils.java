@@ -20,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.reserveat.reserveat.MainActivity;
 import com.reserveat.reserveat.common.dbObjects.Restaurant;
 import com.reserveat.reserveat.common.dbObjects.Review;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ContentBaseDialog;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -192,7 +193,6 @@ public class DBUtils {
 
     // when user gave a review need to calculate change in reliability
     public static void updateReliabilityToUser(final String userId , final Review currentReview, String reviewPath) {
-        final DatabaseReference userRef = mDatabase.child(reviewPath);
 
         mDatabase.child(reviewPath).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -299,4 +299,30 @@ public class DBUtils {
                 });
         //todo: nullpointerexception?
     }
+
+
+    public static void setNotificationRequestActive(String key, boolean isActive) {
+
+        final String userId = getCurrentUserID();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        childUpdates.put("/users/" + userId + "/notificationRequests/" + key + "/isActive", isActive);
+        childUpdates.put("/notificationRequests/" + key + "/isActive", isActive);
+
+        mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.i(TAG, "setNotificationRequestActive: success");
+                } else {
+                    Log.w(TAG, "setNotificationRequestActive: failure", task.getException());
+                }
+            }
+        });
+
+    }
+
+
+
 }

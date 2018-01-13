@@ -7,10 +7,6 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-/**
- * Created by Ami on 03/01/2018.
- */
-
 public class BaseActivity extends AppCompatActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -38,6 +34,10 @@ public class BaseActivity extends AppCompatActivity{
                 Intent intent_picked_res_list = new Intent(getApplicationContext(), MyReservationsListActivity.class );
                 intent_picked_res_list.putExtra("isMyReservations" , false);
                 startActivity(intent_picked_res_list);
+                return true;
+            case R.id.myNotifications:
+                Intent intent_my_notifications_list = new Intent(getApplicationContext(), MyNotificationsListActivity.class );
+                startActivity(intent_my_notifications_list);
                 return true;
             case R.id.statistics:
                 Intent intent_statistics = new Intent(getApplicationContext(), StatisticsActivity.class );
