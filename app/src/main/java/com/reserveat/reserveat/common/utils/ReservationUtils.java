@@ -112,9 +112,7 @@ public class ReservationUtils {
                         activity.getApplication().getApplicationContext().startActivity(intent);
                     }
                 });
-//                TextView phoneTextView = (TextView) customView.findViewById(R.id.popup_phone);
-//                phoneTextView.setMovementMethod(LinkMovementMethod.getInstance());
-//                android:linksClickable="true"
+
             }
 
             @Override

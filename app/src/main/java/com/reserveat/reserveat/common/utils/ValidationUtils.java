@@ -26,39 +26,6 @@ public class ValidationUtils {
 
     private static final int OK = 0;
 
-
-//    public static void isUserValid(FirebaseUser currentUser, final Context context, final boolean isUesrEnterd, Resources resources, final View mLoginFormView, final View mProgressView ) {
-//        if (currentUser == null && isUesrEnterd){ //no user is signed in and in app, go to login
-//            Intent intent = new Intent(context, LoginActivity.class );
-//            context.startActivity(intent);
-//        }
-//        else{
-//
-//            //check if current user has a valid token i.e. user is not disabled
-//            Task<GetTokenResult> x = currentUser.getIdToken(true).addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    if(isUesrEnterd){ //user is invalid and in app, go to login
-//                        Intent intent = new Intent(context, LoginActivity.class );
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        context.startActivity(intent);
-//                    }
-//                }
-//            });
-//
-//            x.addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
-//                @Override
-//                public void onSuccess(GetTokenResult getTokenResult) {
-//                    if(!isUesrEnterd) { //user is valid and not in app, go to main
-//                        Intent intent = new Intent(context, MainActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        context.startActivity(intent);
-//                    }
-//                }
-//            });
-//        }
-//    }
-
     //returns errCode if email is invalid. else- returns 0
     public static int isEmailValid(String email) {
         int res = isEmptyTextField(email);

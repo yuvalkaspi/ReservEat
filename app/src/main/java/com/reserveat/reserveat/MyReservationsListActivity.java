@@ -106,7 +106,6 @@ public class MyReservationsListActivity extends BaseActivity {
                             }
                         });
 
-                        //Todo make grey when reported
                         Button spamButton = (Button) customView.findViewById(R.id.popup_spam_Button);
                         if((isMyReservations && !reservation.isPicked()) || reservation.getIsSpam())
                             makeButtonGrey(spamButton);
@@ -137,7 +136,6 @@ public class MyReservationsListActivity extends BaseActivity {
                         if(isMyReservations)
                             reviewButton.setVisibility(View.GONE);
                         else{
-                            //Todo make gery when answered
                             if(reservation.getIsReviewed())
                                 makeButtonGrey(reviewButton);
                             else{
@@ -269,6 +267,9 @@ public class MyReservationsListActivity extends BaseActivity {
             nameTextView.setVisibility(View.VISIBLE);
             nameTextView.setText(reservation.getReservationName());
         }
+
+        LinearLayout phoneLayout = detailsCustomView.findViewById(R.id.phoneLayout);
+        phoneLayout.setVisibility(View.VISIBLE);
 
         mPopupWindow.setFocusable(true);
         mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.my_reservations_list), Gravity.CENTER,0,0);
