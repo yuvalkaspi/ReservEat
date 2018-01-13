@@ -153,6 +153,38 @@ public class DBUtils {
 
     }
 
+    /*
+    Add number of uploads to user by 1
+     */
+    public static void updateUploadToUser(final String userId ) {
+
+        final DatabaseReference userRef = mDatabase.child("users").child(userId);
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int currNumOfUploads = dataSnapshot.child("uploadsThisMonth").getValue(Integer.class);
+                Map<String, Object> childUpdates = new HashMap<>();
+                childUpdates.put("/users/" + userId + "/uploadsThisMonth", currNumOfUploads+1);
+
+                mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.i(TAG, "Update upload to user: success");
+                        } else {
+                            Log.w(TAG, "Update upload to user: failure", task.getException());
+                        }
+                    }
+                });
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+    }
+
     public static void updateReliabilityToUser(final String userId ,final int reliability) {
         final DatabaseReference userRef = mDatabase.child("users").child(userId);
 
@@ -266,6 +298,7 @@ public class DBUtils {
         childUpdates.put("/users/" + userId + "/stars", 0);
         childUpdates.put("/users/" + userId + "/spamReports", 0);
         childUpdates.put("/users/" + userId + "/reliability", 50);
+        childUpdates.put("/users/" + userId + "/uploadsThisMonth", 0);
 
         mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

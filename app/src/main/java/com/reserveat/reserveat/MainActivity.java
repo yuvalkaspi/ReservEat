@@ -33,8 +33,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.reserveat.reserveat.common.utils.DBUtils;
+import com.reserveat.reserveat.common.utils.DateUtils;
 import com.reserveat.reserveat.common.utils.ReservationUtils;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
@@ -42,8 +47,13 @@ import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogFragment;
 import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
 import com.reserveat.reserveat.common.utils.ValidationUtils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener {
 
@@ -55,6 +65,7 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
     RecyclerView recyclerView;
     FirebaseUser currentUser;
     LinearLayoutManager linearLayoutManager;
+    //FloatingActionButton addButton = findViewById(R.id.add_cancellation);
     String key;
 
 
@@ -63,7 +74,7 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FloatingActionButton addButton = findViewById(R.id.add_cancellation);
+        final FloatingActionButton addButton = findViewById(R.id.add_cancellation);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,6 +109,7 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
         recyclerView.setLayoutManager(linearLayoutManager);
 
         createAdapter("date",false);
+
     }
 
     private void createAdapter(String orderByOption, Boolean sortByDescOrder) {
@@ -167,13 +179,11 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
         // Do nothing
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        //ValidationUtils.isUserValid(currentUser, getApplicationContext(), true);
         if (currentUser == null){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class );
             startActivity(intent);
@@ -194,5 +204,4 @@ public class MainActivity extends BaseActivity implements OurDialogFragment.Noti
             });
         }
     }
-
 }

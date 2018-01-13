@@ -125,7 +125,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        //ValidationUtils.isUserValid(currentUser, getApplicationContext(), false, getResources(), mLoginFormView, mProgressView);
         if(currentUser != null){
             ValidationUtils.showProgress(true, getResources(),mLoginFormView,mProgressView);
             Task<GetTokenResult> x = currentUser.getIdToken(true).addOnFailureListener(new OnFailureListener() {
