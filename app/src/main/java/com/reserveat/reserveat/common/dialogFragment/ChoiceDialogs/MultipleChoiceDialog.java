@@ -1,4 +1,4 @@
-package com.reserveat.reserveat.common.dialogFragment;
+package com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs;
 
 
 import android.app.AlertDialog;
@@ -11,7 +11,7 @@ import com.reserveat.reserveat.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultipleChoiceDialogFragment extends OurDialogFragment{
+public class MultipleChoiceDialog extends BaseChoiceDialog {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -34,13 +34,13 @@ public class MultipleChoiceDialogFragment extends OurDialogFragment{
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        mListener.onDialogPositiveClickMultipleChoice(MultipleChoiceDialogFragment.this, index, mSelectedItems);
+                        mListener.onDialogPositiveClickMultipleChoice(MultipleChoiceDialog.this, index, mSelectedItems);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        mListener.onDialogNegativeClick(MultipleChoiceDialogFragment.this);
+                        //do nothing
                     }
                 });
 

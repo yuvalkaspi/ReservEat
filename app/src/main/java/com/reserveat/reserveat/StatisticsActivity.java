@@ -3,7 +3,6 @@ package com.reserveat.reserveat;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,10 +25,11 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import com.reserveat.reserveat.common.dialogFragment.MultipleChoiceDialogFragment;
-import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
+import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.MultipleChoiceDialog;
+import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.BaseChoiceDialog;
 import com.reserveat.reserveat.common.utils.DBUtils;
 import com.reserveat.reserveat.common.utils.DateUtils;
+import com.reserveat.reserveat.common.utils.DialogUtils;
 import com.reserveat.reserveat.common.utils.ValidationUtils;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ import java.util.List;
 
 import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
 
-public class StatisticsActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener{
+public class StatisticsActivity extends BaseActivity implements BaseChoiceDialog.NoticeDialogListener{
 
     private static final String TAG = "StatisticsActivity";
     private String placeID;
@@ -90,9 +90,9 @@ public class StatisticsActivity extends BaseActivity implements OurDialogFragmen
         timeOfDayChoiceText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OurDialogFragment newFragment = new MultipleChoiceDialogFragment();
-                OurDialogFragment.initDialog(newFragment, R.string.timeOfDay, R.array.timeOfDayOptions,-1);
-                newFragment.show(getFragmentManager(), "ChoiceDialogFragment");
+                BaseChoiceDialog newFragment = new MultipleChoiceDialog();
+                DialogUtils.initChoiceDialog(newFragment, R.string.timeOfDay, R.array.timeOfDayOptions,-1);
+                newFragment.show(getFragmentManager(), "SingleChoiceDialog");
             }
         });
 
@@ -292,11 +292,6 @@ public class StatisticsActivity extends BaseActivity implements OurDialogFragmen
         }
 
         timeOfDayChoiceText.setText(items.toString());
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        // Do nothing
     }
 
 }

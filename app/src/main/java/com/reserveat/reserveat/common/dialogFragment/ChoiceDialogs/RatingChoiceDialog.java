@@ -1,4 +1,4 @@
-package com.reserveat.reserveat.common.dialogFragment;
+package com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,7 +12,7 @@ import android.widget.RatingBar;
 import com.reserveat.reserveat.R;
 
 
-public class RatingDialogFragment extends OurDialogFragment {
+public class RatingChoiceDialog extends BaseChoiceDialog {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -28,13 +28,13 @@ public class RatingDialogFragment extends OurDialogFragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        mListener.onDialogPositiveClick(RatingDialogFragment.this ,index ,ratingBar.getRating() );
+                        mListener.onDialogPositiveClick(RatingChoiceDialog.this ,index ,ratingBar.getRating() );
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        mListener.onDialogNegativeClick(RatingDialogFragment.this);
+                        //do nothing
                     }
                 });
 

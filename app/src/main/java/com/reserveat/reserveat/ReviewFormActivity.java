@@ -15,17 +15,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.reserveat.reserveat.common.dbObjects.Review;
-import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogFragment;
+import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.SingleChoiceDialog;
 import com.reserveat.reserveat.common.utils.DBUtils;
-import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
-import com.reserveat.reserveat.common.dialogFragment.RatingDialogFragment;
+import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.BaseChoiceDialog;
+import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.RatingChoiceDialog;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
+import com.reserveat.reserveat.common.utils.DialogUtils;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ReviewFormActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener {
+public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog.NoticeDialogListener {
 
     static final int NUM_OF_QUESTIONS = 2;
     private Button[] buttons = new Button[NUM_OF_QUESTIONS];
@@ -58,8 +59,8 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
         buttons[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OurDialogFragment newFragment = new ChoiceDialogFragment();
-                OurDialogFragment.initDialog(newFragment, R.string.q1, R.array.SurveyBusyRestaurantOptions,1);
+                BaseChoiceDialog newFragment = new SingleChoiceDialog();
+                DialogUtils.initChoiceDialog(newFragment, R.string.q1, R.array.SurveyBusyRestaurantOptions,1);
                 newFragment.show(getFragmentManager(), "q1ChoiceDialogFragment");
             }
         });
@@ -69,8 +70,8 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
         buttons[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OurDialogFragment newFragment = new RatingDialogFragment();
-                OurDialogFragment.initDialog(newFragment, R.string.q3,R.layout.rating,2);
+                BaseChoiceDialog newFragment = new RatingChoiceDialog();
+                DialogUtils.initChoiceDialog(newFragment, R.string.q3,R.layout.rating,2);
                 newFragment.show(getFragmentManager(), "q3ChoiceDialogFragment");
             }
         });
@@ -168,10 +169,5 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
     @Override
     public void onDialogPositiveClickMultipleChoice(DialogFragment dialog, int dialogIndex, List<Integer> mSelectedItems) {
         // Do nothing
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-
     }
 }
