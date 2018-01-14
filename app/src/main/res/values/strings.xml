@@ -117,4 +117,10 @@
     <string name="no_notifications_exist">No notification requests were found \u2639</string>
     <string name="no_reservations_exist">No reservations were found \u2639</string>
 
+    <string name="spam_not_picked_msg">reservation is not picked, can\'t report it</string>
+    <string name="spam_reported_msg">reservation is reported</string>
+    <string name="remove_picked_msg">reservation is picked, can\'t remove it </string>
+    <string name="review_filed_msg">review is already answered</string>
+    <string name="review_not_arrived_msg">will open after reservation date will arrive</string>
+
 </resources>

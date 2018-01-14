@@ -118,7 +118,8 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
         Map<String, Object> reviewValues = review.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/reviews/" + placeId + "/" + reservation.getDay() + "/" + reservation.getTimeOfDay() +  "/" + key, reviewValues);
+        final String reviewPath = "/reviews/" + placeId + "/" + reservation.getDay() + "/" + reservation.getTimeOfDay() ;
+        childUpdates.put("/" + key, reviewValues);
         childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/reviews/" + key, reviewValues);
         childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/pickedReservations/" + restaurantKey + "/isReviewed", true);
 

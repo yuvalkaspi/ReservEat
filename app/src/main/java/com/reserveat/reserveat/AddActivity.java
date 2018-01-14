@@ -295,7 +295,7 @@ public class AddActivity extends BaseActivity {
         }
     }
 
-    private void addReservationToDB(String restaurant, String branch, String date, String hour, int numOfPeople, String reservationName) {
+    private void addReservationToDB(final String restaurant, final String branch, String date, String hour, final int numOfPeople, String reservationName) {
 
         Log.i(TAG, "adding a new reservation to DB");
         final String key = mDatabase.child("reservations").push().getKey();
@@ -342,11 +342,6 @@ public class AddActivity extends BaseActivity {
             //todo
             Toast.makeText(AddActivity.this, "Error!", Toast.LENGTH_LONG).show();
         }
-    }
-
-
-
-
     }
 }
 

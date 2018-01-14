@@ -82,7 +82,7 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="@string/num_of_people"
         android:inputType="numberDecimal" />
-
+n
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />

@@ -232,13 +232,11 @@ public class DBUtils {
                 int sumRate = 0;
                 int sumBusyRate = 0;
                 int count = 0;
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Review review = snapshot.getValue(Review.class);
-                    count++;
-                    sumRate+= review.getRate();
-                    sumBusyRate+= review.getBusyRate();
-                }
-                updateReliabilityToUser(userId, calcDiff(currentReview, (sumBusyRate/count), (sumRate/count)));
+
+                double currHottnesRate = dataSnapshot.child("hottnesRate").getValue(Double.class);
+                double hottnesRateByUser = calcRate(currentReview);
+
+                updateReliabilityToUser(userId, calcDiff(currHottnesRate, hottnesRateByUser));
             }
 
             @Override
@@ -249,12 +247,13 @@ public class DBUtils {
 
     }
 
+    private static double calcRate(Review currentReview) {
+        return 0;
+    }
+
     // calc how far is the user's review from the given data
-    private static int calcDiff(Review currentReview, int busyRateAvg, int rateAvg) {
-        int res = Math.abs(currentReview.getBusyRate() - busyRateAvg);
-        res += Math.abs(currentReview.getRate() - rateAvg);
-        res = reliabilityReviewValue - res;
-        return res;
+    private static int calcDiff(double currentReviewRate, double userReviewRate) {
+        return (int)Math.round(reliabilityReviewValue - Math.abs(currentReviewRate - userReviewRate));
     }
 
 
