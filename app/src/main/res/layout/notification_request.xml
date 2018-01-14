@@ -34,12 +34,11 @@
                 android:textColor="@color/black"
                 android:textAppearance="?android:textAppearanceMedium" />
 
-            <android.support.v7.widget.SwitchCompat
+            <Switch
                 android:id="@+id/isActive"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:theme="@style/SwitchTheme"/>
+                android:layout_height="wrap_content" />
 
         </RelativeLayout>
 

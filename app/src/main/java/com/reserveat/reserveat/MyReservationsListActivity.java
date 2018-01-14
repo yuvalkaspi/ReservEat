@@ -22,8 +22,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.reserveat.reserveat.common.utils.ReservationUtils;
 import com.reserveat.reserveat.common.utils.DBUtils;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
@@ -36,9 +39,11 @@ import java.util.Map;
 public class MyReservationsListActivity extends BaseActivity {
 
     private static final String TAG = "MyReservationsActivity";
-    FirebaseUser currentUser;
+    private FirebaseUser currentUser;
     private PopupWindow mPopupWindow;
-    boolean isMyReservations;
+    private boolean isMyReservations;
+    private RecyclerView recyclerView;
+    private TextView emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +60,8 @@ public class MyReservationsListActivity extends BaseActivity {
         String resToGet =  isMyReservations? "reservations" : "pickedReservations";
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserID).child(resToGet);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        emptyView = (TextView) findViewById(R.id.empty_view);
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         FirebaseRecyclerAdapter<Reservation, ReservationHolder> adapter = new FirebaseRecyclerAdapter<Reservation, ReservationHolder>(Reservation.class, R.layout.reservation,ReservationHolder.class, mDatabase) {
@@ -158,6 +164,34 @@ public class MyReservationsListActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        DatabaseReference reservationsRef;
+        if(isMyReservations){
+            reservationsRef = DBUtils.getDatabaseRef().child("users").child(DBUtils.getCurrentUserID()).child("reservations");
+        }else{
+            reservationsRef = DBUtils.getDatabaseRef().child("users").child(DBUtils.getCurrentUserID()).child("pickedReservations");
+        }
+        reservationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    recyclerView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                }else{
+                    recyclerView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void makeButtonGrey(Button button) {
         button.setTextColor(getResources().getColor(R.color.lightGray));
     }
@@ -204,6 +238,16 @@ public class MyReservationsListActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null){
+            Intent intent = new Intent(MyReservationsListActivity.this, LoginActivity.class );
+            startActivity(intent);
+        }
+    }
+
     private void popUpDetailsClick(Reservation reservation, String key) {
         LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View detailsCustomView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
@@ -231,15 +275,4 @@ public class MyReservationsListActivity extends BaseActivity {
         mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.my_reservations_list), Gravity.CENTER,0,0);
     }
 
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser == null){
-            Intent intent = new Intent(MyReservationsListActivity.this, LoginActivity.class );
-            startActivity(intent);
-        }
-    }
 }

@@ -71,12 +71,11 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />
-    <android.support.v7.widget.SwitchCompat
+    <Switch
         android:id="@+id/isFlexible"
         android:textSize="20sp"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/SwitchTheme"/>
+        android:layout_height="wrap_content"/>
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />

@@ -4,9 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -50,7 +48,7 @@ public class NotifyActivity extends BaseActivity {
     private EditText numOfPeopleEditText;
     private EditText branchEditText;
     private EditText descriptionEditText;
-    private SwitchCompat isFlexibleSwitch;
+    private Switch isFlexibleSwitch;
     private Calendar current = Calendar.getInstance();
     private FirebaseUser currentUser;
     private String restaurant = "";
@@ -141,7 +139,7 @@ public class NotifyActivity extends BaseActivity {
             }
         });
 
-        isFlexibleSwitch = (SwitchCompat) findViewById(R.id.isFlexible);
+        isFlexibleSwitch = (Switch) findViewById(R.id.isFlexible);
         isFlexibleSwitch.setText("Is time flexible?");
         isFlexibleSwitch.setChecked(true);
 
