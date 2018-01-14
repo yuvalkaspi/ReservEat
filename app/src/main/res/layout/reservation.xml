@@ -81,6 +81,36 @@
                 android:layout_toStartOf="@+id/manIcon"
                 android:text="@string/num_of_people"
                 android:textAppearance="?android:textAppearanceSmall" />
+
+            <ImageView
+                android:id="@+id/boil"
+                android:layout_below="@id/branchHolder"
+                android:layout_toStartOf="@+id/numOfPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:visibility="gone"
+                app:srcCompat="@mipmap/boil" />
+
+            <ImageView
+                android:id="@+id/hot"
+                android:layout_below="@id/branchHolder"
+                android:layout_toStartOf="@+id/numOfPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:visibility="gone"
+                app:srcCompat="@mipmap/hot" />
+
+            <ImageView
+                android:id="@+id/warm"
+                android:layout_below="@id/branchHolder"
+                android:layout_toStartOf="@+id/numOfPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:visibility="gone"
+                app:srcCompat="@mipmap/warm" />
             
         </RelativeLayout>
 

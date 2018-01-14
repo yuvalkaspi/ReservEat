@@ -9,10 +9,14 @@ public class Review {
 
     private int busyRate;
     private float rate;
+    private int wasLine;
+    private int needToBookInAdvance;
     private String userId;
 
     private static final int BUSY_RATE = 1;
     private static final int RATE = 2;
+    private static final int WAS_LINE = 3;
+    private static final int BOOK_INADVANCE = 4;
 
 
     public Review() {
@@ -22,6 +26,8 @@ public class Review {
     public Review(HashMap<Integer, Float> userAnswers, String userId) {
         this.busyRate = userAnswers.get(BUSY_RATE).intValue();
         this.rate = userAnswers.get(RATE);
+        this.wasLine = userAnswers.get(WAS_LINE).intValue();
+        this.needToBookInAdvance = userAnswers.get(BOOK_INADVANCE).intValue();
         this.userId = userId;
     }
 
@@ -32,6 +38,8 @@ public class Review {
         result.put("busyRate", busyRate);
         result.put("rate", rate);
         result.put("userId", userId);
+        result.put("wasLine", wasLine);
+        result.put("needToBookInAdvance", needToBookInAdvance);
 
         return result;
     }
@@ -39,5 +47,10 @@ public class Review {
     public int getBusyRate() { return busyRate; }
 
     public float getRate() { return rate; }
+
+    public int getWasLine() { return wasLine; }
+
+    public int getNeedToBookInAdvance() { return needToBookInAdvance; }
+
 
 }

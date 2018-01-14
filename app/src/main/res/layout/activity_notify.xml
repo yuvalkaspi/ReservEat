@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp">
-
+    android:padding="16dp"
     tools:context="com.reserveat.reserveat.NotifyActivity">
 
 
@@ -19,6 +24,16 @@
         android:textColor="@color/colorPrimary"
         android:textSize="26sp"
         android:typeface="serif" />
+
+    <ImageButton
+        android:id="@+id/infoMsgButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:background="@null"
+        app:srcCompat="@mipmap/infomsg" />
 
     <Space
         android:layout_width="match_parent"
@@ -38,7 +53,7 @@
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/colorPrimaryDark"
         android:hint="@string/branch"
-        android:inputType="text"
+        android:inputType="none"
         android:visibility="gone"/>
 
     <Space
@@ -107,6 +122,10 @@
         android:elevation="4dp"
         android:paddingLeft="70dp"
         android:paddingRight="70dp"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:background="@drawable/mybutton"
         android:text="@string/saveRequest" />
 
 </LinearLayout>
+</ScrollView>

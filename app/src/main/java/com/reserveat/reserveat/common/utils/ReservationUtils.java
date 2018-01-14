@@ -21,6 +21,8 @@ public class ReservationUtils {
         viewHolder.setDate(dateNewFormat);
         viewHolder.setHour(hour);
         viewHolder.setNumOfPeople(model.getNumOfPeople());
+        viewHolder.setHotness(model.getHotness());
+
     }
 
 }

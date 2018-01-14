@@ -22,8 +22,8 @@ public class Reservation implements Serializable {
     private String reservationName;
     private String placeId;
     private int hotness;
-    private Day day;
-    private TimeOfDay timeOfDay;
+    private String day;
+    private String timeOfDay;
     private boolean isReviewed;
     private boolean isSpam;
     private String SeattingArea;
@@ -42,8 +42,8 @@ public class Reservation implements Serializable {
         this.reservationName = reservationName;
         this.hotness = hotness;
         this.placeId = placeId;
-        this.day = day;
-        this.timeOfDay = timeOfDay;
+        this.day = day.name();
+        this.timeOfDay = timeOfDay.name();
         this.SeattingArea = SeattingArea;
         this.isSpam = isSpam;
     }
@@ -84,11 +84,12 @@ public class Reservation implements Serializable {
     public void setPickedByUid(String pickedByUid) { this.pickedByUid = pickedByUid; }
 
     public String getPickedByUid() { return pickedByUid; }
-    public Day getDay() {
+
+    public String getDay() {
         return day;
     }
 
-    public TimeOfDay getTimeOfDay() {
+    public String getTimeOfDay() {
         return timeOfDay;
     }
 

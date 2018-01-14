@@ -49,6 +49,7 @@ import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.utils.ValidationUtils;
 
 import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
+import static com.reserveat.reserveat.common.utils.DBUtils.getCurrentUserID;
 
 public class AddActivity extends BaseActivity {
 
@@ -100,7 +101,7 @@ public class AddActivity extends BaseActivity {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                if(place.getPlaceTypes().contains(TYPE_RESTAURANT)){
+                if (place.getPlaceTypes().contains(TYPE_RESTAURANT)) {
                     Log.i(TAG, "Place: " + place.getName());
                     restaurant = place.getName().toString();
                     placeID = place.getId();
@@ -108,7 +109,7 @@ public class AddActivity extends BaseActivity {
                     branchEditText.setVisibility(View.VISIBLE);
                     DBUtils.addingPlaceToDB(place, TAG);
                     autocompleteFragment.setMenuVisibility(false);
-                }else{
+                } else {
                     autocompleteFragment.setText("");
                     Toast.makeText(AddActivity.this, "place is not a restaurant\nplease enter again", Toast.LENGTH_LONG).show();
                 }
@@ -153,7 +154,7 @@ public class AddActivity extends BaseActivity {
                         Date dateObj = calendar.getTime();
                         dateEditText.setText(dateFormat.format(dateObj));
                     }
-                },year,month,day);
+                }, year, month, day);
                 dpd.show();
             }
         });
@@ -173,7 +174,7 @@ public class AddActivity extends BaseActivity {
                         Date dateObj = calendar.getTime();
                         hourEditText.setText(dateFormat.format(dateObj));
                     }
-                },hour,minutes,false);
+                }, hour, minutes, false);
                 tpd.show();
             }
         });
@@ -182,11 +183,10 @@ public class AddActivity extends BaseActivity {
         isReservationOnMyName.setText(R.string.is_reservation_on_my_name);
         isReservationOnMyName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     reservationNameEditText.setEnabled(false);
                     reservationNameEditText.setText("");//clear
-                }
-                else{
+                } else {
                     reservationNameEditText.setEnabled(true);
                 }
             }
@@ -208,9 +208,7 @@ public class AddActivity extends BaseActivity {
             }
         });
 
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -220,14 +218,12 @@ public class AddActivity extends BaseActivity {
     }
 
 
-
-
     @Override
     public void onStart() {
         super.onStart();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser == null){
-            Intent intent = new Intent(AddActivity.this, LoginActivity.class );
+        if (currentUser == null) {
+            Intent intent = new Intent(AddActivity.this, LoginActivity.class);
             startActivity(intent);
         }
 
@@ -243,6 +239,7 @@ public class AddActivity extends BaseActivity {
 //                            startActivity(intent);
 //                        }
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
@@ -265,24 +262,24 @@ public class AddActivity extends BaseActivity {
         int[] formTextViewErrCodeArr = new int[formTextViewArr.length];
         View focusView = null;
 
-        for (int i = 0 ; i < formTextViewErrCodeArr.length ; i ++ ){
+        for (int i = 0; i < formTextViewErrCodeArr.length; i++) {
             formTextViewErrCodeArr[i] = ValidationUtils.isEmptyTextField(mandatoryFieldsValues[i]);
         }
 
-        if (isReservationOnMyName.isChecked()){//reservation on user's name
+        if (isReservationOnMyName.isChecked()) {//reservation on user's name
             formTextViewErrCodeArr[0] = 0;
             reservationNameEditText.setError(null);
         }
 
-        for (int i = 0; i < formTextViewArr.length; i ++){
+        for (int i = 0; i < formTextViewArr.length; i++) {
             int res = formTextViewErrCodeArr[i];
             TextView textView = formTextViewArr[i];
-            if(res != 0){//error
+            if (res != 0) {//error
                 textView.setError(getString(res));
                 focusView = textView;
-                if(textView == branchEditText)
+                if (textView == branchEditText)
                     Toast.makeText(AddActivity.this, "please enter a restaurant", Toast.LENGTH_LONG).show();
-            }else{
+            } else {
                 textView.setError(null);// Reset error.
             }
         }
@@ -296,46 +293,56 @@ public class AddActivity extends BaseActivity {
         }
     }
 
-    private void addReservationToDB(String restaurant, String branch, String date, String hour, int numOfPeople, String reservationName) {
+    private void addReservationToDB(final String restaurant, final String branch, String date, String hour, final int numOfPeople, String reservationName) {
 
         Log.i(TAG, "adding a new reservation to DB");
-        String key = mDatabase.child("reservations").push().getKey();
-        try{
+        final String key = mDatabase.child("reservations").push().getKey();
+        try {
             String dateNewFormat = DateUtils.switchDateFormat(date, DateUtils.dateFormatUser, DateUtils.dateFormatDB);
-            String newFullDateString = dateNewFormat + " " + hour;
-            if(reservationName.equals("")){
+            final String newFullDateString = dateNewFormat + " " + hour;
+            if (reservationName.equals("")) {
                 reservationName = currentUser.getDisplayName();
             }
-            DateUtils.TimeOfDay timeInDay = DateUtils.getTimeOfDay(hour);
-            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay, SeattingArea, false);
-            Map<String, Object> reservationValues = reservation.toMap();
-            Map<String, Object> childUpdates = new HashMap<>();
-            childUpdates.put("/reservations/" + key, reservationValues);
-            childUpdates.put("/users/" + currentUser.getUid() + "/reservations/" + key, reservationValues);
-
-            mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            final String reservationOnName = reservationName;
+            final DateUtils.TimeOfDay timeInDay = DateUtils.getTimeOfDay(hour);
+            final DatabaseReference reviewRef = mDatabase.child("reviews").child(placeID).child(reservationDay[0].toString()).child(timeInDay.toString());
+            reviewRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        DBUtils.updateUploadToUser(currentUser.getUid());
-                        Log.i(TAG, "add new reservation:success", task.getException());
-                        Intent intent = new Intent(AddActivity.this, MainActivity.class );
-                        startActivity(intent);
-                    } else {
-                        Log.w(TAG, "add new reservation:failure", task.getException());
-                        Toast.makeText(AddActivity.this, "Error!", Toast.LENGTH_LONG).show();
-                    }
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Float hottnesRateInDB = dataSnapshot.child("hottnesRate").getValue(Float.class);
+                    Integer hottnesRate = hottnesRateInDB == null ? 0 : Math.round(hottnesRateInDB);
+                    Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationOnName, hottnesRate, reservationDay[0], timeInDay, SeattingArea, false);
+                    Map<String, Object> reservationValues = reservation.toMap();
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    childUpdates.put("/reservations/" + key, reservationValues);
+                    childUpdates.put("/users/" + currentUser.getUid() + "/reservations/" + key, reservationValues);
+
+                    mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                DBUtils.updateUploadToUser(currentUser.getUid());
+                                Log.i(TAG, "add new reservation:success", task.getException());
+                                Intent intent = new Intent(AddActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Log.w(TAG, "add new reservation:failure", task.getException());
+                                Toast.makeText(AddActivity.this, "Error!", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
                 }
             });
-        }catch (ParseException e){
+        } catch (ParseException e) {
             //todo
             Toast.makeText(AddActivity.this, "Error!", Toast.LENGTH_LONG).show();
         }
-
-
-
-
-
     }
+
+
 }
 

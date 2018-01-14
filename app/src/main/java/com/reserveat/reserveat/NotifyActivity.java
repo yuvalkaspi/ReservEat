@@ -1,7 +1,9 @@
 package com.reserveat.reserveat;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -53,16 +56,33 @@ public class NotifyActivity extends BaseActivity {
     private FirebaseUser currentUser;
     private String restaurant = "";
     private String placeID;
-
-
+    private ImageButton infoMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notify);
 
-        //Calendar myCalendar = Calendar.getInstance();
+        infoMsg = findViewById(R.id.infoMsgButton);
+        infoMsg.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                AlertDialog alertDialog = new AlertDialog.Builder(NotifyActivity.this).create();
+                alertDialog.setMessage(getResources().getString(R.string.notificationInfo));
+
+                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // here you can add functions
+                    }
+                });
+
+                alertDialog.show();
+            }
+        });
+
+
         branchEditText = findViewById(R.id.branch);
+        branchEditText.setKeyListener(null); // make branch uneditable
 
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -72,17 +92,24 @@ public class NotifyActivity extends BaseActivity {
                 .build();
 
         autocompleteFragment.setFilter(typeFilter);
+        autocompleteFragment.setHint("Enter Restaurant");
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                Log.i(TAG, "Place: " + place.getName());
-                restaurant = place.getName().toString();
-                placeID = place.getId();
-                branchEditText.setText(place.getAddress());
-                branchEditText.setVisibility(View.VISIBLE);
-                DBUtils.addingPlaceToDB(place, TAG);
-                autocompleteFragment.setMenuVisibility(false);
+
+                if(place.getPlaceTypes().contains(TYPE_RESTAURANT)){
+                    Log.i(TAG, "Place: " + place.getName());
+                    restaurant = place.getName().toString();
+                    placeID = place.getId();
+                    branchEditText.setText(place.getAddress());
+                    branchEditText.setVisibility(View.VISIBLE);
+                    DBUtils.addingPlaceToDB(place, TAG);
+                    autocompleteFragment.setMenuVisibility(false);
+                }else{
+                    autocompleteFragment.setText("");
+                    Toast.makeText(NotifyActivity.this, "place is not a restaurant\nplease enter again", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -90,6 +117,21 @@ public class NotifyActivity extends BaseActivity {
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
+
+        // click on autocompleteFragment clear button
+        autocompleteFragment.getView().findViewById(R.id.place_autocomplete_clear_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // example : way to access view from PlaceAutoCompleteFragment
+                        // ((EditText) autocompleteFragment.getView()
+                        // .findViewById(R.id.place_autocomplete_search_input)).setText("");
+                        autocompleteFragment.setText("");
+                        view.setVisibility(View.GONE);
+                        branchEditText.setText("");
+                        branchEditText.setVisibility(View.GONE);
+                    }
+                });
 
         dateEditText = findViewById(R.id.date);
         hourEditText = findViewById(R.id.hour);
@@ -139,7 +181,7 @@ public class NotifyActivity extends BaseActivity {
             }
         });
 
-        isFlexibleSwitch = (Switch) findViewById(R.id.isFlexible);
+        isFlexibleSwitch = findViewById(R.id.isFlexible);
         isFlexibleSwitch.setText("Is time flexible?");
         isFlexibleSwitch.setChecked(true);
 

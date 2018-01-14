@@ -87,9 +87,9 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:text="@string/CONTINUE"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/mybutton"
                 android:textColor="@color/white"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/SignUp"
@@ -100,7 +100,7 @@
                 android:text="@string/sign_up_message"
                 android:textColor="@color/black"
                 android:textColorLink="@color/colorPrimary"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 

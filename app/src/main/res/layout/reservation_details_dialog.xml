@@ -193,6 +193,36 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/chair"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/pop_up_padding"
+            android:text="Seatting Area:"
+            android:textSize="@dimen/pop_up_text_size"
+            android:textColor="@color/cardview_dark_background"/>
+
+        <TextView
+            android:id="@+id/seattingArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/pop_up_padding"
+            android:text="Seatting Area"
+            android:textSize="@dimen/pop_up_text_size"
+            android:textColor="@color/cardview_dark_background"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/phoneLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
