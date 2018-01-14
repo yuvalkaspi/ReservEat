@@ -44,9 +44,6 @@ public class MyReservationsListActivity extends BaseActivity {
     private static final String TAG = "MyReservationsActivity";
     private FirebaseUser currentUser;
     private PopupWindow mPopupWindow;
-    private static final String myResSpamInfo = "myResSpamInfo";
-    private static final String myPickResSpamInfo = "myPickResSpamInfo";
-
     private boolean isMyReservations;
     private RecyclerView recyclerView;
     private TextView emptyView;
@@ -121,9 +118,9 @@ public class MyReservationsListActivity extends BaseActivity {
                             public void onClick(View view) {
                                 AlertDialog alertDialog = new AlertDialog.Builder(MyReservationsListActivity.this).create();
                                 if(isMyReservations)
-                                    alertDialog.setMessage(myResSpamInfo);
+                                    alertDialog.setMessage(getResources().getString(R.string.myResSpamInfo));
                                 else
-                                    alertDialog.setMessage(myPickResSpamInfo);
+                                    alertDialog.setMessage(getResources().getString(R.string.myPicksSpamInfo));
 
                                 alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {

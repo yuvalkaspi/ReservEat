@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.reserveat.reserveat.common.dbObjects.Review;
 import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.SingleChoiceDialog;
@@ -28,11 +27,11 @@ import java.util.Map;
 
 public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog.NoticeDialogListener {
 
-    static final int NUM_OF_QUESTIONS = 2;
+    private static final int NUM_OF_QUESTIONS = 4;
     private Button[] buttons = new Button[NUM_OF_QUESTIONS];
-    final HashMap<Integer, Float> userAnswers = new HashMap<>();
-    FirebaseUser currentUser;
-    public static int numOfStarsPerReview = 1;
+    private final HashMap<Integer, Float> userAnswers = new HashMap<>();
+    private FirebaseUser currentUser;
+    private static final int NUM_OF_STARS_PER_REVIEW = 1;
 
     private static final String TAG = "SurveyFormActivity";
 
@@ -60,7 +59,7 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
             @Override
             public void onClick(View view) {
                 BaseChoiceDialog newFragment = new SingleChoiceDialog();
-                DialogUtils.initChoiceDialog(newFragment, R.string.q1, R.array.SurveyBusyRestaurantOptions,1);
+                DialogUtils.initChoiceDialog(newFragment, R.string.q1, R.array.ReviewBusyRestaurantOptions,1);
                 newFragment.show(getFragmentManager(), "q1ChoiceDialogFragment");
             }
         });
@@ -72,7 +71,28 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
             public void onClick(View view) {
                 BaseChoiceDialog newFragment = new RatingChoiceDialog();
                 DialogUtils.initChoiceDialog(newFragment, R.string.q2,R.layout.rating,2);
+                newFragment.show(getFragmentManager(), "q2ChoiceDialogFragment");
+            }
+        });
+
+        buttons[2]= findViewById(R.id.q3);
+        buttons[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BaseChoiceDialog newFragment = new SingleChoiceDialog();
+                DialogUtils.initChoiceDialog(newFragment, R.string.q3, R.array.ReviewYesNoOptions,3);
                 newFragment.show(getFragmentManager(), "q3ChoiceDialogFragment");
+            }
+        });
+
+
+        buttons[3]= findViewById(R.id.q4);
+        buttons[3].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BaseChoiceDialog newFragment = new SingleChoiceDialog();
+                DialogUtils.initChoiceDialog(newFragment, R.string.q4, R.array.ReviewYesNoOptions,4);
+                newFragment.show(getFragmentManager(), "q4ChoiceDialogFragment");
             }
         });
 
@@ -83,7 +103,7 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
                 if(checkAllQuestionsFilled()){
                     Review review = new Review(userAnswers, DBUtils.getCurrentUserID());
                     insertDataToDB(review, reservation, restaurantKey);
-                    DBUtils.updateStarsToUser(numOfStarsPerReview, reservation.getPickedByUid());
+                    DBUtils.updateStarsToUser(NUM_OF_STARS_PER_REVIEW, reservation.getPickedByUid());
                     Toast.makeText(ReviewFormActivity.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
                     //Intent intent = new Intent(ReviewFormActivity.this, MyReviewActivity.class );
                     //startActivity(intent);
@@ -102,7 +122,7 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentUser = DBUtils.getCurrentUser();
         if (currentUser == null){
             Intent intent = new Intent(ReviewFormActivity.this, LoginActivity.class );
             startActivity(intent);
@@ -118,7 +138,8 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
         Map<String, Object> reviewValues = review.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/reviews/" + placeId + "/" + reservation.getDay() + "/" + reservation.getTimeOfDay() +  "/" + key, reviewValues);
+        final String reviewPath = "/reviews/" + placeId + "/" + reservation.getDay() + "/" + reservation.getTimeOfDay();
+        childUpdates.put(reviewPath +  "/" + key, reviewValues);
         childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/reviews/" + key, reviewValues);
         childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/pickedReservations/" + restaurantKey + "/isReviewed", true);
 
