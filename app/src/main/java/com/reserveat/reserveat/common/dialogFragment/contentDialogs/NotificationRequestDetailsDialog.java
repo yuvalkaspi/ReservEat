@@ -36,12 +36,11 @@ public class NotificationRequestDetailsDialog extends ContentBaseDialog {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        View root = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(contentId, null);
+        View root = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.notification_request_details_dialog, null);
 
         fillNotificationRequestDetails(root);
 
-        builder.setTitle(titleStringId)
-                .setView(root);
+        builder.setView(root);
 
         dialog = builder.create();
         return dialog;
@@ -52,7 +51,7 @@ public class NotificationRequestDetailsDialog extends ContentBaseDialog {
 
     private void fillNotificationRequestDetails(final View view){
 
-        final DatabaseReference notificationRef = DBUtils.getDatabaseRef().child("notificationRequests").child(key);
+        final DatabaseReference notificationRef = DBUtils.getDatabaseRef().child("users").child(DBUtils.getCurrentUserID()).child("notificationRequests").child(key);
 
         notificationRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

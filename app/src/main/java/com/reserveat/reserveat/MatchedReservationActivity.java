@@ -1,7 +1,6 @@
 package com.reserveat.reserveat;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +18,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ContentBaseDialog;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ReservationDetailsDialog;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ReservationListDialog;
+import com.reserveat.reserveat.common.utils.DialogUtils;
 import com.reserveat.reserveat.common.utils.ReservationUtils;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
@@ -62,27 +65,9 @@ public class MatchedReservationActivity extends BaseActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         key = getRef(position).getKey();
-                        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                        final View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
-                        mPopupWindow = new PopupWindow(
-                                customView,
-                                LinearLayout.LayoutParams.WRAP_CONTENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT
-                        );
-
-                        mPopupWindow.setElevation(5.0f);
-                        ReservationUtils.popUpWindowCreate(mPopupWindow, customView, reservation, MatchedReservationActivity.this);
-
-                        Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
-                        pickButton.setVisibility(View.VISIBLE);
-                        pickButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ReservationUtils.popUpPickClick(reservation, customView, key, currentUser.getUid(), MatchedReservationActivity.this);
-                            }
-                        });
-                        mPopupWindow.setFocusable(true);
-                        mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.matched_reservation), Gravity.CENTER,0,0);
+                        ContentBaseDialog newFragment = new ReservationDetailsDialog();
+                        DialogUtils.initContentDialog(newFragment, key, false, false, false, false, true);
+                        newFragment.show(getFragmentManager(), "ReservationDetailsDialog");
                     }
                 });
 

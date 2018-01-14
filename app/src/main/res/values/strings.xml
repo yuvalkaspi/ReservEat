@@ -110,5 +110,17 @@
     <string name="notification_request">NOTIFICATION REQUEST</string>
     <string name="no_notifications_exist">No notification requests were found \u2639</string>
     <string name="no_reservations_exist">No reservations were found \u2639</string>
+    <string name="close_button">close_button</string>
+    <string name="details_button_string"> details</string>
+    <string name="review_button_string"> review</string>
+    <string name="spam_button_string"> spam</string>
+    <string name="remove_button_string"> remove</string>
+    <string name="restaurant_icon">restaurant_icon</string>
+    <string name="restaurant_details">Restaurant:</string>
+    <string name="branch_details">Branch:</string>
+    <string name="date_details">Date:</string>
+    <string name="hour_details">Hour:</string>
+    <string name="people_details">People:</string>
+    <string name="phone_details">Phone:</string>
 
 </resources>

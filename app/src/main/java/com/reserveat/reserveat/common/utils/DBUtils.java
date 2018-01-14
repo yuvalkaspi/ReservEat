@@ -186,7 +186,7 @@ public class DBUtils {
 
     }
 
-    public static void updateReliabilityToUser(final String userId ,final int reliability) {
+    public static void updateReliabilityToUser(final String userId ,final double reliability) {
         final DatabaseReference userRef = mDatabase.child("users").child(userId);
 
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -194,7 +194,7 @@ public class DBUtils {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int currReliability = dataSnapshot.child("reliability").getValue(Integer.class);
                 Map<String, Object> childUpdates = new HashMap<>();
-                int finReliability = currReliability + reliability;
+                double finReliability = currReliability + reliability;
 
                 if (finReliability > reliabilityMax )
                     finReliability = reliabilityMax;
@@ -229,7 +229,7 @@ public class DBUtils {
         mDatabase.child(reviewPath).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                int sumRate = 0;
+                double sumRate = 0;
                 int sumBusyRate = 0;
                 int count = 0;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -238,7 +238,7 @@ public class DBUtils {
                     sumRate+= review.getRate();
                     sumBusyRate+= review.getBusyRate();
                 }
-                updateReliabilityToUser(userId, calcDiff(currentReview, (sumBusyRate/count), (sumRate/count)));
+                updateReliabilityToUser(userId, calcDiff(currentReview, ((double)sumBusyRate/count), (sumRate/count)));
             }
 
             @Override
@@ -250,8 +250,8 @@ public class DBUtils {
     }
 
     // calc how far is the user's review from the given data
-    private static int calcDiff(Review currentReview, int busyRateAvg, int rateAvg) {
-        int res = Math.abs(currentReview.getBusyRate() - busyRateAvg);
+    private static double calcDiff(Review currentReview, double busyRateAvg, double rateAvg) {
+        double res = Math.abs(currentReview.getBusyRate() - busyRateAvg);
         res += Math.abs(currentReview.getRate() - rateAvg);
         res = reliabilityReviewValue - res;
         return res;

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.reserveat.reserveat.R;
 import com.reserveat.reserveat.common.utils.DBUtils;
@@ -24,15 +26,31 @@ public class NotificationRequestListDialog extends ContentBaseDialog {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        View root = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(contentId, null);
-        final Button detailsButton = root.findViewById(R.id.details_Button);
-        final Button removeButton = root.findViewById(R.id.remove_Button);
+        View root = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.actions_dialog, null);
+        Button detailsButton = root.findViewById(R.id.details_button);
+        Button removeButton = root.findViewById(R.id.remove_button);
+
+        Button reviewButton = root.findViewById(R.id.review_button);
+        Button spamButton = root.findViewById(R.id.spam_button);
+        ImageButton closeButton = root.findViewById(R.id.close_button);
+        TextView title = root.findViewById(R.id.actions_title);
+
+        reviewButton.setVisibility(View.GONE);
+        spamButton.setVisibility(View.GONE);
+        title.setText(R.string.notification_request);
+
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
 
         detailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NotificationRequestDetailsDialog newFragment = new NotificationRequestDetailsDialog();
-                DialogUtils.initContentDialog(newFragment, R.string.details, R.layout.notification_request_details_dialog,key);
+                ContentBaseDialog newFragment = new NotificationRequestDetailsDialog();
+                DialogUtils.initContentDialog(newFragment, key, false, false, false, false, false);
                 newFragment.show(getFragmentManager(), "NotificationRequestDetailsDialog");
                 dialog.dismiss();
             }
@@ -40,16 +58,12 @@ public class NotificationRequestListDialog extends ContentBaseDialog {
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Map<String, Object> childUpdates = new HashMap<>();
-                childUpdates.put("/users/" + DBUtils.getCurrentUser().getUid() + "/notificationRequests/" + key, null);
-                childUpdates.put("/notificationRequests/" + key, null);
-                removeClick(childUpdates);
+                removeClick("notificationRequests");
             }
         });
 
 
-        builder.setTitle(titleStringId)
-                .setView(root);
+        builder.setView(root);
 
         dialog = builder.create();
         return dialog;

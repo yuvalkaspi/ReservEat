@@ -53,7 +53,7 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
         final Reservation reservation = (Reservation) extras.get("reservation");
         setReservationDetails(reservation);
 
-        final String restaurantKey = (String) extras.get("restaurantKey");
+        final String reservationKey = (String) extras.get("reservationKey");
 
         buttons[0] = findViewById(R.id.q1);
         buttons[0].setOnClickListener(new View.OnClickListener() {
@@ -82,7 +82,7 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
             public void onClick(View view) {
                 if(checkAllQuestionsFilled()){
                     Review review = new Review(userAnswers, DBUtils.getCurrentUserID());
-                    insertDataToDB(review, reservation, restaurantKey);
+                    insertDataToDB(review, reservation, reservationKey);
                     DBUtils.updateStarsToUser(numOfStarsPerReview, reservation.getPickedByUid());
                     Toast.makeText(ReviewFormActivity.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
                     //Intent intent = new Intent(ReviewFormActivity.this, MyReviewActivity.class );
@@ -110,7 +110,7 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
     }
 
 
-    private void insertDataToDB(final Review review, Reservation reservation, String restaurantKey) {
+    private void insertDataToDB(final Review review, Reservation reservation, String reservationKey) {
         Log.i(TAG, "adding a new review to DB");
 
         String placeId = reservation.getPlaceId();
@@ -121,7 +121,7 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
         final String reviewPath = "/reviews/" + placeId + "/" + reservation.getDay().name() + "/" + reservation.getTimeOfDay().name();
         childUpdates.put(reviewPath +  "/" + key, reviewValues);
         childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/reviews/" + key, reviewValues);
-        childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/pickedReservations/" + restaurantKey + "/isReviewed", true);
+        childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/pickedReservations/" + reservationKey + "/isReviewed", true);
 
         DBUtils.getDatabaseRef().updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

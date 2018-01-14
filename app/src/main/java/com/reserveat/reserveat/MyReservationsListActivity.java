@@ -27,6 +27,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.reserveat.reserveat.common.dbObjects.NotificationRequest;
+import com.reserveat.reserveat.common.dbObjects.NotificationRequestHolder;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ContentBaseDialog;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.NotificationRequestListDialog;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ReservationListDialog;
+import com.reserveat.reserveat.common.utils.DialogUtils;
 import com.reserveat.reserveat.common.utils.ReservationUtils;
 import com.reserveat.reserveat.common.utils.DBUtils;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
@@ -73,89 +79,19 @@ public class MyReservationsListActivity extends BaseActivity {
                     Toast.makeText(MyReservationsListActivity.this, "error!", Toast.LENGTH_LONG).show();
                     Log.w(TAG, "populateViewHolder: failure");
                 }
+
                 final Reservation reservation = model;
                 viewHolder.setOnClickListener(new ReservationHolder.ClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         final String key = getRef(position).getKey();
-                        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                        final View customView = inflater.inflate(R.layout.pop_up_my_reservations,null);
-                        mPopupWindow = new PopupWindow(
-                                customView,
-                                LinearLayout.LayoutParams.WRAP_CONTENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT
-                        );
-                        mPopupWindow.setElevation(5.0f);
 
-                        ImageButton closeButton = (ImageButton) customView.findViewById(R.id.ib_popup_close);
-                        closeButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                // Dismiss the popup window
-                                mPopupWindow.dismiss();
-                            }
-                        });
-
-                        Button detailsButton = (Button) customView.findViewById(R.id.popup_details_Button);
-                        detailsButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                // Dismiss the popup window
-                                mPopupWindow.dismiss();
-                                popUpDetailsClick(reservation, key);
-                            }
-                        });
-
-                        Button spamButton = (Button) customView.findViewById(R.id.popup_spam_Button);
-                        if((isMyReservations && !reservation.isPicked()) || reservation.getIsSpam())
-                            makeButtonGrey(spamButton);
-                        else
-                        spamButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                popUpSpamClick(reservation, customView, key);
-                            }
-                        });
-
-                        Button removeButton = (Button) customView.findViewById(R.id.popup_remove_Button);
-                        if(!isMyReservations)
-                            removeButton.setVisibility(View.GONE);
-                        else{
-                            if (reservation.isPicked())
-                                makeButtonGrey(removeButton);
-                            else
-                                removeButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        popUpRemoveClick(reservation, customView, key);
-                                    }
-                                });
-                        }
-
-                        Button reviewButton = (Button) customView.findViewById(R.id.popup_review_Button);
-                        if(isMyReservations)
-                            reviewButton.setVisibility(View.GONE);
-                        else{
-                            if(reservation.getIsReviewed())
-                                makeButtonGrey(reviewButton);
-                            else{
-                                reviewButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent intent = new Intent(MyReservationsListActivity.this, ReviewFormActivity.class );
-                                        intent.putExtra("reservation", reservation);
-                                        intent.putExtra("restaurantKey", key);
-                                        startActivityForResult(intent , 0);
-                                        mPopupWindow.dismiss();
-                                    }
-                                });
-                            }
-                        }
-
-                        mPopupWindow.setFocusable(true);
-                        mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.my_reservations_list), Gravity.CENTER,0,0);
+                        ContentBaseDialog newFragment = new ReservationListDialog();
+                        DialogUtils.initContentDialog(newFragment, key, isMyReservations, reservation.getIsSpam(), reservation.isPicked(), reservation.getIsReviewed(), false);
+                        newFragment.show(getFragmentManager(), "ReservationListDialog");
                     }
                 });
+
                 Log.i(TAG, "populateViewHolder: success");
             }
         };
@@ -192,51 +128,6 @@ public class MyReservationsListActivity extends BaseActivity {
         });
     }
 
-    private void makeButtonGrey(Button button) {
-        button.setTextColor(getResources().getColor(R.color.lightGray));
-    }
-
-    private void popUpRemoveClick(Reservation reservation, View customView, String key) {
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/users/" + currentUser.getUid() + "/reservations/" + key, null);
-        childUpdates.put("/reservations/" + key, null);
-        DatabaseReference popUpDatabase = FirebaseDatabase.getInstance().getReference();
-
-        popUpDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Log.i(TAG, "remove reservation:success", task.getException());
-                    mPopupWindow.dismiss();
-
-                } else {
-                    Log.w(TAG, "remove reservation:failure", task.getException());
-                    Toast.makeText(getApplicationContext() , "Error!", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-
-    private void popUpSpamClick(Reservation reservation, View customView, String key) {
-
-        String spammer;
-        reservation.setIsSpam(true);
-        if(isMyReservations) {
-            // my reservation picker is spammer
-            spammer = "picker";
-            DBUtils.updateSpamToUser(reservation.getPickedByUid(), reservation.getUid(),"reservations", key);
-        }else{
-            // I picked reservation owner is spammer
-            spammer = "reservation owner";
-            DBUtils.updateSpamToUser(reservation.getUid(), reservation.getPickedByUid(),"pickedReservations", key);
-        }
-
-        Button spamButton = (Button) customView.findViewById(R.id.popup_spam_Button);
-        makeButtonGrey(spamButton);
-        Toast.makeText(getApplicationContext() ,spammer + " is reported", Toast.LENGTH_LONG).show();
-        mPopupWindow.dismiss();
-
-    }
 
     @Override
     public void onStart() {
@@ -248,31 +139,6 @@ public class MyReservationsListActivity extends BaseActivity {
         }
     }
 
-    private void popUpDetailsClick(Reservation reservation, String key) {
-        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View detailsCustomView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
-        PopupWindow mPopupWindow = new PopupWindow(
-                detailsCustomView,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
 
-        ReservationUtils.popUpWindowCreate(mPopupWindow, detailsCustomView, reservation, MyReservationsListActivity.this);
-
-        if(!isMyReservations){
-            final TextView nameFormTextView = (TextView) detailsCustomView.findViewById(R.id.popup_name_form);
-            final TextView nameTextView = (TextView) detailsCustomView.findViewById(R.id.popup_name);
-            nameFormTextView.setVisibility(View.VISIBLE);
-            nameFormTextView.setText("Reservation name is : ");
-            nameTextView.setVisibility(View.VISIBLE);
-            nameTextView.setText(reservation.getReservationName());
-        }
-
-        LinearLayout phoneLayout = detailsCustomView.findViewById(R.id.phoneLayout);
-        phoneLayout.setVisibility(View.VISIBLE);
-
-        mPopupWindow.setFocusable(true);
-        mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.my_reservations_list), Gravity.CENTER,0,0);
-    }
 
 }
