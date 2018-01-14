@@ -4,7 +4,7 @@
 
 
     <!-- Strings related to menu -->
-
+    <string name="myNotifications" type="id">My Notifications</string>
     <string name="myPickedReservations">Reservations I Picked Out</string>
     <string name="logOut">Log Out</string>
 
@@ -66,7 +66,7 @@
     <string name="save">SAVE</string>
     <string name="survey_form">REVIEW</string>
     <string name="my_reservations">My Reservations</string>
-    <string name="reservation_details">DETAILS</string>
+    <string name="details">DETAILS</string>
 
 
     <string-array name="SurveyBusyRestaurantOptions">
@@ -76,7 +76,6 @@
         <item>4</item>
         <item>5 - most busy</item>
     </string-array>
-    <string name="title_activity_main2">Main2Activity</string>
     <string name="matchedReservation">MATCHED RESERVATIONS</string>
     <string name="Homepage">Home</string>
     <string name="welcomeHeadline">ReservEat</string>
@@ -110,5 +109,12 @@
         <item>Evening</item>
         <item>Night</item>
     </string-array>
+    <string name="title_activity_my_notifications">MyNotificationsActivity</string>
+
+    <string name="notificationDescription">Notification description</string>
+    <string name="notification_icon">notificationIcon</string>
+    <string name="notification_request">NOTIFICATION REQUEST</string>
+    <string name="no_notifications_exist">No notification requests were found \u2639</string>
+    <string name="no_reservations_exist">No reservations were found \u2639</string>
 
 </resources>

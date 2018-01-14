@@ -93,6 +93,8 @@ public class Reservation implements Serializable {
         return timeOfDay;
     }
 
+    public void setPlaceId(String placeId) { this.placeId = placeId; }
+
     public void setRestaurant(String restaurant) {
         this.restaurant = restaurant;
     }
@@ -115,6 +117,18 @@ public class Reservation implements Serializable {
 
     public int getNumOfPeople() {
         return numOfPeople;
+    }
+
+    public void setNumOfPeople(int numOfPeople) {
+        this.numOfPeople = numOfPeople;
+    }
+
+    public int getHotness() {
+        return hotness;
+    }
+
+    public void setHotness(int hotness) {
+        this.hotness = hotness;
     }
 
     public String getReservationName() {

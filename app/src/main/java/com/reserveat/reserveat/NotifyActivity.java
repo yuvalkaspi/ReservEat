@@ -7,7 +7,6 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -51,12 +50,13 @@ public class NotifyActivity extends BaseActivity {
     private EditText dateEditText;
     private EditText hourEditText;
     private EditText numOfPeopleEditText;
+    private EditText branchEditText;
+    private EditText descriptionEditText;
     private Switch isFlexibleSwitch;
     private Calendar current = Calendar.getInstance();
     private FirebaseUser currentUser;
     private String restaurant = "";
     private String placeID;
-    private EditText branchEditText;
     private ImageButton infoMsg;
 
     @Override
@@ -115,6 +115,7 @@ public class NotifyActivity extends BaseActivity {
         dateEditText = findViewById(R.id.date);
         hourEditText = findViewById(R.id.hour);
         numOfPeopleEditText = findViewById(R.id.numOfPeople);
+        descriptionEditText = findViewById(R.id.description);
         Button saveButton = findViewById(R.id.save);
 
         dateEditText.setOnClickListener(new View.OnClickListener() {
@@ -192,8 +193,9 @@ public class NotifyActivity extends BaseActivity {
             String hour = hourEditText.getText().toString().trim();
             String numOfPeople = numOfPeopleEditText.getText().toString().trim();
             boolean isFlexible = isFlexibleSwitch.isChecked();
+            String description = descriptionEditText.getText().toString().trim();
 
-            if (!isValidValues(numOfPeople, date, hour, numOfPeopleEditText, dateEditText, hourEditText)){
+            if (!isValidValues(description, numOfPeople, date, hour, descriptionEditText, numOfPeopleEditText, dateEditText, hourEditText)){
                 return;
             }
 
@@ -202,7 +204,7 @@ public class NotifyActivity extends BaseActivity {
                 newFullDateString = DateUtils.switchDateFormat(date, DateUtils.dateFormatUser, DateUtils.dateFormatDB) + " " + hour;
             }
             //check if a reservation is already exist
-            NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, Integer.valueOf(numOfPeople), isFlexible);
+            NotificationRequest notificationRequest = new NotificationRequest(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, Integer.valueOf(numOfPeople), isFlexible, description);
             addNotificationRequestToDB(notificationRequest);
 
         } catch (ParseException e) {
@@ -214,16 +216,22 @@ public class NotifyActivity extends BaseActivity {
     *  returns true if at least one of them is not empty
     *  otherwise returns false
     * */
-    private boolean isValidValues(String numOfPeople, String date, String hour, EditText numOfPeopleEditText, EditText dateEditText, EditText hourEditText ) {
+    private boolean isValidValues(String description, String numOfPeople, String date, String hour, EditText descriptionEditText, EditText numOfPeopleEditText, EditText dateEditText, EditText hourEditText ) {
         int resNumOfPeople = ValidationUtils.isEmptyTextField(numOfPeople);
         int resDate = ValidationUtils.isEmptyTextField(date);
         int resHour = ValidationUtils.isEmptyTextField(hour);
+        int resDescription = ValidationUtils.isEmptyTextField(description);
 
         View focusView = null;
         numOfPeopleEditText.setError(null);
         hourEditText.setError(null);
         dateEditText.setError(null);
+        descriptionEditText.setError(null);
 
+        if(resDescription != 0){
+            descriptionEditText.setError(getString(resDescription));
+            focusView = descriptionEditText;
+        }
         if(resNumOfPeople != 0){
             numOfPeopleEditText.setError(getString(resNumOfPeople));
             focusView = numOfPeopleEditText;

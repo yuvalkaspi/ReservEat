@@ -19,6 +19,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.reserveat.reserveat.MainActivity;
 import com.reserveat.reserveat.common.dbObjects.Restaurant;
+import com.reserveat.reserveat.common.dbObjects.Review;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ContentBaseDialog;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -29,12 +31,19 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Created by Golan on 13/12/2017.
+ */
+
 public class DBUtils {
 
     private final static String RESTAURANT = "restaurant";
     private static final String TAG = "DBUtils";
 
     public static int maxNumOfStars = 3;
+    public static int reliabilityMin = 0;
+    public static int reliabilityMax = 100;
+    public static int reliabilityReviewValue = 5; // the number of points a user can give in a review (in one question)
 
 
     private final static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -54,9 +63,8 @@ public class DBUtils {
     /*
     Add stars to user and update starRemoveDate field
      */
-    public static void updateStarsToUser(final int numOfStars) {
+    public static void updateStarsToUser(final int numOfStars, final String userId) {
 
-        final String userId = getCurrentUserID();
         final DatabaseReference userRef = mDatabase.child("users").child(userId);
 
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -129,6 +137,7 @@ public class DBUtils {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.i(TAG, "Update spam to user: success");
+                            updateReliabilityToUser(spammerUserId, -20);
                         } else {
                             Log.w(TAG, "Update spam to user: failure", task.getException());
                         }
@@ -143,6 +152,109 @@ public class DBUtils {
             }
         });
 
+    }
+
+    /*
+    Add number of uploads to user by 1
+     */
+    public static void updateUploadToUser(final String userId ) {
+
+        final DatabaseReference userRef = mDatabase.child("users").child(userId);
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int currNumOfUploads = dataSnapshot.child("uploadsThisMonth").getValue(Integer.class);
+                Map<String, Object> childUpdates = new HashMap<>();
+                childUpdates.put("/users/" + userId + "/uploadsThisMonth", currNumOfUploads+1);
+
+                mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.i(TAG, "Update upload to user: success");
+                        } else {
+                            Log.w(TAG, "Update upload to user: failure", task.getException());
+                        }
+                    }
+                });
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+    }
+
+    public static void updateReliabilityToUser(final String userId ,final int reliability) {
+        final DatabaseReference userRef = mDatabase.child("users").child(userId);
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int currReliability = dataSnapshot.child("reliability").getValue(Integer.class);
+                Map<String, Object> childUpdates = new HashMap<>();
+                int finReliability = currReliability + reliability;
+
+                if (finReliability > reliabilityMax )
+                    finReliability = reliabilityMax;
+                if (finReliability < reliabilityMin )
+                    finReliability = reliabilityMin;
+
+                childUpdates.put("/users/" + userId + "/reliability", finReliability);
+
+                mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.i(TAG, "Update reliability to user: success");
+                        } else {
+                            Log.w(TAG, "Update reliability to user: failure", task.getException());
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    // when user gave a review need to calculate change in reliability
+    public static void updateReliabilityToUser(final String userId , final Review currentReview, String reviewPath) {
+
+        mDatabase.child(reviewPath).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int sumRate = 0;
+                int sumBusyRate = 0;
+                int count = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Review review = snapshot.getValue(Review.class);
+                    count++;
+                    sumRate+= review.getRate();
+                    sumBusyRate+= review.getBusyRate();
+                }
+                updateReliabilityToUser(userId, calcDiff(currentReview, (sumBusyRate/count), (sumRate/count)));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    // calc how far is the user's review from the given data
+    private static int calcDiff(Review currentReview, int busyRateAvg, int rateAvg) {
+        int res = Math.abs(currentReview.getBusyRate() - busyRateAvg);
+        res += Math.abs(currentReview.getRate() - rateAvg);
+        res = reliabilityReviewValue - res;
+        return res;
     }
 
 
@@ -185,6 +297,8 @@ public class DBUtils {
         childUpdates.put("/users/" + userId + "/instanceId", refreshedToken);
         childUpdates.put("/users/" + userId + "/stars", 0);
         childUpdates.put("/users/" + userId + "/spamReports", 0);
+        childUpdates.put("/users/" + userId + "/reliability", 50);
+        childUpdates.put("/users/" + userId + "/uploadsThisMonth", 0);
 
         mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -219,6 +333,28 @@ public class DBUtils {
         //todo: nullpointerexception?
     }
 
+
+    public static void setNotificationRequestActive(String key, boolean isActive) {
+
+        final String userId = getCurrentUserID();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        childUpdates.put("/users/" + userId + "/notificationRequests/" + key + "/isActive", isActive);
+        childUpdates.put("/notificationRequests/" + key + "/isActive", isActive);
+
+        mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.i(TAG, "setNotificationRequestActive: success");
+                } else {
+                    Log.w(TAG, "setNotificationRequestActive: failure", task.getException());
+                }
+            }
+        });
+
+    }
 
 
 

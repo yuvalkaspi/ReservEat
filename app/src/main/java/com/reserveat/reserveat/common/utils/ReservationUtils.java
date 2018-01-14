@@ -2,15 +2,12 @@ package com.reserveat.reserveat.common.utils;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.VoiceInteractor;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
-import com.google.android.gms.location.places.GeoDataApi;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -28,8 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.reserveat.reserveat.AddActivity;
-import com.reserveat.reserveat.MainActivity;
 import com.reserveat.reserveat.R;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
@@ -121,9 +115,7 @@ public class ReservationUtils {
                         activity.getApplication().getApplicationContext().startActivity(intent);
                     }
                 });
-//                TextView phoneTextView = (TextView) customView.findViewById(R.id.popup_phone);
-//                phoneTextView.setMovementMethod(LinkMovementMethod.getInstance());
-//                android:linksClickable="true"
+
             }
 
             @Override
@@ -137,11 +129,19 @@ public class ReservationUtils {
 
 
     public static void popUpPickClick(final Reservation reservation, View customView, String key, String userId, final Context context) {
+
+        //todo remove comments
+//        if(reservation.getUid().equals(userId)){
+//            Toast.makeText(context , "You cannot pick up your own reservation", Toast.LENGTH_LONG).show();
+//            return;
+//        }
+
         final Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
         final TextView nameFormTextView = (TextView) customView.findViewById(R.id.popup_name_form);
         final TextView nameTextView = (TextView) customView.findViewById(R.id.popup_name);
         final TextView noteTextView = (TextView) customView.findViewById(R.id.popup_note);
         final LinearLayout phoneLayout = customView.findViewById(R.id.phoneLayout);
+        final TextView phoneTextView = (TextView) customView.findViewById(R.id.popup_phone);
 
         reservation.setPickedByUid(userId);
         Map<String, Object> reservationValues = reservation.toMap();
@@ -157,15 +157,17 @@ public class ReservationUtils {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Log.i(TAG, "pick reservation:success", task.getException());
+
                     pickButton.setVisibility(View.GONE);
-                    phoneLayout.setVisibility(View.VISIBLE);
+                    if(!phoneTextView.getText().equals(""))
+                        phoneLayout.setVisibility(View.VISIBLE);
                     nameFormTextView.setVisibility(View.VISIBLE);
                     nameFormTextView.setText("Reservation name is : ");
                     nameTextView.setVisibility(View.VISIBLE);
                     nameTextView.setText(reservation.getReservationName());
                     noteTextView.setVisibility(View.VISIBLE);
-                    DBUtils.updateStarsToUser(numOfStarsPerPick);
-
+                    DBUtils.updateStarsToUser(numOfStarsPerPick, reservation.getUid());
+                    DBUtils.updateReliabilityToUser(reservation.getUid(), reservation.getHotness());
                 } else {
                     Log.w(TAG, "pick reservation:failure", task.getException());
                     Toast.makeText(context , "Error!", Toast.LENGTH_LONG).show();

@@ -52,7 +52,8 @@
 
         <activity android:name=".ProfileActivity" />
         <activity android:name=".ContactActivity" />
-        <activity android:name=".StatisticsActivity"></activity>
+        <activity android:name=".StatisticsActivity" />
+        <activity android:name=".MyNotificationsListActivity"></activity>
     </application>
 
 </manifest>

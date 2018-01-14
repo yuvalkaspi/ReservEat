@@ -3,7 +3,6 @@ package com.reserveat.reserveat;
 import android.content.Intent;
 import android.app.DialogFragment;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,17 +15,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.reserveat.reserveat.common.dbObjects.Review;
-import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogFragment;
+import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.SingleChoiceDialog;
 import com.reserveat.reserveat.common.utils.DBUtils;
-import com.reserveat.reserveat.common.dialogFragment.OurDialogFragment;
-import com.reserveat.reserveat.common.dialogFragment.RatingDialogFragment;
+import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.BaseChoiceDialog;
+import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.RatingChoiceDialog;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
+import com.reserveat.reserveat.common.utils.DialogUtils;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ReviewFormActivity extends BaseActivity implements OurDialogFragment.NoticeDialogListener {
+public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog.NoticeDialogListener {
 
     static final int NUM_OF_QUESTIONS = 2;
     private Button[] buttons = new Button[NUM_OF_QUESTIONS];
@@ -59,8 +59,8 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
         buttons[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OurDialogFragment newFragment = new ChoiceDialogFragment();
-                OurDialogFragment.initDialog(newFragment, R.string.q1, R.array.SurveyBusyRestaurantOptions,1);
+                BaseChoiceDialog newFragment = new SingleChoiceDialog();
+                DialogUtils.initChoiceDialog(newFragment, R.string.q1, R.array.SurveyBusyRestaurantOptions,1);
                 newFragment.show(getFragmentManager(), "q1ChoiceDialogFragment");
             }
         });
@@ -70,8 +70,8 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
         buttons[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OurDialogFragment newFragment = new RatingDialogFragment();
-                OurDialogFragment.initDialog(newFragment, R.string.q2,R.layout.rating,2);
+                BaseChoiceDialog newFragment = new RatingChoiceDialog();
+                DialogUtils.initChoiceDialog(newFragment, R.string.q2,R.layout.rating,2);
                 newFragment.show(getFragmentManager(), "q3ChoiceDialogFragment");
             }
         });
@@ -83,7 +83,7 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
                 if(checkAllQuestionsFilled()){
                     Review review = new Review(userAnswers, DBUtils.getCurrentUserID());
                     insertDataToDB(review, reservation, restaurantKey);
-                    DBUtils.updateStarsToUser(numOfStarsPerReview);
+                    DBUtils.updateStarsToUser(numOfStarsPerReview, reservation.getPickedByUid());
                     Toast.makeText(ReviewFormActivity.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
                     //Intent intent = new Intent(ReviewFormActivity.this, MyReviewActivity.class );
                     //startActivity(intent);
@@ -110,7 +110,7 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
     }
 
 
-    private void insertDataToDB(Review review, Reservation reservation, String restaurantKey) {
+    private void insertDataToDB(final Review review, Reservation reservation, String restaurantKey) {
         Log.i(TAG, "adding a new review to DB");
 
         String placeId = reservation.getPlaceId();
@@ -127,6 +127,7 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     Log.i(TAG, "add new review: success", task.getException());
+                    DBUtils.updateReliabilityToUser(DBUtils.getCurrentUserID(), review, reviewPath);
                 }else{
                     Log.w(TAG, "add new review: failure", task.getException());
                 }
@@ -167,10 +168,5 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
     @Override
     public void onDialogPositiveClickMultipleChoice(DialogFragment dialog, int dialogIndex, List<Integer> mSelectedItems) {
         // Do nothing
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-
     }
 }

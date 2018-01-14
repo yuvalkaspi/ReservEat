@@ -53,7 +53,6 @@ import static com.reserveat.reserveat.common.utils.DBUtils.getCurrentUserID;
 
 public class AddActivity extends BaseActivity {
 
-    private static final String TAG = "AddActivity";
     private DatabaseReference mDatabase;
     EditText branchEditText;
     EditText dateEditText;
@@ -62,6 +61,7 @@ public class AddActivity extends BaseActivity {
     EditText reservationNameEditText;
     private Switch isReservationOnMyName;
     FirebaseUser currentUser;
+    private static final String TAG = "AddActivity";
     private String restaurant;
     private String placeID;
     private Spinner dropdown;
@@ -85,6 +85,7 @@ public class AddActivity extends BaseActivity {
         dropdown = findViewById(R.id.spinner);
 
         Button addButton = findViewById(R.id.add);
+        branchEditText.setKeyListener(null); // make branch uneditable
 
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -94,17 +95,24 @@ public class AddActivity extends BaseActivity {
                 .build();
 
         autocompleteFragment.setFilter(typeFilter);
+        autocompleteFragment.setHint("Enter Restaurant");
+
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                Log.i(TAG, "Place: " + place.getName());
-                restaurant = place.getName().toString();
-                placeID = place.getId();
-                branchEditText.setText(place.getAddress());
-                branchEditText.setVisibility(View.VISIBLE);
-                DBUtils.addingPlaceToDB(place, TAG);
-                autocompleteFragment.setMenuVisibility(false);
+                if(place.getPlaceTypes().contains(TYPE_RESTAURANT)){
+                    Log.i(TAG, "Place: " + place.getName());
+                    restaurant = place.getName().toString();
+                    placeID = place.getId();
+                    branchEditText.setText(place.getAddress());
+                    branchEditText.setVisibility(View.VISIBLE);
+                    DBUtils.addingPlaceToDB(place, TAG);
+                    autocompleteFragment.setMenuVisibility(false);
+                }else{
+                    autocompleteFragment.setText("");
+                    Toast.makeText(AddActivity.this, "place is not a restaurant\nplease enter again", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -112,6 +120,21 @@ public class AddActivity extends BaseActivity {
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
+
+        // click on autocompleteFragment clear button
+        autocompleteFragment.getView().findViewById(R.id.place_autocomplete_clear_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // example : way to access view from PlaceAutoCompleteFragment
+                        // ((EditText) autocompleteFragment.getView()
+                        // .findViewById(R.id.place_autocomplete_search_input)).setText("");
+                        autocompleteFragment.setText("");
+                        view.setVisibility(View.GONE);
+                        branchEditText.setText("");
+                        branchEditText.setVisibility(View.GONE);
+                    }
+                });
 
         dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,6 +229,23 @@ public class AddActivity extends BaseActivity {
             Intent intent = new Intent(AddActivity.this, LoginActivity.class );
             startActivity(intent);
         }
+
+        FirebaseDatabase.getInstance().getReference().child("users").child(DBUtils.getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        int currNumOfUploads = dataSnapshot.child("uploadsThisMonth").getValue(Integer.class);
+//                        Todo uncomment
+//                        if(currNumOfUploads >1){
+//                            Toast.makeText(AddActivity.this, "can't add more then 2 reservations in a single month", Toast.LENGTH_LONG).show();
+//                            Intent intent = new Intent(AddActivity.this, MainActivity.class );
+//                            startActivity(intent);
+//                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
     }
 
 
@@ -239,6 +279,8 @@ public class AddActivity extends BaseActivity {
             if(res != 0){//error
                 textView.setError(getString(res));
                 focusView = textView;
+                if(textView == branchEditText)
+                    Toast.makeText(AddActivity.this, "please enter a restaurant", Toast.LENGTH_LONG).show();
             }else{
                 textView.setError(null);// Reset error.
             }
@@ -248,12 +290,12 @@ public class AddActivity extends BaseActivity {
             focusView.requestFocus();
         } else {
             Log.i(TAG, "fields verification: success");
-            addReservation(restaurant, branch, date, hour, Integer.valueOf(numOfPeople), reservationName);
+            addReservationToDB(restaurant, branch, date, hour, Integer.valueOf(numOfPeople), reservationName);
 
         }
     }
 
-    private void addReservation(final String restaurant, final String branch, String date, String hour, final int numOfPeople, String reservationName) {
+    private void addReservationToDB(String restaurant, String branch, String date, String hour, int numOfPeople, String reservationName) {
 
         Log.i(TAG, "adding a new reservation to DB");
         final String key = mDatabase.child("reservations").push().getKey();
@@ -281,6 +323,7 @@ public class AddActivity extends BaseActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
+                                DBUtils.updateUploadToUser(currentUser.getUid());
                                 Log.i(TAG, "add new reservation:success", task.getException());
                                 Intent intent = new Intent(AddActivity.this, MainActivity.class );
                                 startActivity(intent);
@@ -299,6 +342,11 @@ public class AddActivity extends BaseActivity {
             //todo
             Toast.makeText(AddActivity.this, "Error!", Toast.LENGTH_LONG).show();
         }
+    }
+
+
+
+
     }
 }
 
