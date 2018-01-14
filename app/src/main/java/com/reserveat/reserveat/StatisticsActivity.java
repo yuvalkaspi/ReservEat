@@ -1,6 +1,8 @@
 package com.reserveat.reserveat;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.Status;
@@ -49,6 +52,7 @@ public class StatisticsActivity extends BaseActivity implements OurDialogFragmen
     private  DateUtils.TimeOfDay[] timeOfDayArr = DateUtils.TimeOfDay.values();
     private List<Integer> timeOfDayChoiceList = new ArrayList<>();
     private int[] timeOfDayColor = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.BLACK};
+    private ImageButton infoMsg;
 
 
     @Override
@@ -56,6 +60,23 @@ public class StatisticsActivity extends BaseActivity implements OurDialogFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
+        infoMsg = findViewById(R.id.infoMsgButton);
+        infoMsg.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                AlertDialog alertDialog = new AlertDialog.Builder(StatisticsActivity.this).create();
+                alertDialog.setMessage(getResources().getString(R.string.StatisticsInfo));
+
+                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // here you can add functions
+                    }
+                });
+
+                alertDialog.show();
+            }
+        });
+        
         branchEditText = findViewById(R.id.branch);
         statisticsGraph = findViewById(R.id.graph);
 

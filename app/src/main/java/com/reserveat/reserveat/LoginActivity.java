@@ -77,15 +77,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private FirebaseAuth mAuth;
     DatabaseReference mDatabase;
-    private CallbackManager mFacebookCallbackManager;
     private static final String TAG = "LoginActivity";
-    private LoginButton mFacebookSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.reserveatlogo);
 
         mAuth = FirebaseAuth.getInstance();
         // Set up the login form.

@@ -68,6 +68,9 @@ public class ReservationUtils {
         TextView branchTextView = (TextView) customView.findViewById(R.id.popup_branch);
         branchTextView.setText(reservation.getBranch());
 
+        TextView seattingPlaceTextView = (TextView) customView.findViewById(R.id.seattingArea);
+        seattingPlaceTextView.setText(reservation.getSeattingArea());
+
         String date = reservation.getDate();
         int indexOfSpace = date.indexOf(" ");
         String dateOldFormat = date.substring(0, indexOfSpace);

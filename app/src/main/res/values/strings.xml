@@ -62,7 +62,7 @@
 
     <!-- Strings related to survey form -->
     <string name="q1">How Busy Was The Restaurant?</string>
-    <string name="q3">How Whould You Rate The Restaurant?</string>
+    <string name="q2">How Whould You Rate The Restaurant?</string>
     <string name="save">SAVE</string>
     <string name="survey_form">REVIEW</string>
     <string name="my_reservations">My Reservations</string>
@@ -97,6 +97,12 @@
     <string name="statistics">Statistics</string>
     <string name="timeOfDay">Parts Of The Day</string>
     <string name="choosePartsOfTheDay">Choose Parts Of The Day...</string>
+    <string name="MyReservations">My Reservations</string>
+    <string name="MyPickedReservations">My Pick-Out Reservations</string>
+    <string name="MyNotificationRequest">My Notification Requests</string>
+    <string name="notificationInfo">Here you can add a notification request</string>
+    <string name="StatisticsInfo">Select a restaurant and time and checkout...</string>
+    <string name="seattingArea">Select seatting area:</string>
     <string-array name="timeOfDayOptions">
         <item>Morning</item>
         <item>Noon</item>

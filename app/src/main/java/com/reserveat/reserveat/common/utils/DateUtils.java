@@ -1,7 +1,10 @@
 package com.reserveat.reserveat.common.utils;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,6 +30,37 @@ public class DateUtils {
     public static final String dateFormatUser = "dd/MM/yyyy";
     public static final String dateFormatDB = "yyyy/MM/dd";
     public static final String fullDateFormatDB = dateFormatDB + " " + hourFormat;
+    private static final String TAG = "DateUtils";
+
+
+    /*
+    * Returns true if the given date was passed and false otherwise
+    */
+    public static boolean isDatePassed(String dateInDBFormat){
+
+        boolean isPassed = false;
+        Date expiredDate = stringToDate(dateInDBFormat, fullDateFormatDB);
+        if (expiredDate != null && (new Date()).after(expiredDate)) {
+            isPassed = true;
+        }
+
+        return isPassed;
+    }
+
+    /*
+     Receives a string represented a date and returns it's Date object
+     */
+    private static Date stringToDate(String aDate, String aFormat) {
+
+        SimpleDateFormat format = new SimpleDateFormat(aFormat);
+        Date date = null;
+        try {
+            date = format.parse(aDate);
+        } catch (ParseException e) {
+            return null;
+        }
+        return date;
+    }
 
 
     /* Receives string represents date in format- oldFormat

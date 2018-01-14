@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#832237</color>
-    <color name="colorPrimaryDark">#832237</color>
-    <color name="colorAccent">#5640ff</color>
+    <color name="colorPrimary">#8e253a</color>
+    <color name="colorPrimaryDark">#8e253a</color>
+    <color name="colorAccent">#8e253a</color>
     <color name="answeredButtonInReview">#EFB3B9</color>
     <color name="lightGray">#A7A7A7</color>
-    <color name="colorHeadline">#293eb1</color>
+    <color name="colorHeadline">#8e253a</color>
     <color name="pop_up_text_color">#131315</color>
-    <color name="pop_up_button_color">#ce365c</color>
+    <color name="pop_up_button_color">#8e253a</color>
     <color name="gray_background">#F2F2F2</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>

@@ -5,12 +5,6 @@
     <item  android:id="@+id/Profile"
         android:title="@string/profile"/>
 
-    <item  android:id="@+id/MyReservations"
-        android:title="@string/my_reservations"/>
-
-    <item  android:id="@+id/pickedReservationsList"
-        android:title="@string/myPickedReservations"/>
-
     <item  android:id="@+id/statistics"
         android:title="@string/statistics"/>
 

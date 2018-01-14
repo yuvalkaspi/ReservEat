@@ -1,8 +1,9 @@
 package com.reserveat.reserveat;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,12 +34,17 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.reserveat.reserveat.common.utils.DateUtils.isDatePassed;
+
 public class MyReservationsListActivity extends BaseActivity {
 
     private static final String TAG = "MyReservationsActivity";
     FirebaseUser currentUser;
     private PopupWindow mPopupWindow;
     boolean isMyReservations;
+    private static final String myResSpamInfo = "myResSpamInfo";
+    private static final String myPickResSpamInfo = "myPickResSpamInfo";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +114,22 @@ public class MyReservationsListActivity extends BaseActivity {
                         spamButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                popUpSpamClick(reservation, customView, key);
+                                AlertDialog alertDialog = new AlertDialog.Builder(MyReservationsListActivity.this).create();
+                                if(isMyReservations)
+                                    alertDialog.setMessage(myResSpamInfo);
+                                else
+                                    alertDialog.setMessage(myPickResSpamInfo);
+
+                                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        popUpSpamClick(reservation, customView, key);
+                                    }
+                                });
+                                alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
+                                alertDialog.show();
                             }
                         });
 
@@ -132,7 +153,7 @@ public class MyReservationsListActivity extends BaseActivity {
                             reviewButton.setVisibility(View.GONE);
                         else{
                             //Todo make gery when answered
-                            if(reservation.getIsReviewed())
+                            if(reservation.getIsReviewed() || !isDatePassed(reservation.getDate()))
                                 makeButtonGrey(reviewButton);
                             else{
                                 reviewButton.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +180,9 @@ public class MyReservationsListActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
 
     }
+
+
+
 
     private void makeButtonGrey(Button button) {
         button.setTextColor(getResources().getColor(R.color.lightGray));

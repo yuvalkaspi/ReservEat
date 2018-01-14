@@ -38,17 +38,22 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.reserveat.reserveat.common.utils.DBUtils;
 import com.reserveat.reserveat.common.utils.DateUtils;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.utils.ValidationUtils;
 
 import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
+import static com.reserveat.reserveat.common.utils.DBUtils.getCurrentUserID;
 
 public class AddActivity extends BaseActivity {
 
+    private static final String TAG = "AddActivity";
     private DatabaseReference mDatabase;
     EditText branchEditText;
     EditText dateEditText;
@@ -57,7 +62,6 @@ public class AddActivity extends BaseActivity {
     EditText reservationNameEditText;
     private Switch isReservationOnMyName;
     FirebaseUser currentUser;
-    private static final String TAG = "AddActivity";
     private String restaurant;
     private String placeID;
     private Spinner dropdown;
@@ -182,9 +186,7 @@ public class AddActivity extends BaseActivity {
             }
         });
 
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -246,50 +248,57 @@ public class AddActivity extends BaseActivity {
             focusView.requestFocus();
         } else {
             Log.i(TAG, "fields verification: success");
-            addReservationToDB(restaurant, branch, date, hour, Integer.valueOf(numOfPeople), reservationName);
+            addReservation(restaurant, branch, date, hour, Integer.valueOf(numOfPeople), reservationName);
 
         }
     }
 
-    private void addReservationToDB(String restaurant, String branch, String date, String hour, int numOfPeople, String reservationName) {
+    private void addReservation(final String restaurant, final String branch, String date, String hour, final int numOfPeople, String reservationName) {
 
         Log.i(TAG, "adding a new reservation to DB");
-        String key = mDatabase.child("reservations").push().getKey();
+        final String key = mDatabase.child("reservations").push().getKey();
         try{
             String dateNewFormat = DateUtils.switchDateFormat(date, DateUtils.dateFormatUser, DateUtils.dateFormatDB);
-            String newFullDateString = dateNewFormat + " " + hour;
+            final String newFullDateString = dateNewFormat + " " + hour;
             if(reservationName.equals("")){
                 reservationName = currentUser.getDisplayName();
             }
-            DateUtils.TimeOfDay timeInDay = DateUtils.getTimeOfDay(hour);
-            Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationName, 0, reservationDay[0], timeInDay, SeattingArea, false);
-            Map<String, Object> reservationValues = reservation.toMap();
-            Map<String, Object> childUpdates = new HashMap<>();
-            childUpdates.put("/reservations/" + key, reservationValues);
-            childUpdates.put("/users/" + currentUser.getUid() + "/reservations/" + key, reservationValues);
-
-            mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            final String reservationOnName = reservationName;
+            final DateUtils.TimeOfDay timeInDay = DateUtils.getTimeOfDay(hour);
+            final DatabaseReference reviewRef = mDatabase.child("reviews").child(placeID).child(reservationDay[0].toString()).child(timeInDay.toString());
+            reviewRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Log.i(TAG, "add new reservation:success", task.getException());
-                        Intent intent = new Intent(AddActivity.this, MainActivity.class );
-                        startActivity(intent);
-                    } else {
-                        Log.w(TAG, "add new reservation:failure", task.getException());
-                        Toast.makeText(AddActivity.this, "Error!", Toast.LENGTH_LONG).show();
-                    }
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Float hottnesRateInDB = dataSnapshot.child("hottnesRate").getValue(Float.class);
+                    Integer hottnesRate = hottnesRateInDB == null ? 0 : Math.round(hottnesRateInDB * 2);
+                    Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationOnName, hottnesRate, reservationDay[0], timeInDay, SeattingArea, false);
+                    Map<String, Object> reservationValues = reservation.toMap();
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    childUpdates.put("/reservations/" + key, reservationValues);
+                    childUpdates.put("/users/" + currentUser.getUid() + "/reservations/" + key, reservationValues);
+
+                    mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.i(TAG, "add new reservation:success", task.getException());
+                                Intent intent = new Intent(AddActivity.this, MainActivity.class );
+                                startActivity(intent);
+                            } else {
+                                Log.w(TAG, "add new reservation:failure", task.getException());
+                                Toast.makeText(AddActivity.this, "Error!", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
                 }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) { }
             });
         }catch (ParseException e){
             //todo
             Toast.makeText(AddActivity.this, "Error!", Toast.LENGTH_LONG).show();
         }
-
-
-
-
-
     }
 }
 

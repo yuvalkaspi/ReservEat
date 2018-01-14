@@ -1,7 +1,10 @@
 package com.reserveat.reserveat;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -53,12 +57,30 @@ public class NotifyActivity extends BaseActivity {
     private String restaurant = "";
     private String placeID;
     private EditText branchEditText;
-
+    private ImageButton infoMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notify);
+
+        infoMsg = findViewById(R.id.infoMsgButton);
+        infoMsg.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                AlertDialog alertDialog = new AlertDialog.Builder(NotifyActivity.this).create();
+                alertDialog.setMessage(getResources().getString(R.string.notificationInfo));
+
+                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // here you can add functions
+                    }
+                });
+
+                alertDialog.show();
+            }
+        });
+
 
         //Calendar myCalendar = Calendar.getInstance();
         branchEditText = findViewById(R.id.branch);
@@ -137,7 +159,7 @@ public class NotifyActivity extends BaseActivity {
             }
         });
 
-        isFlexibleSwitch = (Switch) findViewById(R.id.isFlexible);
+        isFlexibleSwitch = findViewById(R.id.isFlexible);
         isFlexibleSwitch.setText("Is time flexible?");
         isFlexibleSwitch.setChecked(true);
 

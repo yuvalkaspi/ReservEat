@@ -94,7 +94,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:text="Select seatting area: "
+            android:text="@string/seattingArea"
             android:textSize="20sp"
             android:layout_height="match_parent" />
 
@@ -144,6 +144,9 @@
         android:elevation="4dp"
         android:paddingLeft="70dp"
         android:paddingRight="70dp"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:background="@drawable/mybutton"
         android:text="@string/add" />
 </LinearLayout>
 

@@ -27,33 +27,31 @@ android:padding="16dp">
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:textSize="20sp"
-        style="@style/Divider">
+        android:padding="16dp"
+        android:background="@drawable/mybackground">
 
         <TextView
             android:id="@+id/restaurant"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimaryDark"
             android:textSize="20sp"
-
+            android:textColor="@color/white"
             android:hint="@string/restaurant" />
 
         <TextView
             android:id="@+id/branch"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimaryDark"
             android:textSize="20sp"
-
+            android:textColor="@color/white"
             android:hint="@string/branch" />
 
         <TextView
             android:id="@+id/date"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimaryDark"
             android:textSize="20sp"
-
+            android:textColor="@color/white"
             android:hint="@string/date" />
 
     </LinearLayout>
@@ -84,11 +82,12 @@ android:padding="16dp">
         android:elevation="4dp"
         android:paddingLeft="70dp"
         android:paddingRight="70dp"
-        android:text="@string/q3" />
+        android:text="@string/q2" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="10dp" />
+
 
     <Button
         android:id="@+id/save"
@@ -98,7 +97,15 @@ android:padding="16dp">
         android:elevation="4dp"
         android:paddingLeft="70dp"
         android:paddingRight="70dp"
+        android:background="@drawable/mybutton"
+        android:textSize="20sp"
+        android:textColor="@color/white"
         android:text="@string/submit" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
 
 </LinearLayout>
 </ScrollView>

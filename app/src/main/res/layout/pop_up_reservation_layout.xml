@@ -39,6 +39,7 @@
                 android:layout_alignParentTop="true"
                 android:gravity="center_horizontal"
                 android:background="@null"
+                android:contentDescription=""
                 android:src="@mipmap/close" />
     </RelativeLayout>
 
@@ -50,6 +51,7 @@
             android:layout_width="@dimen/pop_up_icon_size"
             android:layout_height="@dimen/pop_up_icon_size"
             android:src="@mipmap/restaurant"
+            android:contentDescription=""
             android:layout_gravity="center" />
         <TextView
             android:layout_width="wrap_content"
@@ -188,6 +190,36 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/chair"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/pop_up_padding"
+            android:text="Seatting Area:"
+            android:textSize="@dimen/pop_up_text_size"
+            android:textColor="@color/cardview_dark_background"/>
+
+        <TextView
+            android:id="@+id/seattingArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/pop_up_padding"
+            android:text="Seatting Area"
+            android:textSize="@dimen/pop_up_text_size"
+            android:textColor="@color/cardview_dark_background"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/phoneLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -235,7 +267,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/fab_margin"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/mybutton"
             android:text="pick"
             android:visibility="gone"
             android:textColor="@android:color/white"

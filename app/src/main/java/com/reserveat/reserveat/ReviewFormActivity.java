@@ -71,7 +71,7 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
             @Override
             public void onClick(View view) {
                 OurDialogFragment newFragment = new RatingDialogFragment();
-                OurDialogFragment.initDialog(newFragment, R.string.q3,R.layout.rating,2);
+                OurDialogFragment.initDialog(newFragment, R.string.q2,R.layout.rating,2);
                 newFragment.show(getFragmentManager(), "q3ChoiceDialogFragment");
             }
         });
@@ -114,11 +114,11 @@ public class ReviewFormActivity extends BaseActivity implements OurDialogFragmen
         Log.i(TAG, "adding a new review to DB");
 
         String placeId = reservation.getPlaceId();
-        String key = DBUtils.getDatabaseRef().child("reviews").child(placeId).child(reservation.getDay().name()).child(reservation.getTimeOfDay().name()).push().getKey();
+        String key = DBUtils.getDatabaseRef().child("reviews").child(placeId).child(reservation.getDay()).child(reservation.getTimeOfDay()).push().getKey();
         Map<String, Object> reviewValues = review.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/reviews/" + placeId + "/" + reservation.getDay().name() + "/" + reservation.getTimeOfDay().name() +  "/" + key, reviewValues);
+        childUpdates.put("/reviews/" + placeId + "/" + reservation.getDay() + "/" + reservation.getTimeOfDay() +  "/" + key, reviewValues);
         childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/reviews/" + key, reviewValues);
         childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/pickedReservations/" + restaurantKey + "/isReviewed", true);
 
