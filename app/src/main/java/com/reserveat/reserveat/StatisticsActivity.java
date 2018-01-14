@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
@@ -80,6 +81,7 @@ public class StatisticsActivity extends BaseActivity implements BaseChoiceDialog
         branchEditText = findViewById(R.id.branch);
         statisticsGraph = findViewById(R.id.graph);
 
+        branchEditText.setKeyListener(null); // make branch uneditable
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
@@ -88,16 +90,22 @@ public class StatisticsActivity extends BaseActivity implements BaseChoiceDialog
                 .build();
 
         autocompleteFragment.setFilter(typeFilter);
+        autocompleteFragment.setHint("Enter Restaurant");
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                Log.i(TAG, "Place: " + place.getName());
-                placeID = place.getId();
-                branchEditText.setText(place.getAddress());
-                branchEditText.setVisibility(View.VISIBLE);
-                DBUtils.addingPlaceToDB(place, TAG);
-                autocompleteFragment.setMenuVisibility(false);
+                if(place.getPlaceTypes().contains(TYPE_RESTAURANT)){
+                    Log.i(TAG, "Place: " + place.getName());
+                    placeID = place.getId();
+                    branchEditText.setText(place.getAddress());
+                    branchEditText.setVisibility(View.VISIBLE);
+                    DBUtils.addingPlaceToDB(place, TAG);
+                    autocompleteFragment.setMenuVisibility(false);
+                }else{
+                    autocompleteFragment.setText("");
+                    Toast.makeText(StatisticsActivity.this, "place is not a restaurant\nplease enter again", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -105,6 +113,21 @@ public class StatisticsActivity extends BaseActivity implements BaseChoiceDialog
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
+
+        // click on autocompleteFragment clear button
+        autocompleteFragment.getView().findViewById(R.id.place_autocomplete_clear_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // example : way to access view from PlaceAutoCompleteFragment
+                        // ((EditText) autocompleteFragment.getView()
+                        // .findViewById(R.id.place_autocomplete_search_input)).setText("");
+                        autocompleteFragment.setText("");
+                        view.setVisibility(View.GONE);
+                        branchEditText.setText("");
+                        branchEditText.setVisibility(View.GONE);
+                    }
+                });
 
 
         timeOfDayChoiceText = findViewById(R.id.timeOfDayChoice);
@@ -162,6 +185,8 @@ public class StatisticsActivity extends BaseActivity implements BaseChoiceDialog
             if(res != 0){//error
                 textView.setError(getString(res));
                 focusView = textView;
+                if(textView == branchEditText)
+                    Toast.makeText(StatisticsActivity.this, "please enter a restaurant", Toast.LENGTH_LONG).show();
             }else{
                 textView.setError(null);// Reset error.
             }

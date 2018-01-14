@@ -84,6 +84,7 @@ public class NotifyActivity extends BaseActivity {
 
         //Calendar myCalendar = Calendar.getInstance();
         branchEditText = findViewById(R.id.branch);
+        branchEditText.setKeyListener(null); // make branch uneditable
 
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -93,17 +94,24 @@ public class NotifyActivity extends BaseActivity {
                 .build();
 
         autocompleteFragment.setFilter(typeFilter);
+        autocompleteFragment.setHint("Enter Restaurant");
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                Log.i(TAG, "Place: " + place.getName());
-                restaurant = place.getName().toString();
-                placeID = place.getId();
-                branchEditText.setText(place.getAddress());
-                branchEditText.setVisibility(View.VISIBLE);
-                DBUtils.addingPlaceToDB(place, TAG);
-                autocompleteFragment.setMenuVisibility(false);
+
+                if(place.getPlaceTypes().contains(TYPE_RESTAURANT)){
+                    Log.i(TAG, "Place: " + place.getName());
+                    restaurant = place.getName().toString();
+                    placeID = place.getId();
+                    branchEditText.setText(place.getAddress());
+                    branchEditText.setVisibility(View.VISIBLE);
+                    DBUtils.addingPlaceToDB(place, TAG);
+                    autocompleteFragment.setMenuVisibility(false);
+                }else{
+                    autocompleteFragment.setText("");
+                    Toast.makeText(NotifyActivity.this, "place is not a restaurant\nplease enter again", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -111,6 +119,21 @@ public class NotifyActivity extends BaseActivity {
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
+
+        // click on autocompleteFragment clear button
+        autocompleteFragment.getView().findViewById(R.id.place_autocomplete_clear_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // example : way to access view from PlaceAutoCompleteFragment
+                        // ((EditText) autocompleteFragment.getView()
+                        // .findViewById(R.id.place_autocomplete_search_input)).setText("");
+                        autocompleteFragment.setText("");
+                        view.setVisibility(View.GONE);
+                        branchEditText.setText("");
+                        branchEditText.setVisibility(View.GONE);
+                    }
+                });
 
         dateEditText = findViewById(R.id.date);
         hourEditText = findViewById(R.id.hour);
