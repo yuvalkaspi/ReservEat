@@ -5,7 +5,7 @@
 
     <!-- Strings related to menu -->
     <string name="myNotifications" type="id">My Notifications</string>
-    <string name="myPickedReservations">Reservations I Picked Out</string>
+    <string name="myPickedReservations">RESERVATIONS I PICKED-OUT</string>
     <string name="logOut">Log Out</string>
 
 

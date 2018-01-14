@@ -51,6 +51,8 @@ public class ReservationUtils {
         viewHolder.setDate(dateNewFormat);
         viewHolder.setHour(hour);
         viewHolder.setNumOfPeople(model.getNumOfPeople());
+        viewHolder.setHotness(model.getHotness());
+
     }
 
     public static void popUpWindowCreate(final PopupWindow mPopupWindow, final View customView, Reservation reservation, final Activity activity) {
