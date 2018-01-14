@@ -95,7 +95,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="Number Of People"
+        android:hint="@string/required_num_of_people"
         android:inputType="numberDecimal" />
     <Space
         android:layout_width="match_parent"

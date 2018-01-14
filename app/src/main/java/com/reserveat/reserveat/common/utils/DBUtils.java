@@ -229,10 +229,6 @@ public class DBUtils {
         mDatabase.child(reviewPath).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                int sumRate = 0;
-                int sumBusyRate = 0;
-                int count = 0;
-
                 double currHottnesRate = dataSnapshot.child("hottnesRate").getValue(Double.class);
                 double hottnesRateByUser = calcRate(currentReview);
 
@@ -248,7 +244,20 @@ public class DBUtils {
     }
 
     private static double calcRate(Review currentReview) {
-        return 0;
+        double bookInAdvanceRate = calcFieldRate(currentReview.getNeedToBookInAdvance());
+        double wasLineRate = calcFieldRate(currentReview.getWasLine());
+        return  (currentReview.getBusyRate() + currentReview.getRate())/2 +  wasLineRate + bookInAdvanceRate;
+    }
+
+    private static double calcFieldRate(int needToBookInAdvance) {
+        switch (needToBookInAdvance){
+            case 1:
+                return 2.5;
+            case 2:
+                return 0;
+            default:
+                return 1;
+        }
     }
 
     // calc how far is the user's review from the given data

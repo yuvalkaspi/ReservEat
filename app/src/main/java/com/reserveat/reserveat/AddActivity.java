@@ -186,8 +186,10 @@ public class AddActivity extends BaseActivity {
                 if (isChecked) {
                     reservationNameEditText.setEnabled(false);
                     reservationNameEditText.setText("");//clear
+                    reservationNameEditText.setHint(getResources().getString(R.string.reservation_name));
                 } else {
                     reservationNameEditText.setEnabled(true);
+                    reservationNameEditText.setHint(getResources().getString(R.string.required_reservation_name));
                 }
             }
         });
