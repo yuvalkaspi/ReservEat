@@ -2,7 +2,6 @@ package com.reserveat.reserveat;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -82,7 +81,6 @@ public class NotifyActivity extends BaseActivity {
         });
 
 
-        //Calendar myCalendar = Calendar.getInstance();
         branchEditText = findViewById(R.id.branch);
         branchEditText.setKeyListener(null); // make branch uneditable
 

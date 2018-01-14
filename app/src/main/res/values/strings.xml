@@ -63,19 +63,29 @@
     <!-- Strings related to survey form -->
     <string name="q1">How Busy Was The Restaurant?</string>
     <string name="q2">How Whould You Rate The Restaurant?</string>
+    <string name="q3">Was there a line at the entrance?</string>
+    <string name="q4">Is it necessary to book a place in advance?</string>
     <string name="save">SAVE</string>
     <string name="survey_form">REVIEW</string>
     <string name="my_reservations">My Reservations</string>
     <string name="details">DETAILS</string>
 
 
-    <string-array name="SurveyBusyRestaurantOptions">
+    <string-array name="ReviewBusyRestaurantOptions">
         <item>1 - not busy</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
         <item>5 - most busy</item>
     </string-array>
+
+    <string-array name="ReviewYesNoOptions">
+        <item>Yes</item>
+        <item>No</item>
+        <item>Not Sure</item>
+    </string-array>
+
+
     <string name="matchedReservation">MATCHED RESERVATIONS</string>
     <string name="Homepage">Home</string>
     <string name="welcomeHeadline">ReservEat</string>
@@ -99,8 +109,16 @@
     <string name="MyReservations">My Reservations</string>
     <string name="MyPickedReservations">My Pick-Out Reservations</string>
     <string name="MyNotificationRequest">My Notification Requests</string>
-    <string name="notificationInfo">Here you can add a notification request</string>
-    <string name="StatisticsInfo">Select a restaurant and time and checkout...</string>
+    <string name="notificationInfo">
+        Add notification request and get notification alert when a new cancellation that matches your request is received
+        \n\nChoosing the flexible option allows you to get notifications that almost match your request
+        (i.e. 2 hour before and after your request)</string>
+    <string name="StatisticsInfo">Select a restaurant and a time of day and get the chances of getting a cancellation on that restaurant.
+    \n\nThe graph shows the average of cancellations received on the chosen time by days</string>
+    <string name="myPicksSpamInfo">Report the reservation does not exist or inaccurate.
+    \n\nAre you sure you want to report the reservation owner?</string>
+    <string name="myResSpamInfo">Report the user who picked your cancellation if he picked it and did not arrive to the restaurant.
+    \n\nAre you sure you want to report spam?</string>
     <string name="seattingArea">Select seatting area:</string>
     <string-array name="timeOfDayOptions">
         <item>Morning</item>

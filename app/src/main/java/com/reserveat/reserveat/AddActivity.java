@@ -101,7 +101,7 @@ public class AddActivity extends BaseActivity {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                if(place.getPlaceTypes().contains(TYPE_RESTAURANT)){
+                if (place.getPlaceTypes().contains(TYPE_RESTAURANT)) {
                     Log.i(TAG, "Place: " + place.getName());
                     restaurant = place.getName().toString();
                     placeID = place.getId();
@@ -109,7 +109,7 @@ public class AddActivity extends BaseActivity {
                     branchEditText.setVisibility(View.VISIBLE);
                     DBUtils.addingPlaceToDB(place, TAG);
                     autocompleteFragment.setMenuVisibility(false);
-                }else{
+                } else {
                     autocompleteFragment.setText("");
                     Toast.makeText(AddActivity.this, "place is not a restaurant\nplease enter again", Toast.LENGTH_LONG).show();
                 }
@@ -154,7 +154,7 @@ public class AddActivity extends BaseActivity {
                         Date dateObj = calendar.getTime();
                         dateEditText.setText(dateFormat.format(dateObj));
                     }
-                },year,month,day);
+                }, year, month, day);
                 dpd.show();
             }
         });
@@ -174,7 +174,7 @@ public class AddActivity extends BaseActivity {
                         Date dateObj = calendar.getTime();
                         hourEditText.setText(dateFormat.format(dateObj));
                     }
-                },hour,minutes,false);
+                }, hour, minutes, false);
                 tpd.show();
             }
         });
@@ -183,11 +183,10 @@ public class AddActivity extends BaseActivity {
         isReservationOnMyName.setText(R.string.is_reservation_on_my_name);
         isReservationOnMyName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     reservationNameEditText.setEnabled(false);
                     reservationNameEditText.setText("");//clear
-                }
-                else{
+                } else {
                     reservationNameEditText.setEnabled(true);
                 }
             }
@@ -219,14 +218,12 @@ public class AddActivity extends BaseActivity {
     }
 
 
-
-
     @Override
     public void onStart() {
         super.onStart();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser == null){
-            Intent intent = new Intent(AddActivity.this, LoginActivity.class );
+        if (currentUser == null) {
+            Intent intent = new Intent(AddActivity.this, LoginActivity.class);
             startActivity(intent);
         }
 
@@ -242,6 +239,7 @@ public class AddActivity extends BaseActivity {
 //                            startActivity(intent);
 //                        }
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
@@ -264,24 +262,24 @@ public class AddActivity extends BaseActivity {
         int[] formTextViewErrCodeArr = new int[formTextViewArr.length];
         View focusView = null;
 
-        for (int i = 0 ; i < formTextViewErrCodeArr.length ; i ++ ){
+        for (int i = 0; i < formTextViewErrCodeArr.length; i++) {
             formTextViewErrCodeArr[i] = ValidationUtils.isEmptyTextField(mandatoryFieldsValues[i]);
         }
 
-        if (isReservationOnMyName.isChecked()){//reservation on user's name
+        if (isReservationOnMyName.isChecked()) {//reservation on user's name
             formTextViewErrCodeArr[0] = 0;
             reservationNameEditText.setError(null);
         }
 
-        for (int i = 0; i < formTextViewArr.length; i ++){
+        for (int i = 0; i < formTextViewArr.length; i++) {
             int res = formTextViewErrCodeArr[i];
             TextView textView = formTextViewArr[i];
-            if(res != 0){//error
+            if (res != 0) {//error
                 textView.setError(getString(res));
                 focusView = textView;
-                if(textView == branchEditText)
+                if (textView == branchEditText)
                     Toast.makeText(AddActivity.this, "please enter a restaurant", Toast.LENGTH_LONG).show();
-            }else{
+            } else {
                 textView.setError(null);// Reset error.
             }
         }
@@ -299,10 +297,10 @@ public class AddActivity extends BaseActivity {
 
         Log.i(TAG, "adding a new reservation to DB");
         final String key = mDatabase.child("reservations").push().getKey();
-        try{
+        try {
             String dateNewFormat = DateUtils.switchDateFormat(date, DateUtils.dateFormatUser, DateUtils.dateFormatDB);
             final String newFullDateString = dateNewFormat + " " + hour;
-            if(reservationName.equals("")){
+            if (reservationName.equals("")) {
                 reservationName = currentUser.getDisplayName();
             }
             final String reservationOnName = reservationName;
@@ -312,7 +310,7 @@ public class AddActivity extends BaseActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Float hottnesRateInDB = dataSnapshot.child("hottnesRate").getValue(Float.class);
-                    Integer hottnesRate = hottnesRateInDB == null ? 0 : Math.round(hottnesRateInDB * 2);
+                    Integer hottnesRate = hottnesRateInDB == null ? 0 : Math.round(hottnesRateInDB);
                     Reservation reservation = new Reservation(currentUser.getUid(), restaurant, branch, placeID, newFullDateString, numOfPeople, reservationOnName, hottnesRate, reservationDay[0], timeInDay, SeattingArea, false);
                     Map<String, Object> reservationValues = reservation.toMap();
                     Map<String, Object> childUpdates = new HashMap<>();
@@ -325,7 +323,7 @@ public class AddActivity extends BaseActivity {
                             if (task.isSuccessful()) {
                                 DBUtils.updateUploadToUser(currentUser.getUid());
                                 Log.i(TAG, "add new reservation:success", task.getException());
-                                Intent intent = new Intent(AddActivity.this, MainActivity.class );
+                                Intent intent = new Intent(AddActivity.this, MainActivity.class);
                                 startActivity(intent);
                             } else {
                                 Log.w(TAG, "add new reservation:failure", task.getException());
@@ -336,9 +334,10 @@ public class AddActivity extends BaseActivity {
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) { }
+                public void onCancelled(DatabaseError databaseError) {
+                }
             });
-        }catch (ParseException e){
+        } catch (ParseException e) {
             //todo
             Toast.makeText(AddActivity.this, "Error!", Toast.LENGTH_LONG).show();
         }
