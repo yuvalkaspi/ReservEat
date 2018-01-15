@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
                 android:background="@null"
                 android:visibility="gone"
                 app:srcCompat="@mipmap/stars0" />
@@ -45,33 +46,37 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
                 android:background="@null"
                 android:visibility="gone"
-                app:srcCompat="@mipmap/star1" />
+                app:srcCompat="@mipmap/stars1" />
             <ImageView
                 android:id="@+id/star2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
                 android:background="@null"
                 android:visibility="gone"
-                app:srcCompat="@mipmap/star2" />
+                app:srcCompat="@mipmap/stars2" />
             <ImageView
                 android:id="@+id/star3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/star0"
                 android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
                 android:background="@null"
                 android:visibility="gone"
-                app:srcCompat="@mipmap/star3" />
+                app:srcCompat="@mipmap/stars3" />
 
             <TextView
                 android:id="@+id/ResetStarDate"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"
                 android:textSize="20dp" />
 
             <Space
@@ -83,6 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"
                 android:textSize="20dp"/>
 
         </LinearLayout>

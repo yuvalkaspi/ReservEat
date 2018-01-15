@@ -26,6 +26,7 @@ public class BaseActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.reserveatlogo);
     }
