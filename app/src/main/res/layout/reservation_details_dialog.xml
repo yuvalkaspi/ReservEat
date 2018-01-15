@@ -63,10 +63,10 @@
 
         <TextView
             android:id="@+id/resturant_detail"
-            android:layout_width="255dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/pop_up_padding"
-            android:text="restuarnt"
+            android:text="restaurant"
             android:textColor="@color/cardview_dark_background"
             android:textSize="@dimen/pop_up_text_size" />
 
@@ -91,7 +91,7 @@
 
         <TextView
             android:id="@+id/branch_detail"
-            android:layout_width="254dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/pop_up_padding"
             android:text="branch"
@@ -122,7 +122,7 @@
 
         <TextView
             android:id="@+id/date_detail"
-            android:layout_width="252dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/pop_up_padding"
             android:text="date"
@@ -152,7 +152,7 @@
 
         <TextView
             android:id="@+id/hour_detail"
-            android:layout_width="255dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/pop_up_padding"
             android:text="hour"
@@ -183,7 +183,7 @@
 
         <TextView
             android:id="@+id/num_of_people_detail"
-            android:layout_width="251dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/pop_up_padding"
             android:text="num"
@@ -197,8 +197,8 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/pop_up_icon_size"
+            android:layout_height="@dimen/pop_up_icon_size"
             android:src="@mipmap/chair"
             android:layout_gravity="center" />
 
@@ -211,11 +211,11 @@
             android:textColor="@color/cardview_dark_background"/>
 
         <TextView
-            android:id="@+id/seattingArea"
+            android:id="@+id/seatting_area_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/pop_up_padding"
-            android:text="Seatting Area"
+            android:text="@string/seatting_details"
             android:textSize="@dimen/pop_up_text_size"
             android:textColor="@color/cardview_dark_background"/>
 
@@ -246,7 +246,7 @@
 
         <TextView
             android:id="@+id/phone_detail"
-            android:layout_width="245dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="phone"
             android:clickable="true"

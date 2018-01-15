@@ -27,13 +27,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.reserveat.reserveat.MatchedReservationActivity;
 import com.reserveat.reserveat.R;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.dbObjects.Restaurant;
 import com.reserveat.reserveat.common.utils.DBUtils;
 import com.reserveat.reserveat.common.utils.DateUtils;
-import com.reserveat.reserveat.common.utils.ReservationUtils;
 
 import java.text.ParseException;
 import java.util.HashMap;
@@ -103,6 +101,7 @@ public class ReservationDetailsDialog extends ContentBaseDialog {
                 }
 
                 setDetail(Integer.toString(reservation.getNumOfPeople()), R.id.num_of_people_detail, view);
+                setDetail(reservation.getSeattingArea(), R.id.seatting_area_detail, view);
                 fillPhoneDetails(view, reservation);
 
                 if(isPickable){

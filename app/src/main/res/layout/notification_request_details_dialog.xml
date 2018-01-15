@@ -3,14 +3,44 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/nd_custom_layout"
+        android:id="@+id/rl_custom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal_margin">
+
+
+            <TextView
+                android:id="@+id/contact_form_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/details"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp"
+                android:typeface="serif" />
+
+            <ImageButton
+                android:id="@+id/close"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center_horizontal"
+                android:background="@null"
+                android:contentDescription="@string/close_button"
+                android:src="@mipmap/close" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -20,23 +50,25 @@
                 android:layout_width="@dimen/pop_up_icon_size"
                 android:layout_height="@dimen/pop_up_icon_size"
                 android:src="@mipmap/restaurant"
-                android:layout_gravity="center" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/pop_up_padding"
-                android:text="Restuarnt:"
-                android:textSize="@dimen/pop_up_text_size"
-                android:textColor="@color/cardview_dark_background"/>
+                android:layout_gravity="center"
+                android:contentDescription="@string/restaurant_icon"/>
 
             <TextView
-                android:id="@+id/dialog_resturant_name"
+                android:layout_width="129dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="@string/restaurant_details"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/pop_up_text_size" />
+
+            <TextView
+                android:id="@+id/resturant_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/pop_up_padding"
-                android:text="restuarnt"
-                android:textSize="@dimen/pop_up_text_size"
-                android:textColor="@color/cardview_dark_background"/>
+                android:text="restaurant"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/pop_up_text_size" />
 
         </LinearLayout>
 
@@ -50,16 +82,16 @@
                 android:layout_gravity="center" />
 
             <TextView
-                android:layout_width="95dp"
+                android:layout_width="129dp"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/pop_up_padding"
-                android:text="Branch:     "
+                android:text="@string/branch_details"
                 android:textColor="@color/cardview_dark_background"
                 android:textSize="@dimen/pop_up_text_size" />
 
             <TextView
-                android:id="@+id/dialog_branch"
-                android:layout_width="252dp"
+                android:id="@+id/branch_detail"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/pop_up_padding"
                 android:text="branch"
@@ -70,7 +102,8 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <ImageView
                 android:layout_width="@dimen/pop_up_icon_size"
@@ -78,22 +111,23 @@
                 android:src="@mipmap/calendar"
                 android:layout_gravity="center"
                 />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/pop_up_padding"
-                android:text="Date:          "
-                android:textSize="@dimen/pop_up_text_size"
-                android:textColor="@color/cardview_dark_background"/>
 
             <TextView
-                android:id="@+id/dialog_date"
+                android:layout_width="129dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="@string/date_details"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/pop_up_text_size" />
+
+            <TextView
+                android:id="@+id/date_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/pop_up_padding"
                 android:text="date"
-                android:textSize="@dimen/pop_up_text_size"
-                android:textColor="@color/cardview_dark_background"/>
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/pop_up_text_size" />
 
         </LinearLayout>
 
@@ -107,22 +141,23 @@
                 android:src="@mipmap/clock"
                 android:layout_gravity="center"
                 />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/pop_up_padding"
-                android:text="Hour:          "
-                android:textSize="@dimen/pop_up_text_size"
-                android:textColor="@color/cardview_dark_background"/>
 
             <TextView
-                android:id="@+id/dialog_hour"
+                android:layout_width="129dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="@string/hour_details"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/pop_up_text_size" />
+
+            <TextView
+                android:id="@+id/hour_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/pop_up_padding"
                 android:text="hour"
-                android:textSize="@dimen/pop_up_text_size"
-                android:textColor="@color/cardview_dark_background"/>
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/pop_up_text_size" />
 
         </LinearLayout>
 
@@ -136,16 +171,16 @@
                 android:layout_gravity="center" />
 
             <TextView
-                android:layout_width="95dp"
+                android:layout_width="129dp"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/pop_up_padding"
-                android:text="Flexible time:     "
+                android:text="@string/flexible_details"
                 android:textColor="@color/cardview_dark_background"
                 android:textSize="@dimen/pop_up_text_size" />
 
             <TextView
                 android:id="@+id/timeFlexible"
-                android:layout_width="252dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/pop_up_padding"
                 android:text="flexible"
@@ -165,22 +200,23 @@
                 android:src="@mipmap/user"
                 android:layout_gravity="center"
                 />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/pop_up_padding"
-                android:text="People:      "
-                android:textSize="@dimen/pop_up_text_size"
-                android:textColor="@color/cardview_dark_background"/>
 
             <TextView
-                android:id="@+id/dialog_num_of_people"
+                android:layout_width="129dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/pop_up_padding"
+                android:text="@string/people_details"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/pop_up_text_size" />
+
+            <TextView
+                android:id="@+id/num_of_people_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/pop_up_padding"
                 android:text="num"
-                android:textSize="@dimen/pop_up_text_size"
-                android:textColor="@color/cardview_dark_background"/>
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/pop_up_text_size" />
 
         </LinearLayout>
 
