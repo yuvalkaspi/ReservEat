@@ -38,6 +38,14 @@ public class NotificationRequestDetailsDialog extends ContentBaseDialog {
 
         View root = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.notification_request_details_dialog, null);
 
+        ImageButton closeButton = (ImageButton) root.findViewById(R.id.close);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
         fillNotificationRequestDetails(root);
 
         builder.setView(root);
@@ -45,8 +53,6 @@ public class NotificationRequestDetailsDialog extends ContentBaseDialog {
         dialog = builder.create();
         return dialog;
     }
-
-
 
 
     private void fillNotificationRequestDetails(final View view){
@@ -59,8 +65,8 @@ public class NotificationRequestDetailsDialog extends ContentBaseDialog {
 
                 NotificationRequest notificationRequest = dataSnapshot.getValue(NotificationRequest.class);
 
-                setDetail(notificationRequest.getRestaurant(), R.id.dialog_resturant_name, view);
-                setDetail(notificationRequest.getBranch(), R.id.dialog_branch, view);
+                setDetail(notificationRequest.getRestaurant(), R.id.resturant_detail, view);
+                setDetail(notificationRequest.getBranch(), R.id.branch_detail, view);
 
                 String date = notificationRequest.getDate();
                 String dateNewFormat = null;
@@ -75,14 +81,12 @@ public class NotificationRequestDetailsDialog extends ContentBaseDialog {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    setDetail(dateNewFormat, R.id.dialog_date, view);
-                    setDetail(hour, R.id.dialog_hour, view);
                 }
-
-                setDetail(dateNewFormat, R.id.dialog_date, view);
-                setDetail(hour, R.id.dialog_hour, view);
+                setDetail(dateNewFormat, R.id.date_detail, view);
+                setDetail(hour, R.id.hour_detail, view);
                 setDetail(notificationRequest.getIsFlexible()? "Yes":"No", R.id.timeFlexible, view);
-                setDetail(Integer.toString(notificationRequest.getNumOfPeople()), R.id.dialog_num_of_people, view);
+                setDetail(Integer.toString(notificationRequest.getNumOfPeople()), R.id.num_of_people_detail, view);
+
             }
 
             @Override
@@ -90,8 +94,9 @@ public class NotificationRequestDetailsDialog extends ContentBaseDialog {
 
             }
         });
-    }
 
+
+    }
 
     private void setDetail(String detail, int textViewId, View detailsView){
         String newDetail = (detail == null || detail.equals("")) ? "Flexible" : detail;

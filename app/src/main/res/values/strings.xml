@@ -146,5 +146,7 @@
     <string name="hour_details">Hour:</string>
     <string name="people_details">People:</string>
     <string name="phone_details">Phone:</string>
+    <string name="flexible_details">Time Flexibility:</string>
+    <string name="seatting_details">Seatting Area:</string>
 
 </resources>
