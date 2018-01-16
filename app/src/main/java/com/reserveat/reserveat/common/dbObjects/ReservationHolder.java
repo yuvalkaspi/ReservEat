@@ -2,6 +2,7 @@ package com.reserveat.reserveat.common.dbObjects;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.reserveat.reserveat.R;
@@ -13,6 +14,9 @@ public class ReservationHolder extends RecyclerView.ViewHolder {
     private final TextView date;
     private final TextView hour;
     private final TextView numOfPeople;
+    private final ImageView boilHotness;
+    private final ImageView hotHotness;
+    private final ImageView warmHotness;
 
     ReservationHolder(View itemView) {
         super(itemView);
@@ -27,6 +31,10 @@ public class ReservationHolder extends RecyclerView.ViewHolder {
                 mClickListener.onItemClick(view ,getAdapterPosition());
             }
         });
+        boilHotness = itemView.findViewById(R.id.boil);
+        hotHotness = itemView.findViewById(R.id.hot);
+        warmHotness = itemView.findViewById(R.id.warm);
+
     }
 
     public void setRestaurant(String r){
@@ -48,6 +56,17 @@ public class ReservationHolder extends RecyclerView.ViewHolder {
 
     public void setNumOfPeople(int n){
         numOfPeople.setText(String.valueOf(n));
+    }
+
+    public void setHotness(int hotness){
+        if(hotness >= 9){
+            boilHotness.setVisibility(View.VISIBLE);
+        } else if( hotness == 8) {
+            hotHotness.setVisibility(View.VISIBLE);
+        } else if( hotness == 7){
+            warmHotness.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private ClickListener mClickListener = new ClickListener() {

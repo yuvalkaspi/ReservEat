@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp">
+
+        <TextView
+            android:id="@+id/actions_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:typeface="serif" />
+
+        <ImageButton
+            android:id="@+id/close_button"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/close"
+            android:background="@null"
+            android:contentDescription="@string/close_button"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/details_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@mipmap/informationd"
+        android:gravity="start|center_vertical"
+        android:text="@string/details_button_string"
+        android:textSize="@dimen/pop_up_text_size"
+        android:layout_margin="@dimen/my_res_pu_margin"
+        />
+
+    <Button
+        android:id="@+id/review_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@mipmap/clipboard"
+        android:gravity="start|center_vertical"
+        android:text="@string/review_button_string"
+        android:textSize="@dimen/pop_up_text_size"
+        android:layout_margin="@dimen/my_res_pu_margin" />
+
+
+    <Button
+        android:id="@+id/remove_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@mipmap/rubbish_black"
+        android:gravity="start|center_vertical"
+        android:text="@string/remove_button_string"
+        android:textSize="@dimen/pop_up_text_size"
+        android:layout_margin="@dimen/my_res_pu_margin"
+        />
+
+    <Button
+        android:id="@+id/spam_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@mipmap/exclamation"
+        android:gravity="start|center_vertical"
+        android:text="@string/spam_button_string"
+        android:textSize="@dimen/pop_up_text_size"
+        android:layout_margin="@dimen/my_res_pu_margin"
+        />
+
+
+</LinearLayout>

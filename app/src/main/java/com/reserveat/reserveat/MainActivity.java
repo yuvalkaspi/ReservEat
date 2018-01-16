@@ -23,14 +23,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ContentBaseDialog;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ReservationDetailsDialog;
 import com.reserveat.reserveat.common.utils.DialogUtils;
-import com.google.firebase.database.ValueEventListener;
-import com.reserveat.reserveat.common.utils.DBUtils;
-import com.reserveat.reserveat.common.utils.DateUtils;
 import com.reserveat.reserveat.common.utils.ReservationUtils;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
@@ -117,28 +114,9 @@ public class MainActivity extends BaseActivity implements BaseChoiceDialog.Notic
                     @Override
                     public void onItemClick(View view, int position) {
                         key = getRef(position).getKey();
-                        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                        final View customView = inflater.inflate(R.layout.pop_up_reservation_layout,null);
-                        PopupWindow mPopupWindow = new PopupWindow(
-                                customView,
-                                LinearLayout.LayoutParams.WRAP_CONTENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT
-                        );
-
-
-                        ReservationUtils.popUpWindowCreate(mPopupWindow, customView, reservation, MainActivity.this);
-
-                        Button pickButton = (Button) customView.findViewById(R.id.pick_Button);
-                        //Todo make gery when uid is current user
-                        pickButton.setVisibility(View.VISIBLE);
-                        pickButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ReservationUtils.popUpPickClick(reservation, customView, key, currentUser.getUid(), MainActivity.this);
-                            }
-                        });
-                        mPopupWindow.setFocusable(true);
-                        mPopupWindow.showAtLocation((LinearLayout) findViewById(R.id.activity_main_page), Gravity.CENTER,0,0);
+                        ContentBaseDialog newFragment = new ReservationDetailsDialog();
+                        DialogUtils.initContentDialog(newFragment, key, false, false, false, false, true);
+                        newFragment.show(getFragmentManager(), "ReservationDetailsDialog");
                     }
                 });
                 Log.i(TAG, "populateViewHolder: success");

@@ -14,9 +14,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.reserveat.reserveat.common.utils.DBUtils;
+import com.reserveat.reserveat.common.utils.DateUtils;
 
+
+import java.text.ParseException;
 
 import static com.reserveat.reserveat.common.utils.DBUtils.getCurrentUserID;
+import static com.reserveat.reserveat.common.utils.DateUtils.dateFormatDB;
+import static com.reserveat.reserveat.common.utils.DateUtils.dateFormatUser;
 
 public class ProfileActivity extends BaseActivity {
 
@@ -51,7 +56,12 @@ public class ProfileActivity extends BaseActivity {
                 int currNumOfStars = dataSnapshot.child("stars").getValue(Integer.class);
 
                 if(currNumOfStars != 0){
-                    String resetStarnextDate = dataSnapshot.child("starRemoveDate").getValue(String.class);
+                    String resetStarnextDate = dataSnapshot.child("starRemoveDate").getValue(String.class).split(" ")[0];
+                    try {
+                        resetStarnextDate = DateUtils.switchDateFormat(resetStarnextDate, dateFormatDB, dateFormatUser);
+                    } catch(ParseException e){
+                        resetStarnextDate = "";
+                    }
                     resetStarDateTextView.setText("Losing Star date: " + resetStarnextDate);
                 }
 
@@ -78,10 +88,6 @@ public class ProfileActivity extends BaseActivity {
             }
         });
 
-
-
-
-
         Button myResButton = findViewById(R.id.MyReservations);
         myResButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +106,17 @@ public class ProfileActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        Button myNotificationButton = findViewById(R.id.MyNotificationReq);
+        myNotificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, MyNotificationsListActivity.class );
+                startActivity(intent);
+            }
+        });
+
+
     }
 
 

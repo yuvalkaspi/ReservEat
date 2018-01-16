@@ -5,14 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,12 +18,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.reserveat.reserveat.common.dbObjects.NotificationRequest;
 import com.reserveat.reserveat.common.dbObjects.NotificationRequestHolder;
-import com.reserveat.reserveat.common.dbObjects.Review;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ContentBaseDialog;
 import com.reserveat.reserveat.common.dialogFragment.contentDialogs.NotificationRequestListDialog;
 import com.reserveat.reserveat.common.utils.DialogUtils;
-import com.reserveat.reserveat.common.utils.ReservationUtils;
 import com.reserveat.reserveat.common.utils.DBUtils;
-import com.reserveat.reserveat.common.dbObjects.Reservation;
 
 
 public class MyNotificationsListActivity extends BaseActivity  {
@@ -65,8 +57,8 @@ public class MyNotificationsListActivity extends BaseActivity  {
                     public void onItemClick(View view, int position) {
                           final String key = getRef(position).getKey();
 
-                          NotificationRequestListDialog newFragment = new NotificationRequestListDialog();
-                          DialogUtils.initContentDialog(newFragment, R.string.notification_request, R.layout.notification_request_dialog,key);
+                          ContentBaseDialog newFragment = new NotificationRequestListDialog();
+                          DialogUtils.initContentDialog(newFragment ,key, false, false, false, false, false);
                           newFragment.show(getFragmentManager(), "NotificationRequestListDialog");
                     }
 

@@ -186,7 +186,7 @@ public class DBUtils {
 
     }
 
-    public static void updateReliabilityToUser(final String userId ,final int reliability) {
+    public static void updateReliabilityToUser(final String userId ,final double reliability) {
         final DatabaseReference userRef = mDatabase.child("users").child(userId);
 
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -194,7 +194,7 @@ public class DBUtils {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int currReliability = dataSnapshot.child("reliability").getValue(Integer.class);
                 Map<String, Object> childUpdates = new HashMap<>();
-                int finReliability = currReliability + reliability;
+                double finReliability = currReliability + reliability;
 
                 if (finReliability > reliabilityMax )
                     finReliability = reliabilityMax;
