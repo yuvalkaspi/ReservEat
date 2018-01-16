@@ -150,6 +150,8 @@
     <string name="hour_details">Hour:</string>
     <string name="people_details">People:</string>
     <string name="phone_details">Phone:</string>
+    <string name="flexible_details">Time Flexibility:</string>
+    <string name="seatting_details">Seatting Area:</string>
 
     <string name="spam_not_picked_msg">reservation is not picked, can\'t report it</string>
     <string name="spam_reported_msg">reservation is reported</string>

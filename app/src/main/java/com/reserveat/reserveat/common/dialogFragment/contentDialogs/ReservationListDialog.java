@@ -4,6 +4,7 @@ package com.reserveat.reserveat.common.dialogFragment.contentDialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.reserveat.reserveat.MyReservationsListActivity;
 import com.reserveat.reserveat.R;
 import com.reserveat.reserveat.ReviewFormActivity;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
@@ -58,7 +60,28 @@ public class ReservationListDialog extends ContentBaseDialog {
             spamButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    spamClick(spamButton);
+                    spamButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                            if(isMyReservations)
+                                alertDialog.setMessage(getResources().getString(R.string.myResSpamInfo));
+                            else
+                                alertDialog.setMessage(getResources().getString(R.string.myPicksSpamInfo));
+
+                            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    spamClick(spamButton);
+                                }
+                            });
+                            alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                            alertDialog.show();
+                        }
+                    });
+
                 }
             });
 
