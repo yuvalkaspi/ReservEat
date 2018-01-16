@@ -179,11 +179,11 @@ public class ReservationDetailsDialog extends ReservationContentDialog {
 
         String userId = DBUtils.getCurrentUserID();
         final Button pickButton = (Button) view.findViewById(R.id.pick_Button);
-
-        if (reservation.getUid().equals(userId)) {
-            DialogUtils.makeButtonGrey(pickButton, getResources());
-            return;
-        }
+//
+//        if (reservation.getUid().equals(userId)) {// My reservation
+//            Toast.makeText(getActivity(), "You can't pick your own reservation", Toast.LENGTH_LONG).show();
+//            return;
+//        }
 
         final TextView noteTextView = (TextView) view.findViewById(R.id.note_detail);
 
