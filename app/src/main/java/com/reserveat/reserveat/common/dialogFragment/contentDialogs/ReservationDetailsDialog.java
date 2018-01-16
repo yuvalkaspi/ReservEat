@@ -4,6 +4,7 @@ package com.reserveat.reserveat.common.dialogFragment.contentDialogs;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,22 +33,22 @@ import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.dbObjects.Restaurant;
 import com.reserveat.reserveat.common.utils.DBUtils;
 import com.reserveat.reserveat.common.utils.DateUtils;
+import com.reserveat.reserveat.common.utils.DialogUtils;
 
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
 
-public class ReservationDetailsDialog extends ContentBaseDialog {
+public class ReservationDetailsDialog extends ReservationContentDialog {
 
-    private String resToGet;
     public static int numOfStarsPerPick = 2;
+    private static final String TAG = "ReservationDetailsDlg";
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        resToGet =  isMyReservations? "reservations" : "pickedReservations";
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         View root = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.reservation_details_dialog, null);
@@ -70,74 +71,58 @@ public class ReservationDetailsDialog extends ContentBaseDialog {
 
     private void fillReservationDetails(final View view) {
 
-        DatabaseReference reservationRef = DBUtils.getDatabaseRef().child("reservations").child(key);
-        if(!isPickable){
-            reservationRef = DBUtils.getDatabaseRef().child("users").child(DBUtils.getCurrentUserID()).child(resToGet).child(key);
+        setDetail(reservation.getRestaurant(), R.id.resturant_detail, view);
+        setDetail(reservation.getBranch(), R.id.branch_detail, view);
+
+        String date = reservation.getDate();
+        String dateNewFormat = null;
+        String hour = null;
+
+        if (date != null && !date.equals("")) {
+            int indexOfSpace = date.indexOf(" ");
+            String dateOldFormat = date.substring(0, indexOfSpace);
+            hour = date.substring(indexOfSpace + 1);
+            try {
+                dateNewFormat = DateUtils.switchDateFormat(dateOldFormat, DateUtils.dateFormatDB, DateUtils.dateFormatUser);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            setDetail(dateNewFormat, R.id.date_detail, view);
+            setDetail(hour, R.id.hour_detail, view);
         }
 
-        reservationRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                final Reservation reservation = dataSnapshot.getValue(Reservation.class);
+        setDetail(Integer.toString(reservation.getNumOfPeople()), R.id.num_of_people_detail, view);
+        setDetail(reservation.getSeattingArea(), R.id.seatting_area_detail, view);
+        fillPhoneDetails(view, reservation);
 
-                setDetail(reservation.getRestaurant(), R.id.resturant_detail, view);
-                setDetail(reservation.getBranch(), R.id.branch_detail, view);
-
-                String date = reservation.getDate();
-                String dateNewFormat = null;
-                String hour = null;
-
-                if( date != null && !date.equals("")) {
-                    int indexOfSpace = date.indexOf(" ");
-                    String dateOldFormat = date.substring(0, indexOfSpace);
-                    hour = date.substring(indexOfSpace + 1);
-                    try {
-                        dateNewFormat = DateUtils.switchDateFormat(dateOldFormat, DateUtils.dateFormatDB, DateUtils.dateFormatUser);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    setDetail(dateNewFormat, R.id.date_detail, view);
-                    setDetail(hour, R.id.hour_detail, view);
+        if (isPickable) {
+            Button pickButton = (Button) view.findViewById(R.id.pick_Button);
+            pickButton.setVisibility(View.VISIBLE);
+            pickButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View clickedView) {
+                    pickClick(reservation, view);
                 }
-
-                setDetail(Integer.toString(reservation.getNumOfPeople()), R.id.num_of_people_detail, view);
-                setDetail(reservation.getSeattingArea(), R.id.seatting_area_detail, view);
-                fillPhoneDetails(view, reservation);
-
-                if(isPickable){
-                    Button pickButton = (Button) view.findViewById(R.id.pick_Button);
-                    pickButton.setVisibility(View.VISIBLE);
-                    pickButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View clickedView) {
-                           pickClick(reservation, view);
-                        }
-                    });
-                }else{
-                    fillReservationHiddenDetails(view, reservation);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+            });
+        } else {
+            fillReservationHiddenDetails(view, reservation);
+        }
 
     }
 
     private void fillReservationHiddenDetails(View view, Reservation reservation) {
-        if(!isMyReservations){
+        if (!isMyReservations) {
             setDetailAndVisibility("Reservation name is : ", R.id.name_form_detail, view);
             setDetailAndVisibility(reservation.getReservationName(), R.id.name_detail, view);
         }
 
         LinearLayout phoneLayout = view.findViewById(R.id.phoneLayout);
         TextView phoneTextView = view.findViewById(R.id.phone_detail);
-        if(!phoneTextView.getText().equals("")){
+        if (!phoneTextView.getText().equals("")) {
             phoneLayout.setVisibility(View.VISIBLE);
         }
 
-        if(!phoneTextView.getText().equals(""))
+        if (!phoneTextView.getText().equals(""))
             phoneLayout.setVisibility(View.VISIBLE);
     }
 
@@ -148,11 +133,10 @@ public class ReservationDetailsDialog extends ContentBaseDialog {
     }
 
 
-    private void setDetail(String detail, int textViewId, View detailsView){
+    private void setDetail(String detail, int textViewId, View detailsView) {
         TextView textView = detailsView.findViewById(textViewId);
         textView.setText(detail);
     }
-
 
 
     public void fillPhoneDetails(final View view, Reservation reservation) {
@@ -191,15 +175,13 @@ public class ReservationDetailsDialog extends ContentBaseDialog {
     }
 
 
-
-
     public void pickClick(final Reservation reservation, final View view) {
 
         String userId = DBUtils.getCurrentUserID();
         final Button pickButton = (Button) view.findViewById(R.id.pick_Button);
-        //todo remove comments
-//        if(reservation.getUid().equals(userId)){
-//            makeButtonGrey(pickButton);
+//
+//        if (reservation.getUid().equals(userId)) {// My reservation
+//            Toast.makeText(getActivity(), "You can't pick your own reservation", Toast.LENGTH_LONG).show();
 //            return;
 //        }
 
@@ -229,10 +211,11 @@ public class ReservationDetailsDialog extends ContentBaseDialog {
                     DBUtils.updateReliabilityToUser(reservation.getUid(), reservation.getHotness());
                 } else {
                     Log.w(TAG, "pick reservation:failure", task.getException());
-                    Toast.makeText(getActivity() , "Error!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Error!", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
+
 
 }

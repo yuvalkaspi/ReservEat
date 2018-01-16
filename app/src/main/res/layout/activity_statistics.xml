@@ -20,7 +20,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="5dp"
-        android:text="STATISTICS"
+        android:text="@string/cancellationStatisticsTitle"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"
         android:typeface="serif" />

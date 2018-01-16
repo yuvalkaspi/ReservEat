@@ -3,6 +3,7 @@ package com.reserveat.reserveat.common.dialogFragment.contentDialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,16 +26,12 @@ import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.utils.DBUtils;
 import com.reserveat.reserveat.common.utils.DialogUtils;
 
-public class ReservationListDialog extends ContentBaseDialog {
-
-    private String resToGet;
+public class ReservationListDialog extends ReservationContentDialog {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        resToGet =  isMyReservations? "reservations" : "pickedReservations";
 
         View root = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.actions_dialog, null);
         Button detailsButton = root.findViewById(R.id.details_button);
@@ -54,8 +51,8 @@ public class ReservationListDialog extends ContentBaseDialog {
             }
         });
 
-        if((isMyReservations && !isPicked) || isSpam)
-            makeButtonGrey(spamButton);
+        if ((isMyReservations && !reservation.isPicked()) || reservation.getIsSpam())
+            DialogUtils.makeButtonGrey(spamButton, getResources());
         else
             spamButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -64,7 +61,7 @@ public class ReservationListDialog extends ContentBaseDialog {
                         @Override
                         public void onClick(View view) {
                             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-                            if(isMyReservations)
+                            if (isMyReservations)
                                 alertDialog.setMessage(getResources().getString(R.string.myResSpamInfo));
                             else
                                 alertDialog.setMessage(getResources().getString(R.string.myPicksSpamInfo));
@@ -74,7 +71,7 @@ public class ReservationListDialog extends ContentBaseDialog {
                                     spamClick(spamButton);
                                 }
                             });
-                            alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
+                            alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                 }
                             });
@@ -86,16 +83,16 @@ public class ReservationListDialog extends ContentBaseDialog {
             });
 
 
-        if(!isMyReservations)
+        if (!isMyReservations)
             removeButton.setVisibility(View.GONE);
-        else{
-            if (isPicked)
-                makeButtonGrey(removeButton);
+        else {
+            if (reservation.isPicked())
+                DialogUtils.makeButtonGrey(removeButton, getResources());
             else
                 removeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        removeClick("reservations");
+                        DialogUtils.removeClick(dialog, "reservations", key, getActivity());
                     }
                 });
         }
@@ -103,20 +100,20 @@ public class ReservationListDialog extends ContentBaseDialog {
         detailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ContentBaseDialog newFragment = new ReservationDetailsDialog();
-                DialogUtils.initContentDialog(newFragment, key, isMyReservations, isSpam, isPicked, isReviewed, isPickable);
+                ReservationContentDialog newFragment = new ReservationDetailsDialog();
+                ReservationContentDialog.initInstance(newFragment, key, reservation, isMyReservations, isPickable);
                 newFragment.show(getFragmentManager(), "ReservationDetailsDialog");
                 dialog.dismiss();
             }
         });
 
 
-        if(isMyReservations)
+        if (isMyReservations)
             reviewButton.setVisibility(View.GONE);
-        else{
-            if(isReviewed)
-                makeButtonGrey(reviewButton);
-            else{
+        else {
+            if (reservation.getIsReviewed())
+                DialogUtils.makeButtonGrey(reviewButton, getResources());
+            else {
                 reviewButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -133,56 +130,31 @@ public class ReservationListDialog extends ContentBaseDialog {
     }
 
     private void reviewClick() {
-
-        final DatabaseReference reservationRef = DBUtils.getDatabaseRef().child("users").child(DBUtils.getCurrentUserID()).child(resToGet).child(key);
-
-        reservationRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Reservation reservation = dataSnapshot.getValue(Reservation.class);
-                Intent intent = new Intent(getActivity(), ReviewFormActivity.class );
-                intent.putExtra("reservation", reservation);
-                intent.putExtra("reservationKey", key);
-                startActivityForResult(intent , 0);
-                dialog.dismiss();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
+        Intent intent = new Intent(getActivity(), ReviewFormActivity.class);
+        intent.putExtra("reservation", reservation);
+        intent.putExtra("reservationKey", key);
+        startActivityForResult(intent, 0);
+        dialog.dismiss();
     }
 
 
     private void spamClick(final Button spamButton) {
 
-        final DatabaseReference reservationRef = DBUtils.getDatabaseRef().child("users").child(DBUtils.getCurrentUserID()).child(resToGet).child(key);
+        String spammer;
+        reservation.setIsSpam(true);
+        if (isMyReservations) {
+            // my reservation picker is spammer
+            spammer = "picker";
+            DBUtils.updateSpamToUser(reservation.getPickedByUid(), reservation.getUid(), "reservations", key);
+        } else {
+            // I picked reservation owner is spammer
+            spammer = "reservation owner";
+            DBUtils.updateSpamToUser(reservation.getUid(), reservation.getPickedByUid(), "pickedReservations", key);
+        }
 
-        reservationRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Reservation reservation = dataSnapshot.getValue(Reservation.class);
-                String spammer;
-                reservation.setIsSpam(true);
-                if(isMyReservations) {
-                    // my reservation picker is spammer
-                    spammer = "picker";
-                    DBUtils.updateSpamToUser(reservation.getPickedByUid(), reservation.getUid(),"reservations", key);
-                }else{
-                    // I picked reservation owner is spammer
-                    spammer = "reservation owner";
-                    DBUtils.updateSpamToUser(reservation.getUid(), reservation.getPickedByUid(),"pickedReservations", key);
-                }
-
-                makeButtonGrey(spamButton);
-                Toast.makeText(getActivity() ,spammer + " is reported", Toast.LENGTH_LONG).show();
-                dialog.dismiss();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
+        DialogUtils.makeButtonGrey(spamButton, getResources());
+        Toast.makeText(getActivity(), spammer + " is reported", Toast.LENGTH_LONG).show();
+        dialog.dismiss();
     }
 
 

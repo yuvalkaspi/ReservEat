@@ -10,6 +10,10 @@ import java.util.List;
 
 public abstract class BaseChoiceDialog extends DialogFragment{
 
+    public static String dialogTitle = "dialogTitle";
+    public static String dialogContent = "dialogContent";
+    public static String dialogIndex = "dialogIndex";
+
     protected int titleStringId;
     protected int contentId;
     protected int index = -1;
@@ -21,12 +25,21 @@ public abstract class BaseChoiceDialog extends DialogFragment{
 
     protected BaseChoiceDialog.NoticeDialogListener mListener;
 
+
+    public static void initInstance(BaseChoiceDialog dialog, int titleStringId, int contentId, int index){
+        Bundle args = new Bundle();
+        args.putInt(BaseChoiceDialog.dialogTitle, titleStringId);
+        args.putInt(BaseChoiceDialog.dialogContent, contentId);
+        args.putInt(BaseChoiceDialog.dialogIndex, index);
+        dialog.setArguments(args);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        titleStringId = getArguments().getInt(DialogUtils.dialogTitle);
-        contentId = getArguments().getInt(DialogUtils.dialogContent);
-        index = getArguments().getInt(DialogUtils.dialogIndex);
+        titleStringId = getArguments().getInt(BaseChoiceDialog.dialogTitle);
+        contentId = getArguments().getInt(BaseChoiceDialog.dialogContent);
+        index = getArguments().getInt(BaseChoiceDialog.dialogIndex);
     }
 
     @Override

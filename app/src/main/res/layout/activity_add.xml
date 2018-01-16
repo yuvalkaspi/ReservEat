@@ -54,7 +54,7 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:clickable="true"
         android:focusable="false"
-        android:hint="@string/date"
+        android:hint="@string/required_date"
         android:inputType="none" />
 
     <Space
@@ -68,7 +68,7 @@
         android:backgroundTint="@color/colorPrimaryDark"
         android:clickable="true"
         android:focusable="false"
-        android:hint="@string/hour"
+        android:hint="@string/required_hour"
         android:inputType="none" />
 
     <Space
@@ -80,9 +80,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="@string/num_of_people"
+        android:hint="@string/required_num_of_people"
         android:inputType="numberDecimal" />
-
+n
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/spaceSize" />
@@ -129,7 +129,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="@string/reservation_name"
+        android:hint="@string/required_reservation_name"
         android:inputType="textPersonName" />
 
     <Space

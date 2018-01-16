@@ -1,25 +1,16 @@
 package com.reserveat.reserveat;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,20 +18,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.reserveat.reserveat.common.dbObjects.NotificationRequest;
-import com.reserveat.reserveat.common.dbObjects.NotificationRequestHolder;
-import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ContentBaseDialog;
-import com.reserveat.reserveat.common.dialogFragment.contentDialogs.NotificationRequestListDialog;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ReservationContentDialog;
 import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ReservationListDialog;
-import com.reserveat.reserveat.common.utils.DialogUtils;
 import com.reserveat.reserveat.common.utils.ReservationUtils;
 import com.reserveat.reserveat.common.utils.DBUtils;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
 
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MyReservationsListActivity extends BaseActivity {
 
@@ -85,9 +70,8 @@ public class MyReservationsListActivity extends BaseActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         final String key = getRef(position).getKey();
-
-                        ContentBaseDialog newFragment = new ReservationListDialog();
-                        DialogUtils.initContentDialog(newFragment, key, isMyReservations, reservation.getIsSpam(), reservation.isPicked(), reservation.getIsReviewed(), false);
+                        ReservationContentDialog newFragment = new ReservationListDialog();
+                        ReservationContentDialog.initInstance(newFragment, key, reservation, isMyReservations, false);
                         newFragment.show(getFragmentManager(), "ReservationListDialog");
                     }
                 });
@@ -99,6 +83,7 @@ public class MyReservationsListActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
 
     }
+
 
     @Override
     public void onResume() {

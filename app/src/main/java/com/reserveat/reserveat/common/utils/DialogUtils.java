@@ -1,39 +1,48 @@
 package com.reserveat.reserveat.common.utils;
 
-import android.os.Bundle;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.res.Resources;
+import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.Toast;
 
-import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.BaseChoiceDialog;
-import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ContentBaseDialog;
-import com.reserveat.reserveat.common.dialogFragment.contentDialogs.NotificationRequestListDialog;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.reserveat.reserveat.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DialogUtils {
 
-    public static String dialogTitle = "dialogTitle";
-    public static String dialogContent = "dialogContent";
-    public static String dialogIndex = "dialogIndex";
-    public static String dialogKey = "dialogKey";
-    public static String isMyReservation = "isMyReservations";
-    public static String isSpam = "isSpam";
-    public static String isPicked = "isPicked";
-    public static String isReviewed = "isReviewed";
-    public static String isPickable = "isPickable";
+    private static final String TAG = "DialogUtils";
 
-    public static void initChoiceDialog(BaseChoiceDialog dialog, int titleStringId, int contentId, int index){
-        Bundle args = new Bundle();
-        args.putInt(DialogUtils.dialogTitle, titleStringId);
-        args.putInt(DialogUtils.dialogContent, contentId);
-        args.putInt(DialogUtils.dialogIndex, index);
-        dialog.setArguments(args);
+    public static void removeClick(final Dialog dialog, final String location, final String key, final Context context) {
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/" + location + "/" + key, null);
+        childUpdates.put( "/" + location + "/" + key, null);
+        DatabaseReference popUpDatabase = FirebaseDatabase.getInstance().getReference();
+
+        popUpDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.i(TAG, "removeClick:success", task.getException());
+                    dialog.dismiss();
+
+                } else {
+                    Log.w(TAG, "removeClick:failure", task.getException());
+                    Toast.makeText(context , "Error!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
-    public static void initContentDialog(ContentBaseDialog dialog, String key, boolean isMyReservations, boolean isSpam, boolean isPicked, boolean isReviewed, boolean isPickable){
-        Bundle args = new Bundle();
-        args.putString(DialogUtils.dialogKey, key);
-        args.putBoolean(DialogUtils.isMyReservation, isMyReservations);
-        args.putBoolean(DialogUtils.isSpam, isSpam);
-        args.putBoolean(DialogUtils.isPicked, isPicked);
-        args.putBoolean(DialogUtils.isReviewed, isReviewed);
-        args.putBoolean(DialogUtils.isPickable, isPickable);
-        dialog.setArguments(args);
+    public static void makeButtonGrey(Button button, Resources resources) {
+        button.setTextColor(resources.getColor(R.color.lightGray));
     }
 }

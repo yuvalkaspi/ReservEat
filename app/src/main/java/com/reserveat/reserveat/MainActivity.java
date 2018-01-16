@@ -25,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ContentBaseDialog;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ReservationContentDialog;
 import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ReservationDetailsDialog;
 import com.reserveat.reserveat.common.utils.DialogUtils;
 import com.reserveat.reserveat.common.utils.ReservationUtils;
@@ -34,7 +34,6 @@ import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
 import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.SingleChoiceDialog;
 import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.BaseChoiceDialog;
 import com.reserveat.reserveat.common.utils.ValidationUtils;
-import android.support.v7.app.ActionBar;
 
 import java.text.ParseException;
 import java.util.List;
@@ -80,7 +79,7 @@ public class MainActivity extends BaseActivity implements BaseChoiceDialog.Notic
             @Override
             public void onClick(View view) {
                 BaseChoiceDialog newFragment = new SingleChoiceDialog();
-                DialogUtils.initChoiceDialog(newFragment, R.string.sort_by, R.array.SortByOptions,-1);
+                BaseChoiceDialog.initInstance(newFragment, R.string.sort_by, R.array.SortByOptions,-1);
                 newFragment.show(getFragmentManager(), "SingleChoiceDialog");
             }
         });
@@ -114,8 +113,8 @@ public class MainActivity extends BaseActivity implements BaseChoiceDialog.Notic
                     @Override
                     public void onItemClick(View view, int position) {
                         key = getRef(position).getKey();
-                        ContentBaseDialog newFragment = new ReservationDetailsDialog();
-                        DialogUtils.initContentDialog(newFragment, key, false, false, false, false, true);
+                        ReservationContentDialog newFragment = new ReservationDetailsDialog();
+                        ReservationContentDialog.initInstance(newFragment, key, reservation, false, true);
                         newFragment.show(getFragmentManager(), "ReservationDetailsDialog");
                     }
                 });

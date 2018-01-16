@@ -20,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.reserveat.reserveat.MainActivity;
 import com.reserveat.reserveat.common.dbObjects.Restaurant;
 import com.reserveat.reserveat.common.dbObjects.Review;
-import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ContentBaseDialog;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -31,9 +30,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * Created by Golan on 13/12/2017.
- */
 
 public class DBUtils {
 
@@ -229,16 +225,12 @@ public class DBUtils {
         mDatabase.child(reviewPath).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                double sumRate = 0;
-                int sumBusyRate = 0;
-                int count = 0;
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Review review = snapshot.getValue(Review.class);
-                    count++;
-                    sumRate+= review.getRate();
-                    sumBusyRate+= review.getBusyRate();
+                if(dataSnapshot.child("hottnesRate").exists()) {
+                    double currHottnesRate = dataSnapshot.child("hottnesRate").getValue(Double.class);
+                    double hottnesRateByUser = calcRate(currentReview);
+
+                    updateReliabilityToUser(userId, calcDiff(currHottnesRate, hottnesRateByUser));
                 }
-                updateReliabilityToUser(userId, calcDiff(currentReview, ((double)sumBusyRate/count), (sumRate/count)));
             }
 
             @Override
@@ -249,12 +241,26 @@ public class DBUtils {
 
     }
 
+    private static double calcRate(Review currentReview) {
+        double bookInAdvanceRate = calcFieldRate(currentReview.getNeedToBookInAdvance());
+        double wasLineRate = calcFieldRate(currentReview.getWasLine());
+        return  (currentReview.getBusyRate() + currentReview.getRate())/2 +  wasLineRate + bookInAdvanceRate;
+    }
+
+    private static double calcFieldRate(int needToBookInAdvance) {
+        switch (needToBookInAdvance){
+            case 1:
+                return 2.5;
+            case 2:
+                return 0;
+            default:
+                return 1;
+        }
+    }
+
     // calc how far is the user's review from the given data
-    private static double calcDiff(Review currentReview, double busyRateAvg, double rateAvg) {
-        double res = Math.abs(currentReview.getBusyRate() - busyRateAvg);
-        res += Math.abs(currentReview.getRate() - rateAvg);
-        res = reliabilityReviewValue - res;
-        return res;
+    private static int calcDiff(double currentReviewRate, double userReviewRate) {
+        return (int)Math.round(reliabilityReviewValue - Math.abs(currentReviewRate - userReviewRate));
     }
 
 

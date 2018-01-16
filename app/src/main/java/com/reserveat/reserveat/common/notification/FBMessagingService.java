@@ -49,7 +49,8 @@ public class FBMessagingService extends FirebaseMessagingService {
 
         Intent resultIntent = null;
         if(reservationId != null){
-            resultIntent = new Intent(this, MatchedReservationActivity.class);
+            String click_action = remoteMessage.getNotification().getClickAction();
+            resultIntent = new Intent(click_action);
             resultIntent.putExtra("reservationId", reservationId);
             resultIntent.setAction(Long.toString(System.currentTimeMillis()));
 

@@ -5,8 +5,8 @@
     <item  android:id="@+id/Profile"
         android:title="@string/profile"/>
 
-    <item  android:id="@+id/statistics"
-        android:title="@string/statistics"/>
+    <item  android:id="@+id/cancellation_statistics"
+        android:title="@string/cancellation_statistics"/>
 
     <item  android:id="@+id/contactUs"
         android:title="@string/contactUs"/>
