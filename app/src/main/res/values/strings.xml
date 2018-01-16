@@ -31,10 +31,14 @@
     <string name="restaurant">Restaurant</string>
     <string name="branch">Branch</string>
     <string name="num_of_people">Num of People</string>
+    <string name="required_num_of_people">*Num of People</string>
     <string name="date">Date</string>
+    <string name="required_date">*Date</string>
     <string name="hour">Hour</string>
+    <string name="required_hour">*Hour</string>
     <string name="is_reservation_on_my_name">"The reservation is on my name"</string>
     <string name="reservation_name">Reservation name</string>
+    <string name="required_reservation_name">*Reservation name</string>
     <string name="add_reservation">ADD RESERVATION</string>
     <string name="reservation">RESERVATION</string>
 
@@ -148,5 +152,11 @@
     <string name="phone_details">Phone:</string>
     <string name="flexible_details">Time Flexibility:</string>
     <string name="seatting_details">Seatting Area:</string>
+
+    <string name="spam_not_picked_msg">reservation is not picked, can\'t report it</string>
+    <string name="spam_reported_msg">reservation is reported</string>
+    <string name="remove_picked_msg">reservation is picked, can\'t remove it </string>
+    <string name="review_filed_msg">review is already answered</string>
+    <string name="review_not_arrived_msg">will open after reservation date will arrive</string>
 
 </resources>

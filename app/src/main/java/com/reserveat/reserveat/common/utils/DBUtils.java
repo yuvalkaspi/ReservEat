@@ -225,16 +225,10 @@ public class DBUtils {
         mDatabase.child(reviewPath).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                double sumRate = 0;
-                int sumBusyRate = 0;
-                int count = 0;
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Review review = snapshot.getValue(Review.class);
-                    count++;
-                    sumRate+= review.getRate();
-                    sumBusyRate+= review.getBusyRate();
-                }
-                updateReliabilityToUser(userId, calcDiff(currentReview, ((double)sumBusyRate/count), (sumRate/count)));
+                double currHottnesRate = dataSnapshot.child("hottnesRate").getValue(Double.class);
+                double hottnesRateByUser = calcRate(currentReview);
+
+                updateReliabilityToUser(userId, calcDiff(currHottnesRate, hottnesRateByUser));
             }
 
             @Override
@@ -245,12 +239,26 @@ public class DBUtils {
 
     }
 
+    private static double calcRate(Review currentReview) {
+        double bookInAdvanceRate = calcFieldRate(currentReview.getNeedToBookInAdvance());
+        double wasLineRate = calcFieldRate(currentReview.getWasLine());
+        return  (currentReview.getBusyRate() + currentReview.getRate())/2 +  wasLineRate + bookInAdvanceRate;
+    }
+
+    private static double calcFieldRate(int needToBookInAdvance) {
+        switch (needToBookInAdvance){
+            case 1:
+                return 2.5;
+            case 2:
+                return 0;
+            default:
+                return 1;
+        }
+    }
+
     // calc how far is the user's review from the given data
-    private static double calcDiff(Review currentReview, double busyRateAvg, double rateAvg) {
-        double res = Math.abs(currentReview.getBusyRate() - busyRateAvg);
-        res += Math.abs(currentReview.getRate() - rateAvg);
-        res = reliabilityReviewValue - res;
-        return res;
+    private static int calcDiff(double currentReviewRate, double userReviewRate) {
+        return (int)Math.round(reliabilityReviewValue - Math.abs(currentReviewRate - userReviewRate));
     }
 
 
