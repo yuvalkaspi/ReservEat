@@ -117,7 +117,7 @@
         Add notification request and get notification alert when a new cancellation that matches your request is received
         \n\nChoosing the flexible option allows you to get notifications that almost match your request
         (i.e. 2 hour before and after your request)</string>
-    <string name="StatisticsInfo">Select a restaurant and a time of day and get the chances of getting a cancellation on that restaurant.
+    <string name="StatisticsInfo">Select a restaurant and a part of the day and get the chances of getting a cancellation on that restaurant.
     \n\nThe graph shows the average of cancellations received on the chosen time by days</string>
     <string name="myPicksSpamInfo">Report the reservation does not exist or inaccurate.
     \n\nAre you sure you want to report the reservation owner?</string>
@@ -159,5 +159,7 @@
     <string name="review_filed_msg">review is already answered</string>
     <string name="review_not_arrived_msg">will open after reservation date will arrive</string>
     <string name="required_notification_description">*Notification Description</string>
+    <string name="cancellationStatisticsTitle">CANCELLATION STATISTICS</string>
+    <string name="cancellation_statistics">Cancellation Statistics</string>
 
 </resources>

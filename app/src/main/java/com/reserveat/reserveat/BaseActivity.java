@@ -42,7 +42,7 @@ public class BaseActivity extends AppCompatActivity{
                 Intent intent_profile = new Intent(getApplicationContext(), ProfileActivity.class );
                 startActivity(intent_profile);
                 return true;
-            case R.id.statistics:
+            case R.id.cancellation_statistics:
                 Intent intent_statistics = new Intent(getApplicationContext(), StatisticsActivity.class );
                 startActivity(intent_statistics);
                 return true;

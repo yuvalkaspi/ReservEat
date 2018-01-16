@@ -62,7 +62,7 @@ public class ProfileActivity extends BaseActivity {
                     } catch(ParseException e){
                         resetStarnextDate = "";
                     }
-                    resetStarDateTextView.setText("Losing Star date: " + resetStarnextDate);
+                    resetStarDateTextView.setText("Losing star date: " + resetStarnextDate);
                 }
 
                 switch (currNumOfStars){
