@@ -21,9 +21,9 @@ public class DialogUtils {
 
     private static final String TAG = "DialogUtils";
 
-    public static void removeClick(final Dialog dialog, String location, String key, final Context context) {
+    public static void removeClick(final Dialog dialog, final String location, final String key, final Context context) {
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/users/" + DBUtils.getCurrentUser() + "/" + location + "/" + key, null);
+        childUpdates.put("/users/" + DBUtils.getCurrentUserID() + "/" + location + "/" + key, null);
         childUpdates.put( "/" + location + "/" + key, null);
         DatabaseReference popUpDatabase = FirebaseDatabase.getInstance().getReference();
 

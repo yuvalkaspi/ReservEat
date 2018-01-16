@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        String regularText = "Don't Have an Account?  ";
+        String regularText = "Don't have an Account?  ";
         String clickableText = "SIGN UP";
 
         SpannableString ss = new SpannableString(regularText + clickableText);

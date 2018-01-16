@@ -225,10 +225,12 @@ public class DBUtils {
         mDatabase.child(reviewPath).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                double currHottnesRate = dataSnapshot.child("hottnesRate").getValue(Double.class);
-                double hottnesRateByUser = calcRate(currentReview);
+                if(dataSnapshot.child("hottnesRate").exists()) {
+                    double currHottnesRate = dataSnapshot.child("hottnesRate").getValue(Double.class);
+                    double hottnesRateByUser = calcRate(currentReview);
 
-                updateReliabilityToUser(userId, calcDiff(currHottnesRate, hottnesRateByUser));
+                    updateReliabilityToUser(userId, calcDiff(currHottnesRate, hottnesRateByUser));
+                }
             }
 
             @Override
