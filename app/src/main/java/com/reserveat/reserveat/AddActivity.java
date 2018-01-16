@@ -185,10 +185,11 @@ public class AddActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     reservationNameEditText.setEnabled(false);
-                    reservationNameEditText.setText("");//clear
-                    reservationNameEditText.setHint(getResources().getString(R.string.reservation_name));
+                    reservationNameEditText.setText(currentUser.getDisplayName());
+                    //reservationNameEditText.setHint(getResources().getString(R.string.reservation_name));
                 } else {
                     reservationNameEditText.setEnabled(true);
+                    reservationNameEditText.setText("");
                     reservationNameEditText.setHint(getResources().getString(R.string.required_reservation_name));
                 }
             }
