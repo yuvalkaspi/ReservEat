@@ -59,7 +59,7 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
             @Override
             public void onClick(View view) {
                 BaseChoiceDialog newFragment = new SingleChoiceDialog();
-                DialogUtils.initChoiceDialog(newFragment, R.string.q1, R.array.ReviewBusyRestaurantOptions,1);
+                BaseChoiceDialog.initInstance(newFragment, R.string.q1, R.array.ReviewBusyRestaurantOptions,1);
                 newFragment.show(getFragmentManager(), "q1ChoiceDialogFragment");
             }
         });
@@ -70,7 +70,7 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
             @Override
             public void onClick(View view) {
                 BaseChoiceDialog newFragment = new RatingChoiceDialog();
-                DialogUtils.initChoiceDialog(newFragment, R.string.q2,R.layout.rating,2);
+                BaseChoiceDialog.initInstance(newFragment, R.string.q2,R.layout.rating,2);
                 newFragment.show(getFragmentManager(), "q2ChoiceDialogFragment");
             }
         });
@@ -80,7 +80,7 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
             @Override
             public void onClick(View view) {
                 BaseChoiceDialog newFragment = new SingleChoiceDialog();
-                DialogUtils.initChoiceDialog(newFragment, R.string.q3, R.array.ReviewYesNoOptions,3);
+                BaseChoiceDialog.initInstance(newFragment, R.string.q3, R.array.ReviewYesNoOptions,3);
                 newFragment.show(getFragmentManager(), "q3ChoiceDialogFragment");
             }
         });
@@ -91,7 +91,7 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
             @Override
             public void onClick(View view) {
                 BaseChoiceDialog newFragment = new SingleChoiceDialog();
-                DialogUtils.initChoiceDialog(newFragment, R.string.q4, R.array.ReviewYesNoOptions,4);
+                BaseChoiceDialog.initInstance(newFragment, R.string.q4, R.array.ReviewYesNoOptions,4);
                 newFragment.show(getFragmentManager(), "q4ChoiceDialogFragment");
             }
         });

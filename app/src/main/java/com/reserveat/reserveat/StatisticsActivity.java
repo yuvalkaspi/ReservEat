@@ -135,7 +135,7 @@ public class StatisticsActivity extends BaseActivity implements BaseChoiceDialog
             @Override
             public void onClick(View view) {
                 BaseChoiceDialog newFragment = new MultipleChoiceDialog();
-                DialogUtils.initChoiceDialog(newFragment, R.string.timeOfDay, R.array.timeOfDayOptions,-1);
+                BaseChoiceDialog.initInstance(newFragment, R.string.timeOfDay, R.array.timeOfDayOptions,-1);
                 newFragment.show(getFragmentManager(), "SingleChoiceDialog");
             }
         });

@@ -18,7 +18,7 @@ import com.reserveat.reserveat.common.utils.DialogUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NotificationRequestListDialog extends ContentBaseDialog {
+public class NotificationRequestListDialog extends NotificationContentDialog {
 
 
     @Override
@@ -49,8 +49,8 @@ public class NotificationRequestListDialog extends ContentBaseDialog {
         detailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ContentBaseDialog newFragment = new NotificationRequestDetailsDialog();
-                DialogUtils.initContentDialog(newFragment, key, false, false, false, false, false);
+                NotificationContentDialog newFragment = new NotificationRequestDetailsDialog();
+                NotificationContentDialog.initInstance(newFragment, key, notificationRequest);
                 newFragment.show(getFragmentManager(), "NotificationRequestDetailsDialog");
                 dialog.dismiss();
             }
@@ -58,7 +58,7 @@ public class NotificationRequestListDialog extends ContentBaseDialog {
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                removeClick("notificationRequests");
+                DialogUtils.removeClick(dialog, "notificationRequests", key, getActivity());
             }
         });
 

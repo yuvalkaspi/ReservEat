@@ -20,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.reserveat.reserveat.MainActivity;
 import com.reserveat.reserveat.common.dbObjects.Restaurant;
 import com.reserveat.reserveat.common.dbObjects.Review;
-import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ContentBaseDialog;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -31,9 +30,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * Created by Golan on 13/12/2017.
- */
 
 public class DBUtils {
 

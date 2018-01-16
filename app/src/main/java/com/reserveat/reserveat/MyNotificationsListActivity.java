@@ -18,9 +18,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.reserveat.reserveat.common.dbObjects.NotificationRequest;
 import com.reserveat.reserveat.common.dbObjects.NotificationRequestHolder;
-import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ContentBaseDialog;
+import com.reserveat.reserveat.common.dialogFragment.contentDialogs.NotificationContentDialog;
 import com.reserveat.reserveat.common.dialogFragment.contentDialogs.NotificationRequestListDialog;
-import com.reserveat.reserveat.common.utils.DialogUtils;
 import com.reserveat.reserveat.common.utils.DBUtils;
 
 
@@ -57,8 +56,8 @@ public class MyNotificationsListActivity extends BaseActivity  {
                     public void onItemClick(View view, int position) {
                           final String key = getRef(position).getKey();
 
-                          ContentBaseDialog newFragment = new NotificationRequestListDialog();
-                          DialogUtils.initContentDialog(newFragment ,key, false, false, false, false, false);
+                          NotificationContentDialog newFragment = new NotificationRequestListDialog();
+                          NotificationContentDialog.initInstance(newFragment ,key, notificationRequest);
                           newFragment.show(getFragmentManager(), "NotificationRequestListDialog");
                     }
 

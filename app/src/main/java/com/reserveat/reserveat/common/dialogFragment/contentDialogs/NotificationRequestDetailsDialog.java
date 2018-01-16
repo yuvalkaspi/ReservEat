@@ -28,7 +28,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NotificationRequestDetailsDialog extends ContentBaseDialog {
+public class NotificationRequestDetailsDialog extends NotificationContentDialog {
 
 
     @Override
@@ -55,50 +55,33 @@ public class NotificationRequestDetailsDialog extends ContentBaseDialog {
     }
 
 
-    private void fillNotificationRequestDetails(final View view){
+    private void fillNotificationRequestDetails(final View view) {
 
-        final DatabaseReference notificationRef = DBUtils.getDatabaseRef().child("users").child(DBUtils.getCurrentUserID()).child("notificationRequests").child(key);
+        setDetail(notificationRequest.getRestaurant(), R.id.resturant_detail, view);
+        setDetail(notificationRequest.getBranch(), R.id.branch_detail, view);
 
-        notificationRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        String date = notificationRequest.getDate();
+        String dateNewFormat = null;
+        String hour = null;
 
-                NotificationRequest notificationRequest = dataSnapshot.getValue(NotificationRequest.class);
-
-                setDetail(notificationRequest.getRestaurant(), R.id.resturant_detail, view);
-                setDetail(notificationRequest.getBranch(), R.id.branch_detail, view);
-
-                String date = notificationRequest.getDate();
-                String dateNewFormat = null;
-                String hour = null;
-
-                if( date != null && !date.equals("")) {
-                    int indexOfSpace = date.indexOf(" ");
-                    String dateOldFormat = date.substring(0, indexOfSpace);
-                    hour = date.substring(indexOfSpace + 1);
-                    try {
-                        dateNewFormat = DateUtils.switchDateFormat(dateOldFormat, DateUtils.dateFormatDB, DateUtils.dateFormatUser);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-                setDetail(dateNewFormat, R.id.date_detail, view);
-                setDetail(hour, R.id.hour_detail, view);
-                setDetail(notificationRequest.getIsFlexible()? "Yes":"No", R.id.timeFlexible, view);
-                setDetail(Integer.toString(notificationRequest.getNumOfPeople()), R.id.num_of_people_detail, view);
-
+        if (date != null && !date.equals("")) {
+            int indexOfSpace = date.indexOf(" ");
+            String dateOldFormat = date.substring(0, indexOfSpace);
+            hour = date.substring(indexOfSpace + 1);
+            try {
+                dateNewFormat = DateUtils.switchDateFormat(dateOldFormat, DateUtils.dateFormatDB, DateUtils.dateFormatUser);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        }
+        setDetail(dateNewFormat, R.id.date_detail, view);
+        setDetail(hour, R.id.hour_detail, view);
+        setDetail(notificationRequest.getIsFlexible() ? "Yes" : "No", R.id.timeFlexible, view);
+        setDetail(Integer.toString(notificationRequest.getNumOfPeople()), R.id.num_of_people_detail, view);
 
     }
 
-    private void setDetail(String detail, int textViewId, View detailsView){
+    private void setDetail(String detail, int textViewId, View detailsView) {
         String newDetail = (detail == null || detail.equals("")) ? "Flexible" : detail;
         TextView textView = detailsView.findViewById(textViewId);
         textView.setText(newDetail);
