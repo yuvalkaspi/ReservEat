@@ -61,10 +61,20 @@ public class ReservationHolder extends RecyclerView.ViewHolder {
     public void setHotness(int hotness){
         if(hotness >= 9){
             boilHotness.setVisibility(View.VISIBLE);
+            hotHotness.setVisibility(View.GONE);
+            warmHotness.setVisibility(View.GONE);
         } else if( hotness == 8) {
             hotHotness.setVisibility(View.VISIBLE);
+            boilHotness.setVisibility(View.GONE);
+            warmHotness.setVisibility(View.GONE);
         } else if( hotness == 7){
             warmHotness.setVisibility(View.VISIBLE);
+            hotHotness.setVisibility(View.GONE);
+            boilHotness.setVisibility(View.GONE);
+        } else{
+            warmHotness.setVisibility(View.GONE);
+            hotHotness.setVisibility(View.GONE);
+            boilHotness.setVisibility(View.GONE);
         }
 
     }
