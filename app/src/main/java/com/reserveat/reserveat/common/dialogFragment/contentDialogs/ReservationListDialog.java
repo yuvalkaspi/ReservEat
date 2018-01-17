@@ -3,7 +3,6 @@ package com.reserveat.reserveat.common.dialogFragment.contentDialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,17 +13,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-import com.reserveat.reserveat.MyReservationsListActivity;
 import com.reserveat.reserveat.R;
 import com.reserveat.reserveat.ReviewFormActivity;
-import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.utils.DBUtils;
 import com.reserveat.reserveat.common.utils.DialogUtils;
+
+import static com.reserveat.reserveat.common.utils.DateUtils.isDatePassed;
 
 public class ReservationListDialog extends ReservationContentDialog {
 
@@ -54,9 +48,7 @@ public class ReservationListDialog extends ReservationContentDialog {
         if ((isMyReservations && !reservation.isPicked()) || reservation.getIsSpam())
             DialogUtils.makeButtonGrey(spamButton, getResources());
         else
-            spamButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+
                     spamButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -78,9 +70,6 @@ public class ReservationListDialog extends ReservationContentDialog {
                             alertDialog.show();
                         }
                     });
-
-                }
-            });
 
 
         if (!isMyReservations)
@@ -111,7 +100,7 @@ public class ReservationListDialog extends ReservationContentDialog {
         if (isMyReservations)
             reviewButton.setVisibility(View.GONE);
         else {
-            if (reservation.getIsReviewed())
+            if (reservation.getIsReviewed() || !isDatePassed(reservation.getDate()))
                 DialogUtils.makeButtonGrey(reviewButton, getResources());
             else {
                 reviewButton.setOnClickListener(new View.OnClickListener() {
