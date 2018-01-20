@@ -37,6 +37,7 @@ public class FBMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.i(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody() + "title: " + remoteMessage.getNotification().getTitle());
+            Log.i(TAG, "Message Notification click_action: " + remoteMessage.getNotification().getClickAction());
             sendNotification(remoteMessage, reservationId);
         }
 
@@ -49,11 +50,9 @@ public class FBMessagingService extends FirebaseMessagingService {
 
         Intent resultIntent = null;
         if(reservationId != null){
-            String click_action = remoteMessage.getNotification().getClickAction();
-            resultIntent = new Intent(click_action);
+            resultIntent = new Intent(this, MatchedReservationActivity.class );
             resultIntent.putExtra("reservationId", reservationId);
             resultIntent.setAction(Long.toString(System.currentTimeMillis()));
-
         }
         else{
             resultIntent = new Intent(this, MainActivity.class);
