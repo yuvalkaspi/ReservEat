@@ -45,8 +45,10 @@ public class ReservationListDialog extends ReservationContentDialog {
             }
         });
 
-        if ((isMyReservations && !reservation.isPicked()) || reservation.getIsSpam())
-            DialogUtils.makeButtonGrey(spamButton, getResources());
+        if (isMyReservations && !reservation.isPicked())
+            DialogUtils.makeButtonGrey(spamButton, getResources(), R.string.spam_not_picked_msg);
+        else if (reservation.getIsSpam())
+            DialogUtils.makeButtonGrey(spamButton, getResources(), R.string.spam_reported_msg);
         else
 
                     spamButton.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +78,7 @@ public class ReservationListDialog extends ReservationContentDialog {
             removeButton.setVisibility(View.GONE);
         else {
             if (reservation.isPicked())
-                DialogUtils.makeButtonGrey(removeButton, getResources());
+                DialogUtils.makeButtonGrey(removeButton, getResources(), R.string.remove_picked_msg);
             else
                 removeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -100,8 +102,10 @@ public class ReservationListDialog extends ReservationContentDialog {
         if (isMyReservations)
             reviewButton.setVisibility(View.GONE);
         else {
-            if (reservation.getIsReviewed() || !isDatePassed(reservation.getDate()))
-                DialogUtils.makeButtonGrey(reviewButton, getResources());
+            if (reservation.getIsReviewed())
+                DialogUtils.makeButtonGrey(reviewButton, getResources(), R.string.review_filed_msg);
+            else if(!isDatePassed(reservation.getDate()))
+                DialogUtils.makeButtonGrey(reviewButton, getResources(), R.string.review_not_arrived_msg);
             else {
                 reviewButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -141,7 +145,7 @@ public class ReservationListDialog extends ReservationContentDialog {
             DBUtils.updateSpamToUser(reservation.getUid(), reservation.getPickedByUid(), "pickedReservations", key);
         }
 
-        DialogUtils.makeButtonGrey(spamButton, getResources());
+        DialogUtils.makeButtonGrey(spamButton, getResources(), R.string.spam_reported_msg);
         Toast.makeText(getActivity(), spammer + " is reported", Toast.LENGTH_LONG).show();
         dialog.dismiss();
     }
