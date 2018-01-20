@@ -41,7 +41,7 @@ public class MyNotificationsListActivity extends BaseActivity  {
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        emptyView = (TextView) findViewById(R.id.empty_view);
+        emptyView = findViewById(R.id.empty_view);
 
         adapter = new FirebaseRecyclerAdapter<NotificationRequest, NotificationRequestHolder>(NotificationRequest.class, R.layout.notification_request,NotificationRequestHolder.class, mDatabase) {
             @Override
@@ -72,8 +72,6 @@ public class MyNotificationsListActivity extends BaseActivity  {
         };
 
         recyclerView.setAdapter(adapter);
-
-
 
     }
 

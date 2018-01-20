@@ -33,10 +33,6 @@ public class ReviewData implements Serializable {
         return branch;
     }
 
-    public String getFullDate() {
-        return fullDate;
-    }
-
 
     public Map<String,String> toMap() {
 

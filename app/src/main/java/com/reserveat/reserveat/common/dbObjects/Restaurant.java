@@ -29,24 +29,12 @@ public class Restaurant {
     // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public String getRestaurantName() {
-        return restaurantName;
-    }
-
     public String getBranch() {
         return branch;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
-    }
-
-    public Float getRating() {
-        return rating;
-    }
-
-    public Integer getPriceLevel() {
-        return priceLevel;
     }
 
     @Exclude

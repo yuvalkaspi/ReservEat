@@ -336,7 +336,6 @@ public class DBUtils {
                         context.startActivity(intent);
                     }
                 });
-        //todo: nullpointerexception?
     }
 
 

@@ -21,13 +21,13 @@ import com.reserveat.reserveat.common.utils.ValidationUtils;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    EditText firstNameEditText;
-    EditText lastNameEditText;
-    EditText emailEditText;
-    EditText passwordEditText;
-    DatabaseReference mDatabase;
     private static final String TAG = "SignUpActivity";
+
+    private FirebaseAuth mAuth;
+    private EditText firstNameEditText;
+    private EditText lastNameEditText;
+    private EditText emailEditText;
+    private EditText passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +72,10 @@ public class SignUpActivity extends AppCompatActivity {
         formTextViewErrCodeArr[2] = ValidationUtils.isEmptyTextField(lastName);
         formTextViewErrCodeArr[3] = ValidationUtils.isEmptyTextField(firstName);
 
-        //todo: check if first name and last name contain only letters
-
         for (int i = 0; i < formTextViewArr.length; i ++){
             int res = formTextViewErrCodeArr[i];
             TextView textView = formTextViewArr[i];
-            if(res != 0){//error
+            if(res != 0){ //error
                 textView.setError(getString(res));
                 focusView = textView;
             }else{
@@ -95,7 +93,6 @@ public class SignUpActivity extends AppCompatActivity {
             // perform the user login attempt.
             Log.i(TAG, "fields verification: success");
             addUserToDB(email, password, firstName, lastName);
-
         }
     }
 
@@ -120,9 +117,6 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
-
 
 
 }

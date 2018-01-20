@@ -44,12 +44,11 @@ public class MainActivity extends BaseActivity implements BaseChoiceDialog.Notic
     private final String[] sortBy = {"date", "numOfPeople", "hotness"};
     private final Boolean[] sortByDescOrder = {false , false, true};
     private static final String TAG = "MainActivity";
-    DatabaseReference mDatabase;
-    RecyclerView recyclerView;
-    FirebaseUser currentUser;
-    LinearLayoutManager linearLayoutManager;
-    String key;
-
+    private DatabaseReference mDatabase;
+    private RecyclerView recyclerView;
+    private FirebaseUser currentUser;
+    private LinearLayoutManager linearLayoutManager;
+    private String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

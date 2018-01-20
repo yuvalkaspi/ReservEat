@@ -1,7 +1,6 @@
 package com.reserveat.reserveat.common.dbObjects;
 
 import com.google.firebase.database.Exclude;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,10 +61,6 @@ public class NotificationRequest implements Serializable {
         return this.branch;
     }
 
-    public String getPlaceId(){
-        return this.placeId;
-    }
-
     public String getDate(){
         return this.date;
     }
@@ -83,8 +78,6 @@ public class NotificationRequest implements Serializable {
     public String getDescription(){
         return this.description;
     }
-
-
 
 }
 

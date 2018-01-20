@@ -53,27 +53,26 @@ import static com.reserveat.reserveat.common.utils.DBUtils.getCurrentUserID;
 
 public class AddActivity extends BaseActivity {
 
-    private DatabaseReference mDatabase;
-    EditText branchEditText;
-    EditText dateEditText;
-    EditText hourEditText;
-    EditText numOfPeopleEditText;
-    EditText reservationNameEditText;
-    private Switch isReservationOnMyName;
-    FirebaseUser currentUser;
     private static final String TAG = "AddActivity";
+    private FirebaseUser currentUser;
+    private DatabaseReference mDatabase;
+    private EditText branchEditText;
+    private EditText dateEditText;
+    private EditText hourEditText;
+    private EditText numOfPeopleEditText;
+    private EditText reservationNameEditText;
+    private Switch isReservationOnMyName;
     private String restaurant;
     private String placeID;
     private Spinner dropdown;
     private String SeattingArea;
-    Calendar current = Calendar.getInstance();
+    private Calendar current = Calendar.getInstance();
     final DateUtils.Day[] reservationDay = new DateUtils.Day[1];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-
 
         //Calendar myCalendar = Calendar.getInstance();
 
@@ -96,7 +95,6 @@ public class AddActivity extends BaseActivity {
 
         autocompleteFragment.setFilter(typeFilter);
         autocompleteFragment.setHint("Enter Restaurant");
-
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -121,17 +119,14 @@ public class AddActivity extends BaseActivity {
             }
         });
 
-        // click on autocompleteFragment clear button
+        //click on autocompleteFragment clear button
         autocompleteFragment.getView().findViewById(R.id.place_autocomplete_clear_button)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // example : way to access view from PlaceAutoCompleteFragment
-                        // ((EditText) autocompleteFragment.getView()
-                        // .findViewById(R.id.place_autocomplete_search_input)).setText("");
                         autocompleteFragment.setText("");
                         view.setVisibility(View.GONE);
-                        branchEditText.setText("");
+                        branchEditText.setText(""); //clear the branch
                         branchEditText.setVisibility(View.GONE);
                     }
                 });
@@ -207,7 +202,6 @@ public class AddActivity extends BaseActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
             }
         });
 
@@ -234,13 +228,14 @@ public class AddActivity extends BaseActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        //allows the user to upload only 2 reservations in a month
                         int currNumOfUploads = dataSnapshot.child("uploadsThisMonth").getValue(Integer.class);
-//                        Todo uncomment
-//                        if(currNumOfUploads >1){
-//                            Toast.makeText(AddActivity.this, "can't add more then 2 reservations in a single month", Toast.LENGTH_LONG).show();
-//                            Intent intent = new Intent(AddActivity.this, MainActivity.class );
-//                            startActivity(intent);
-//                        }
+                        if(currNumOfUploads >1){
+                            Toast.makeText(AddActivity.this, "can't add more then 2 reservations in a single month", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(AddActivity.this, MainActivity.class );
+                            startActivity(intent);
+                        }
                     }
 
                     @Override
@@ -252,7 +247,6 @@ public class AddActivity extends BaseActivity {
 
     private void attemptAddReservation() {
 
-        //String restaurant = restaurantEditText.getText().toString().trim();
         String branch = branchEditText.getText().toString().trim();
         String date = dateEditText.getText().toString().trim();
         String hour = hourEditText.getText().toString().trim();
@@ -341,7 +335,6 @@ public class AddActivity extends BaseActivity {
                 }
             });
         } catch (ParseException e) {
-            //todo
             Toast.makeText(AddActivity.this, "Error!", Toast.LENGTH_LONG).show();
         }
     }

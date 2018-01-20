@@ -70,7 +70,6 @@ public class StatisticsActivity extends BaseActivity implements BaseChoiceDialog
 
                 alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // here you can add functions
                     }
                 });
 
@@ -166,7 +165,6 @@ public class StatisticsActivity extends BaseActivity implements BaseChoiceDialog
     }
 
     private boolean successFieldVerification() {
-        //String restaurant = restaurantEditText.getText().toString().trim();
         String branch = branchEditText.getText().toString().trim();
         String timeOfDay = timeOfDayChoiceText.getText().toString().trim();
 
@@ -261,7 +259,6 @@ public class StatisticsActivity extends BaseActivity implements BaseChoiceDialog
 
     private void createGraph(double[][] countReservation) {
 
-        //int i = 0;
         int count = 0;
 
         for(int i = 0 ; i < timeOfDayArr.length; i++){
@@ -271,10 +268,6 @@ public class StatisticsActivity extends BaseActivity implements BaseChoiceDialog
             }
 
         }
-//        for (int timeOfDayInt : timeOfDayChoiceList){
-//            addSeries(countReservation[timeOfDayInt - 1], timeOfDayColor[i], timeOfDayArr[timeOfDayInt - 1].name());
-//            i++;
-//        }
 
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(statisticsGraph);
         staticLabelsFormatter.setHorizontalLabels(getXLabels());

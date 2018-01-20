@@ -19,7 +19,6 @@ import com.reserveat.reserveat.common.utils.DBUtils;
 import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.BaseChoiceDialog;
 import com.reserveat.reserveat.common.dialogFragment.ChoiceDialogs.RatingChoiceDialog;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
-import com.reserveat.reserveat.common.utils.DialogUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,8 +42,6 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey_form);
 
-        //temporary. TODO: should come from the data base
-        //Reservation reservation
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
             //The key argument here must match that used in the other activity
@@ -105,8 +102,6 @@ public class ReviewFormActivity extends BaseActivity implements BaseChoiceDialog
                     insertDataToDB(review, reservation, reservationKey);
                     DBUtils.updateStarsToUser(NUM_OF_STARS_PER_REVIEW, reservation.getPickedByUid());
                     Toast.makeText(ReviewFormActivity.this, "THANKS! YOU EARN 1 START", Toast.LENGTH_LONG).show();
-                    //Intent intent = new Intent(ReviewFormActivity.this, MyReviewActivity.class );
-                    //startActivity(intent);
                     finish();
                 } else{
                     Toast.makeText(ReviewFormActivity.this, "FAILED: PLEASE ANSWER ALL QUESTIONS", Toast.LENGTH_LONG).show();

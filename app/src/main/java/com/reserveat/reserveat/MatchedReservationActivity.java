@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ReservationContentDialog;
 import com.reserveat.reserveat.common.dialogFragment.contentDialogs.ReservationDetailsDialog;
+import com.reserveat.reserveat.common.utils.DBUtils;
 import com.reserveat.reserveat.common.utils.ReservationUtils;
 import com.reserveat.reserveat.common.dbObjects.Reservation;
 import com.reserveat.reserveat.common.dbObjects.ReservationHolder;
@@ -25,9 +26,8 @@ import java.text.ParseException;
 public class MatchedReservationActivity extends BaseActivity {
 
     private static final String TAG = "MatchedReservActivity";
-    FirebaseUser currentUser;
-    private PopupWindow mPopupWindow;
-    String key;
+    private FirebaseUser currentUser;
+    private String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +76,8 @@ public class MatchedReservationActivity extends BaseActivity {
     @Override
     public void onStart() {
         super.onStart();
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser != null){
-        }else{
+        currentUser = DBUtils.getCurrentUser();
+        if(currentUser == null){
             Intent intent = new Intent(MatchedReservationActivity.this, LoginActivity.class );
             startActivity(intent);
         }

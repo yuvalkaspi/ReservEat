@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-
 import com.reserveat.reserveat.R;
 
 public class NotificationRequestHolder extends RecyclerView.ViewHolder {
@@ -39,14 +38,10 @@ public class NotificationRequestHolder extends RecyclerView.ViewHolder {
 
     private ClickListener mClickListener = new ClickListener() {
         @Override
-        public void onItemClick(View view, int position) {
-
-        }
+        public void onItemClick(View view, int position) { }
 
         @Override
-        public void onSwitchClick(boolean isChecked, int position) {
-
-        }
+        public void onSwitchClick(boolean isChecked, int position) { }
     };
 
     //Interface to send callbacks...

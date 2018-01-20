@@ -7,17 +7,16 @@ import java.util.Map;
 
 public class Review {
 
-    private int busyRate;
-    private float rate;
-    private int wasLine;
-    private int needToBookInAdvance;
-    private String userId;
-
     private static final int BUSY_RATE = 1;
     private static final int RATE = 2;
     private static final int WAS_LINE = 3;
     private static final int BOOK_INADVANCE = 4;
 
+    private int busyRate;
+    private float rate;
+    private int wasLine;
+    private int needToBookInAdvance;
+    private String userId;
 
     public Review() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -51,6 +50,5 @@ public class Review {
     public int getWasLine() { return wasLine; }
 
     public int getNeedToBookInAdvance() { return needToBookInAdvance; }
-
 
 }

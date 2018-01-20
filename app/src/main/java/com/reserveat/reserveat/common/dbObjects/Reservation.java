@@ -64,7 +64,6 @@ public class Reservation implements Serializable {
         result.put("timeOfDay", timeOfDay);
         result.put("SeattingArea", SeattingArea);
         result.put("isSpam", isSpam);
-//        result.put("isReviewed", isReviewed);
 
         return result;
     }

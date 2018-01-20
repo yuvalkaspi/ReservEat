@@ -34,7 +34,6 @@ public class ReservationHolder extends RecyclerView.ViewHolder {
         boilHotness = itemView.findViewById(R.id.boil);
         hotHotness = itemView.findViewById(R.id.hot);
         warmHotness = itemView.findViewById(R.id.warm);
-
     }
 
     public void setRestaurant(String r){
@@ -59,15 +58,15 @@ public class ReservationHolder extends RecyclerView.ViewHolder {
     }
 
     public void setHotness(int hotness){
-        if(hotness >= 9){
+        if(hotness >= 9){ //boil reservation
             boilHotness.setVisibility(View.VISIBLE);
             hotHotness.setVisibility(View.GONE);
             warmHotness.setVisibility(View.GONE);
-        } else if( hotness == 8) {
+        } else if( hotness == 8) { //hot reservation
             hotHotness.setVisibility(View.VISIBLE);
             boilHotness.setVisibility(View.GONE);
             warmHotness.setVisibility(View.GONE);
-        } else if( hotness == 7){
+        } else if( hotness == 7){ //warm reservation
             warmHotness.setVisibility(View.VISIBLE);
             hotHotness.setVisibility(View.GONE);
             boilHotness.setVisibility(View.GONE);
@@ -76,7 +75,6 @@ public class ReservationHolder extends RecyclerView.ViewHolder {
             hotHotness.setVisibility(View.GONE);
             boilHotness.setVisibility(View.GONE);
         }
-
     }
 
     private ClickListener mClickListener = new ClickListener() {
