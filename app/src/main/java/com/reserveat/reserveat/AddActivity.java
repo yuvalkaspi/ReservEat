@@ -231,7 +231,7 @@ public class AddActivity extends BaseActivity {
 
                         //allows the user to upload only 2 reservations in a month
                         int currNumOfUploads = dataSnapshot.child("uploadsThisMonth").getValue(Integer.class);
-                        if(currNumOfUploads >1){
+                        if(currNumOfUploads > 1){
                             Toast.makeText(AddActivity.this, "can't add more then 2 reservations in a single month", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(AddActivity.this, MainActivity.class );
                             startActivity(intent);
